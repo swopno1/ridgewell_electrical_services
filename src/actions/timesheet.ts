@@ -5,6 +5,7 @@ import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
 import { getSession } from '@/lib/session';
 import { differenceInMinutes } from 'date-fns';
+import { revalidatePath } from 'next/cache';
 
 const createTimesheetSchema = z.object({
   projectId: z.string().uuid(),
@@ -61,6 +62,8 @@ export async function createTimesheetAction(data: unknown, userId: string) {
       },
     });
 
+    revalidatePath('/timesheets');
+    revalidatePath('/dashboard');
     return { success: true, timesheet };
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -115,6 +118,8 @@ export async function updateTimesheetAction(
       include: { project: true, user: true },
     });
 
+    revalidatePath('/timesheets');
+    revalidatePath('/dashboard');
     return { success: true, timesheet: updated };
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -146,6 +151,8 @@ export async function deleteTimesheetAction(timesheetId: string, userId: string)
       where: { id: timesheetId },
     });
 
+    revalidatePath('/timesheets');
+    revalidatePath('/dashboard');
     return { success: true };
   } catch {
     return { error: 'Failed to delete timesheet' };
@@ -184,6 +191,8 @@ export async function approveTimesheetAction(
       }),
     ]);
 
+    revalidatePath('/timesheets');
+    revalidatePath('/dashboard');
     return { success: true, timesheet: updated };
   } catch {
     return { error: 'Failed to approve timesheet' };
@@ -222,6 +231,8 @@ export async function rejectTimesheetAction(
       }),
     ]);
 
+    revalidatePath('/timesheets');
+    revalidatePath('/dashboard');
     return { success: true, timesheet: updated };
   } catch {
     return { error: 'Failed to reject timesheet' };
@@ -256,3 +267,79 @@ export async function getTimesheetsByDateRange(
     return { error: 'Failed to fetch timesheets' };
   }
 }
+
+export async function getTimesheetsAction(
+  search?: string,
+  status?: string,
+  page = 1,
+  pageSize = 10
+) {
+  try {
+    const session = await getSession();
+    if (!session?.user?.id) {
+      return { error: 'Unauthorized' };
+    }
+
+    const userId = session.user.id;
+    const role = session.user.role;
+
+    const where: any = {};
+
+    // Role-based scoping
+    if (role === 'EMPLOYEE') {
+      where.userId = userId;
+    }
+
+    // Search filter
+    if (search) {
+      const searchConditions: any[] = [
+        { project: { name: { contains: search, mode: 'insensitive' } } },
+        { project: { client: { contains: search, mode: 'insensitive' } } },
+      ];
+      if (role !== 'EMPLOYEE') {
+        searchConditions.push({
+          user: { name: { contains: search, mode: 'insensitive' } },
+        });
+      }
+      where.OR = searchConditions;
+    }
+
+    // Status filter
+    if (status && status !== 'ALL') {
+      where.status = status;
+    }
+
+    const skip = (page - 1) * pageSize;
+
+    const [timesheets, totalCount] = await Promise.all([
+      prisma.timesheet.findMany({
+        where,
+        include: {
+          user: {
+            select: { name: true, email: true },
+          },
+          project: {
+            select: { name: true, client: true },
+          },
+        },
+        orderBy: { date: 'desc' },
+        skip,
+        take: pageSize,
+      }),
+      prisma.timesheet.count({ where }),
+    ]);
+
+    return {
+      success: true,
+      timesheets: timesheets.map((t) => ({
+        ...t,
+        date: t.date.toISOString().split('T')[0], // format date for client table
+      })),
+      totalCount,
+      totalPages: Math.ceil(totalCount / pageSize),
+    };
+  } catch (error: any) {
+    return { error: error.message || 'Failed to fetch timesheets' };
+  }
+}
+
