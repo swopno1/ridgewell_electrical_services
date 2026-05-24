@@ -1,4 +1,5 @@
 // src/lib/seed.ts
+import 'dotenv/config';
 import { prisma } from './prisma';
 import { hashPassword } from './auth-utils';
 import { addDays, startOfToday } from 'date-fns';
@@ -96,12 +97,17 @@ async function main() {
   ];
 
   for (const project of projectData) {
-    const created = await prisma.project.upsert({
-      where: { id: project.name }, // Using name as unique identifier for seed
-      update: {},
-      create: project,
+    const existing = await prisma.project.findFirst({
+      where: { name: project.name }
     });
-    projects.push(created);
+    if (existing) {
+      projects.push(existing);
+    } else {
+      const created = await prisma.project.create({
+        data: project
+      });
+      projects.push(created);
+    }
   }
 
   // 3. Create Timesheets
@@ -153,17 +159,27 @@ async function main() {
     const startDate = addDays(today, 10);
     const endDate = addDays(startDate, 2);
 
-    await prisma.leaveRequest.create({
-      data: {
+    const existingLeave = await prisma.leaveRequest.findFirst({
+      where: {
         userId: employee.id,
-        leaveType: 'ANNUAL',
         startDate,
         endDate,
-        totalDays: 3,
-        reason: 'Annual vacation',
-        status: 'PENDING',
       },
     });
+
+    if (!existingLeave) {
+      await prisma.leaveRequest.create({
+        data: {
+          userId: employee.id,
+          leaveType: 'ANNUAL',
+          startDate,
+          endDate,
+          totalDays: 3,
+          reason: 'Annual vacation',
+          status: 'PENDING',
+        },
+      });
+    }
   }
 
   // 5. Create Leave Balances
@@ -198,16 +214,23 @@ async function main() {
   });
 
   for (const timesheet of approvedTimesheets) {
-    await prisma.approval.create({
-      data: {
-        approverUserId: manager.id,
+    const existingApproval = await prisma.approval.findFirst({
+      where: {
         timesheetId: timesheet.id,
-        type: 'TIMESHEET',
-        approved: true,
-        comment: 'Looks good',
-        approvedAt: new Date(),
       },
     });
+    if (!existingApproval) {
+      await prisma.approval.create({
+        data: {
+          approverUserId: manager.id,
+          timesheetId: timesheet.id,
+          type: 'TIMESHEET',
+          approved: true,
+          comment: 'Looks good',
+          approvedAt: new Date(),
+        },
+      });
+    }
   }
 
   console.log('✨ Database seeded successfully!');
@@ -218,7 +241,7 @@ async function main() {
   console.log(`  - Leave Requests: ${employees.length}`);
   console.log(`  - Leave Balances: ${employees.length}`);
   console.log('\n🔐 Default Credentials:');
-  console.log('  Admin: admin@example.com / Admin@123456');
+  console.log('  Admin: amirhossain.limon@gmail.com / Admin@123456**');
   console.log('  Manager: manager@example.com / Manager@123456');
   console.log('  Employee: alice@example.com / Employee@123456');
   console.log('           (same password for all employees)');
