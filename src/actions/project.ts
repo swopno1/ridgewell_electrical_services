@@ -75,7 +75,7 @@ export async function getProjectsAction(
     ]);
 
     // Aggregate hours for the fetched projects
-    const projectIds = projects.map((p) => p.id);
+    const projectIds = projects.map((p: { id: string }) => p.id);
     const hoursAggregation = await prisma.timesheet.groupBy({
       by: ['projectId'],
       where: {
@@ -87,11 +87,11 @@ export async function getProjectsAction(
     });
 
     const hoursMap = new Map<string, number>();
-    hoursAggregation.forEach((agg) => {
+    hoursAggregation.forEach((agg: any) => {
       hoursMap.set(agg.projectId, agg._sum.totalHours || 0);
     });
 
-    const projectsWithHours = projects.map((project) => ({
+    const projectsWithHours = projects.map((project: any) => ({
       ...project,
       totalHoursLogged: hoursMap.get(project.id) || 0,
     }));

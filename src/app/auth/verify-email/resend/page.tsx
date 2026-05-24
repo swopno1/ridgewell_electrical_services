@@ -1,7 +1,7 @@
 // src/app/auth/verify-email/resend/page.tsx
 'use client';
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { resendVerificationAction } from '@/actions/auth';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Clock, Send, AlertTriangle } from 'lucide-react';
 import { appConfig } from '@/lib/config';
@@ -21,7 +21,7 @@ const resendFormSchema = z.object({
 
 type ResendFormValues = z.infer<typeof resendFormSchema>;
 
-export default function ResendVerificationPage() {
+function ResendVerificationContent() {
   const searchParams = useSearchParams();
   const emailParam = searchParams.get('email') || '';
 
@@ -158,5 +158,13 @@ export default function ResendVerificationPage() {
         </Card>
       </div>
     </div>
+  );
+}
+
+export default function ResendVerificationPage() {
+  return (
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center">Loading...</div>}>
+      <ResendVerificationContent />
+    </Suspense>
   );
 }
