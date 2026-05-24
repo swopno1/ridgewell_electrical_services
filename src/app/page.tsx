@@ -12,7 +12,7 @@ export default function HomePage() {
           </p>
           <a
             href="/dashboard"
-            className="inline-block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded transition-colors"
+            className="inline-block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-sm transition-colors"
           >
             Go to Dashboard
           </a>
