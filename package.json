@@ -47,6 +47,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.48.0",
+    "resend": "^6.12.3",
     "shadcn": "^4.8.0",
     "tailwind-merge": "^2.0.0",
     "tailwindcss": "^4.3.0",
