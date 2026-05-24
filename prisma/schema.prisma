@@ -127,7 +127,6 @@ model Project {
   updatedAt   DateTime    @updatedAt
   
   @@index([active])
-  @@fulltext([name, client]) // For search
 }
 
 // ============================================

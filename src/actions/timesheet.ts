@@ -4,7 +4,7 @@
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
 import { getSession } from '@/lib/session';
-import { differenceInMinutes, parseISO } from 'date-fns';
+import { differenceInMinutes } from 'date-fns';
 
 const createTimesheetSchema = z.object({
   projectId: z.string().uuid(),
