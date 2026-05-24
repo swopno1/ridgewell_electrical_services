@@ -1,7 +1,7 @@
 // src/app/auth/reset-password/page.tsx
 'use client';
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -32,7 +32,7 @@ const resetFormSchema = z
 
 type ResetFormValues = z.infer<typeof resetFormSchema>;
 
-export default function ResetPasswordPage() {
+function ResetPasswordContent() {
   const searchParams = useSearchParams();
   
   const token = searchParams.get('token') || '';
@@ -209,5 +209,13 @@ export default function ResetPasswordPage() {
         </Card>
       </div>
     </div>
+  );
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center">Loading...</div>}>
+      <ResetPasswordContent />
+    </Suspense>
   );
 }

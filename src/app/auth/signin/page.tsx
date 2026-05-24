@@ -1,7 +1,7 @@
 // src/app/auth/signin/page.tsx
 'use client';
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -22,7 +22,7 @@ const signInFormSchema = z.object({
 
 type SignInFormValues = z.infer<typeof signInFormSchema>;
 
-export default function SignInPage() {
+function SignInContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   
@@ -194,5 +194,13 @@ export default function SignInPage() {
         </Card>
       </div>
     </div>
+  );
+}
+
+export default function SignInPage() {
+  return (
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center">Loading...</div>}>
+      <SignInContent />
+    </Suspense>
   );
 }

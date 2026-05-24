@@ -331,7 +331,7 @@ export async function getTimesheetsAction(
 
     return {
       success: true,
-      timesheets: timesheets.map((t) => ({
+      timesheets: timesheets.map((t: any) => ({
         ...t,
         date: t.date.toISOString().split('T')[0], // format date for client table
       })),

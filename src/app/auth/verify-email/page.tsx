@@ -1,6 +1,6 @@
 // src/app/auth/verify-email/page.tsx
 'use client';
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { verifyEmailAction } from '@/actions/auth';
 import { Button } from '@/components/ui/button';
@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { Clock, CheckCircle2, XCircle, Loader2 } from 'lucide-react';
 import { appConfig } from '@/lib/config';
 
-export default function VerifyEmailPage() {
+function VerifyEmailContent() {
   const searchParams = useSearchParams();
 
   const token = searchParams.get('token') || '';
@@ -123,5 +123,13 @@ export default function VerifyEmailPage() {
         </Card>
       </div>
     </div>
+  );
+}
+
+export default function VerifyEmailPage() {
+  return (
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center text-blue-600">Loading...</div>}>
+      <VerifyEmailContent />
+    </Suspense>
   );
 }
