@@ -17,13 +17,13 @@ async function main() {
   // 1. Create Users
   console.log('📝 Creating users...');
   
-  const adminPassword = await hashPassword('Admin@123456');
+  const adminPassword = await hashPassword('Admin@123456**');
   await prisma.user.upsert({
-    where: { email: 'admin@example.com' },
+    where: { email: 'amirhossain.limon@gmail.com' },
     update: {},
     create: {
-      name: 'Admin User',
-      email: 'admin@example.com',
+      name: 'Md Amir Hossain',
+      email: 'amirhossain.limon@gmail.com',
       password: adminPassword,
       role: 'ADMIN',
       active: true,

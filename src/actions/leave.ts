@@ -4,6 +4,8 @@
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
 import { differenceInDays } from 'date-fns';
+import { getSession } from '@/lib/session';
+import { revalidatePath } from 'next/cache';
 
 const createLeaveRequestSchema = z.object({
   leaveType: z.enum(['ANNUAL', 'SICK', 'UNPAID']),
@@ -37,6 +39,8 @@ export async function createLeaveRequestAction(data: unknown, userId: string) {
       },
     });
 
+    revalidatePath('/leave');
+    revalidatePath('/dashboard');
     return { success: true, leaveRequest };
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -84,6 +88,8 @@ export async function updateLeaveRequestAction(
       include: { user: true },
     });
 
+    revalidatePath('/leave');
+    revalidatePath('/dashboard');
     return { success: true, leaveRequest: updated };
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -113,6 +119,8 @@ export async function cancelLeaveRequestAction(leaveRequestId: string, userId: s
       include: { user: true },
     });
 
+    revalidatePath('/leave');
+    revalidatePath('/dashboard');
     return { success: true, leaveRequest: updated };
   } catch {
     return { error: 'Failed to cancel leave request' };
@@ -133,13 +141,25 @@ export async function approveLeaveRequestAction(
       return { error: 'Leave request not found' };
     }
 
-    // Update leave balance
-    const year = new Date().getFullYear();
-    const balance = await prisma.leaveBalance.findUnique({
+    // Find or create leave balance
+    const year = new Date(leaveRequest.startDate).getFullYear();
+    let balance = await prisma.leaveBalance.findUnique({
       where: { userId_year: { userId: leaveRequest.userId, year } },
     });
 
-    if (leaveRequest.leaveType === 'ANNUAL' && balance) {
+    if (!balance) {
+      balance = await prisma.leaveBalance.create({
+        data: {
+          userId: leaveRequest.userId,
+          year,
+          annualEntitled: 20,
+          annualUsed: 0,
+          sickUsed: 0,
+        },
+      });
+    }
+
+    if (leaveRequest.leaveType === 'ANNUAL') {
       if (balance.annualUsed + leaveRequest.totalDays > balance.annualEntitled) {
         return { error: 'Insufficient annual leave balance' };
       }
@@ -161,14 +181,21 @@ export async function approveLeaveRequestAction(
           approvedAt: new Date(),
         },
       }),
-      leaveRequest.leaveType === 'ANNUAL' && balance
+      leaveRequest.leaveType === 'ANNUAL'
         ? prisma.leaveBalance.update({
             where: { id: balance.id },
             data: { annualUsed: balance.annualUsed + leaveRequest.totalDays },
           })
+        : leaveRequest.leaveType === 'SICK'
+        ? prisma.leaveBalance.update({
+            where: { id: balance.id },
+            data: { sickUsed: balance.sickUsed + leaveRequest.totalDays },
+          })
         : null,
     ]);
 
+    revalidatePath('/leave');
+    revalidatePath('/dashboard');
     return { success: true, leaveRequest: updated };
   } catch {
     return { error: 'Failed to approve leave request' };
@@ -207,6 +234,8 @@ export async function rejectLeaveRequestAction(
       }),
     ]);
 
+    revalidatePath('/leave');
+    revalidatePath('/dashboard');
     return { success: true, leaveRequest: updated };
   } catch {
     return { error: 'Failed to reject leave request' };
@@ -254,3 +283,78 @@ export async function getLeaveBalance(userId: string, year: number) {
     return { error: 'Failed to fetch leave balance' };
   }
 }
+
+export async function getLeaveRequestsAction(
+  search?: string,
+  status?: string,
+  page = 1,
+  pageSize = 10
+) {
+  try {
+    const session = await getSession();
+    if (!session?.user?.id) {
+      return { error: 'Unauthorized' };
+    }
+
+    const userId = session.user.id;
+    const role = session.user.role;
+
+    const where: any = {};
+
+    // Role-based scoping
+    if (role === 'EMPLOYEE') {
+      where.userId = userId;
+    }
+
+    // Search filter
+    if (search && role !== 'EMPLOYEE') {
+      where.user = {
+        name: { contains: search, mode: 'insensitive' },
+      };
+    }
+
+    // Status filter
+    if (status && status !== 'ALL') {
+      where.status = status;
+    }
+
+    const skip = (page - 1) * pageSize;
+
+    const [leaveRequests, totalCount] = await Promise.all([
+      prisma.leaveRequest.findMany({
+        where,
+        include: {
+          user: {
+            select: { name: true, email: true },
+          },
+          approvals: {
+            include: {
+              approverUser: {
+                select: { name: true },
+              },
+            },
+            orderBy: { createdAt: 'desc' },
+          },
+        },
+        orderBy: { startDate: 'desc' },
+        skip,
+        take: pageSize,
+      }),
+      prisma.leaveRequest.count({ where }),
+    ]);
+
+    return {
+      success: true,
+      leaveRequests: leaveRequests.map((l: any) => ({
+        ...l,
+        startDate: l.startDate.toISOString().split('T')[0],
+        endDate: l.endDate.toISOString().split('T')[0],
+      })),
+      totalCount,
+      totalPages: Math.ceil(totalCount / pageSize),
+    };
+  } catch (error: any) {
+    return { error: error.message || 'Failed to fetch leave requests' };
+  }
+}
+
