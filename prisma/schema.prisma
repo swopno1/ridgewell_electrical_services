@@ -1,0 +1,257 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// ENUMS
+// ============================================
+
+enum UserRole {
+  ADMIN
+  MANAGER
+  EMPLOYEE
+}
+
+enum TimesheetStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum LeaveType {
+  ANNUAL
+  SICK
+  UNPAID
+}
+
+enum LeaveStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+enum ApprovalType {
+  TIMESHEET
+  LEAVE_REQUEST
+}
+
+// ============================================
+// USERS & AUTHENTICATION
+// ============================================
+
+model User {
+  id            String     @id @default(cuid())
+  name          String
+  email         String     @unique
+  emailVerified DateTime?
+  password      String?
+  image         String?
+  role          UserRole   @default(EMPLOYEE)
+  active        Boolean    @default(true)
+  
+  // Relations
+  timesheets    Timesheet[]
+  leaveRequests LeaveRequest[]
+  approvals     Approval[]
+  accounts      Account[]
+  sessions      Session[]
+  
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  
+  @@index([email])
+  @@index([role])
+  @@index([active])
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ============================================
+// PROJECTS / JOBS
+// ============================================
+
+model Project {
+  id          String      @id @default(cuid())
+  name        String
+  client      String
+  description String?
+  active      Boolean     @default(true)
+  
+  // Relations
+  timesheets  Timesheet[]
+  
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  
+  @@index([active])
+  @@fulltext([name, client]) // For search
+}
+
+// ============================================
+// TIMESHEETS
+// ============================================
+
+model Timesheet {
+  id              String            @id @default(cuid())
+  userId          String
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  projectId       String
+  project         Project           @relation(fields: [projectId], references: [id])
+  
+  date            DateTime
+  timeOn          DateTime
+  timeOff         DateTime
+  breakDuration   Int               @default(0) // in minutes
+  overtimeHours   Float             @default(0)
+  totalHours      Float
+  notes           String?
+  
+  status          TimesheetStatus   @default(PENDING)
+  approvals       Approval[]
+  
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  
+  @@unique([userId, date])
+  @@index([userId])
+  @@index([projectId])
+  @@index([status])
+  @@index([date])
+}
+
+// ============================================
+// LEAVE MANAGEMENT
+// ============================================
+
+model LeaveRequest {
+  id              String          @id @default(cuid())
+  userId          String
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  leaveType       LeaveType
+  startDate       DateTime
+  endDate         DateTime
+  totalDays       Int
+  reason          String
+  
+  status          LeaveStatus     @default(PENDING)
+  approvals       Approval[]
+  
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  
+  @@index([userId])
+  @@index([status])
+  @@index([startDate])
+}
+
+// ============================================
+// APPROVALS WORKFLOW
+// ============================================
+
+model Approval {
+  id                String          @id @default(cuid())
+  approverUserId    String
+  approverUser      User            @relation(fields: [approverUserId], references: [id])
+  
+  type              ApprovalType
+  
+  timesheetId       String?
+  timesheet         Timesheet?      @relation(fields: [timesheetId], references: [id], onDelete: Cascade)
+  
+  leaveRequestId    String?
+  leaveRequest      LeaveRequest?   @relation(fields: [leaveRequestId], references: [id], onDelete: Cascade)
+  
+  approved          Boolean?
+  comment           String?
+  approvedAt        DateTime?
+  
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  
+  @@index([approverUserId])
+  @@index([type])
+  @@index([timesheetId])
+  @@index([leaveRequestId])
+}
+
+// ============================================
+// LEAVE BALANCE (Annual leave tracking)
+// ============================================
+
+model LeaveBalance {
+  id              String          @id @default(cuid())
+  userId          String          @unique
+  year            Int
+  annualEntitled  Float           @default(20)
+  annualUsed      Float           @default(0)
+  sickUsed        Float           @default(0)
+  
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  
+  @@unique([userId, year])
+}
+
+// ============================================
+// AUDIT LOG (For tracking changes)
+// ============================================
+
+model AuditLog {
+  id              String          @id @default(cuid())
+  userId          String
+  action          String
+  entity          String
+  entityId        String
+  changes         String?         @db.Text
+  ipAddress       String?
+  
+  createdAt       DateTime        @default(now())
+  
+  @@index([userId])
+  @@index([createdAt])
+}
