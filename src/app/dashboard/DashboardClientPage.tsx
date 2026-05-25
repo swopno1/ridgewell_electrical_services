@@ -13,10 +13,22 @@ import {
   Plus,
   FileSpreadsheet,
   TrendingUp,
-  User,
+  Clock,
+  AlertCircle,
+  Briefcase,
+  Calendar,
+  ArrowRight,
 } from 'lucide-react';
 import Link from 'next/link';
 import { EmployeeDashboard } from '@/components/widgets/EmployeeDashboard';
+
+const iconMap = {
+  Clock,
+  AlertCircle,
+  Briefcase,
+  Calendar,
+};
+
 
 interface StatBlock {
   title: string;
@@ -79,10 +91,8 @@ interface DashboardClientPageProps {
 
 export function DashboardClientPage({
   user,
-  metrics,
+  stats,
   recentEntries,
-  leaveRequests,
-  pendingApprovals,
   weeklyActivity,
   leaveBalance,
   employeeData
@@ -91,7 +101,7 @@ export function DashboardClientPage({
     return fullName.split(' ')[0] || 'User';
   };
 
-  const isAdminOrManager = ['ADMIN', 'MANAGER'].includes(user.role);
+  const isManagerOrAdmin = ['ADMIN', 'MANAGER'].includes(user.role);
 
   return (
     <DashboardLayout>
