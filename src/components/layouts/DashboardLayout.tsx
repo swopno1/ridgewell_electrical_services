@@ -9,6 +9,7 @@ import {
   LayoutDashboard,
   Clock,
   Calendar,
+  CalendarClock,
   Briefcase,
   BarChart3,
   Users,
@@ -24,6 +25,9 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarInset,
   SidebarMenu,
@@ -32,18 +36,15 @@ import {
   SidebarProvider,
   SidebarTrigger,
   SidebarSeparator,
-  SidebarGroup,
-  SidebarGroupLabel,
-  SidebarGroupContent,
 } from '@/components/ui/sidebar';
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  DropdownMenuGroup,
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
@@ -66,6 +67,7 @@ const iconMap: Record<string, React.ComponentType<any>> = {
   LayoutDashboard,
   Clock,
   Calendar,
+  CalendarClock,
   Briefcase,
   BarChart3,
   Users,
@@ -176,7 +178,7 @@ export function DashboardLayout({
                       <Avatar className="h-8 w-8 rounded-lg bg-blue-100 text-blue-800 font-semibold dark:bg-blue-900/50 dark:text-blue-200">
                         <AvatarFallback className="text-xs">{getInitials(userName)}</AvatarFallback>
                       </Avatar>
-                      <div className="grid flex-1 text-left text-xs leading-tight">
+                      <div className="grid flex-1 text-left text-sm leading-tight">
                         <span className="truncate font-medium text-slate-800 dark:text-slate-200">{userName}</span>
                         <span className="truncate text-[10px] text-slate-500">{userEmail}</span>
                       </div>
