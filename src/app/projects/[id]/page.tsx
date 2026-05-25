@@ -33,7 +33,7 @@ export default async function EditProjectPage({ params }: EditProjectPageProps) 
   };
 
   return (
-    <DashboardLayout userRole={session.user.role as any} userName={session.user.name || ''} userEmail={session.user.email || ''}>
+    <DashboardLayout userRole={session.user.role as string} userName={session.user.name || ''} userEmail={session.user.email || ''}>
       <div className="py-4">
         <ProjectForm
           initialData={{

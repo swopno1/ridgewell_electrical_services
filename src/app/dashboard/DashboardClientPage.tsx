@@ -104,7 +104,7 @@ export function DashboardClientPage({
   const isManagerOrAdmin = ['ADMIN', 'MANAGER'].includes(user.role);
 
   return (
-    <DashboardLayout>
+    <DashboardLayout userRole={user.role} userName={user.name} userEmail={user.email}>
       <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-500">
         {user.role === 'EMPLOYEE' && employeeData && leaveBalance ? (
           <EmployeeDashboard

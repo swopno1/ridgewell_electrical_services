@@ -17,7 +17,7 @@ export default async function ReportsPage() {
 
   if (!isManagerOrAdmin) {
     return (
-      <DashboardLayout>
+      <DashboardLayout userRole={session.user.role as string} userName={session.user.name || ""} userEmail={session.user.email || ""}>
         <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
           <div className="bg-amber-50 dark:bg-amber-950/30 p-6 rounded-full mb-6">
             <BarChart3 className="h-12 w-12 text-amber-600" />
@@ -59,7 +59,7 @@ export default async function ReportsPage() {
   ];
 
   return (
-    <DashboardLayout>
+    <DashboardLayout userRole={session.user.role as string} userName={session.user.name || ""} userEmail={session.user.email || ""}>
       <div className="space-y-6">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Business Intelligence Reports</h1>

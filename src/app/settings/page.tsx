@@ -1,10 +1,19 @@
-'use client';
-
 import { DashboardLayout } from '@/components/layouts/DashboardLayout';
+import { getSession } from '@/lib/session';
+import { redirect } from 'next/navigation';
 
-export default function SettingsPage() {
+export default async function SettingsPage() {
+  const session = await getSession();
+  if (!session?.user) {
+    redirect('/auth/signin');
+  }
+
   return (
-    <DashboardLayout>
+    <DashboardLayout
+      userRole={session.user.role as string}
+      userName={session.user.name || ''}
+      userEmail={session.user.email || ''}
+    >
       <div className="space-y-6">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">System Settings</h1>

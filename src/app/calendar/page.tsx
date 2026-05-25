@@ -33,7 +33,7 @@ export default async function CalendarPage() {
   return (
     <DashboardLayout
       userRole={userRole}
-      userName={session.user.name || 'User'}
+      userName={session.user.name || ''}
       userEmail={session.user.email || ''}
     >
       <div className="space-y-6">

@@ -11,7 +11,7 @@ export default async function ProjectReportPage() {
   }
 
   return (
-    <DashboardLayout>
+    <DashboardLayout userRole={session.user.role as string} userName={session.user.name || ""} userEmail={session.user.email || ""}>
       <ReportClient
         title="Project Hours Report"
         description="Analysis of time allocation and personnel assigned across projects."
