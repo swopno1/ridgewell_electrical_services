@@ -1,4 +1,4 @@
-# TimesheetPro User Guide
+# Onboarding & Setup
 
 Welcome to **TimesheetPro**, your comprehensive solution for employee timesheet and leave management. This guide will help you navigate the initial setup, account management, and understand your role-based permissions within the platform.
 
@@ -14,6 +14,7 @@ Getting started with TimesheetPro begins with creating your personal account.
     *   **Email Address**: Provide your corporate or preferred email. This will be your primary login identifier.
     *   **Password**: Choose a secure password.
         > [!TIP]
+        > **Secure Passwords**
         > Passwords must be at least 8 characters long and typically require a mix of uppercase letters, numbers, and special characters for enhanced security.
 3.  **Submit**: Click the **Create Account** button to register.
 
@@ -30,6 +31,7 @@ To ensure the security of your data and verify ownership of your email address, 
     *   Click the **Resend Verification Link** button on the verification status page to receive a fresh link.
 
 > [!IMPORTANT]
+> **Verification Required**
 > You will not be able to access the dashboard or log hours until your email address has been successfully verified.
 
 ---
@@ -43,7 +45,8 @@ Once your account is active, you can sign in to access your dashboard.
 3.  **Access Granted**: Click **Sign In**. Upon success, you will be redirected to your personal dashboard.
 
 > [!WARNING]
-> **Invalid Credentials**: If you enter an incorrect email or password, you will receive an "Invalid email or password" warning. For security reasons, the system does not specify which part of the credentials was incorrect.
+> **Invalid Credentials**
+> If you enter an incorrect email or password, you will receive an "Invalid email or password" warning. For security reasons, the system does not specify which part of the credentials was incorrect.
 
 ---
 

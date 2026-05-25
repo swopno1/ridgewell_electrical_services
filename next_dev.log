@@ -1,0 +1,20 @@
+
+> timesheet-management@0.1.0 dev /app
+> next dev
+
+▲ Next.js 16.2.6 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.2:3000
+✓ Ready in 531ms
+
+○ Compiling /docs ...
+ GET /docs 200 in 4.0s (next.js: 3.5s, application-code: 522ms)
+ GET /docs/onboarding 200 in 2.2s (next.js: 1963ms, generate-params: 1142ms, application-code: 204ms)
+ GET /docs 200 in 125ms (next.js: 5ms, application-code: 120ms)
+ GET /docs/onboarding 200 in 130ms (next.js: 30ms, generate-params: 25ms, application-code: 100ms)
+ GET /docs 200 in 115ms (next.js: 4ms, application-code: 111ms)
+ GET /docs/onboarding 200 in 169ms (next.js: 24ms, generate-params: 20ms, application-code: 146ms)
+ GET /docs 200 in 125ms (next.js: 3ms, application-code: 122ms)
+ GET /docs/onboarding 200 in 176ms (next.js: 24ms, generate-params: 20ms, application-code: 152ms)
+ ELIFECYCLE  Command failed.
+[?25h
