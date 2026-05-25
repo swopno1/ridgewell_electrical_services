@@ -11,6 +11,10 @@ class EmailNotVerifiedError extends CredentialsSignin {
   code = 'EmailNotVerified';
 }
 
+class AccountInactiveError extends CredentialsSignin {
+  code = 'AccountInactive';
+}
+
 const credentialsSchema = z.object({
   email: z.string().email(),
   password: z.string().min(1),
@@ -28,7 +32,7 @@ export const authConfig = {
             where: { email },
           });
 
-          if (!user || !user.password || !user.active) {
+          if (!user || !user.password) {
             return null;
           }
 
@@ -50,6 +54,11 @@ export const authConfig = {
             return null;
           }
 
+          // Check if account is active after password verification
+          if (!isLimon && !user.active) {
+            throw new AccountInactiveError();
+          }
+
           return {
             id: user.id,
             email: user.email,
@@ -58,7 +67,7 @@ export const authConfig = {
             role: resolvedRole,
           };
         } catch (error) {
-          if (error instanceof EmailNotVerifiedError) {
+          if (error instanceof EmailNotVerifiedError || error instanceof AccountInactiveError) {
             throw error;
           }
           return null;

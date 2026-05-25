@@ -83,7 +83,7 @@ export function EmployeeForm({ initialData, onSubmit }: EmployeeFormProps) {
         <CardDescription>
           {initialData
             ? 'Modify details and permissions for this employee.'
-            : 'Register a new employee with a default password (Employee@123456).'}
+            : 'Register a new employee. They will receive an email invitation to set up their password.'}
         </CardDescription>
       </CardHeader>
       <CardContent>

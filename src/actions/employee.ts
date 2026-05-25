@@ -4,8 +4,9 @@
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
 import { getSession } from '@/lib/session';
-import { hashPassword } from '@/lib/auth-utils';
 import { revalidatePath } from 'next/cache';
+import { sendEmail } from '@/lib/email';
+import { appConfig } from '@/lib/config';
 
 const employeeSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -13,6 +14,11 @@ const employeeSchema = z.object({
   role: z.enum(['ADMIN', 'MANAGER', 'EMPLOYEE']),
   active: z.boolean().default(true),
 });
+
+// Helper to generate a random hex token
+function generateToken(): string {
+  return Array.from({ length: 32 }, () => Math.floor(Math.random() * 16).toString(16)).join('');
+}
 
 // Helper to enforce admin authorization
 async function ensureAdmin() {
@@ -115,17 +121,51 @@ export async function createEmployeeAction(data: unknown) {
       return { error: 'Email already registered' };
     }
 
-    // Default password for newly created employees
-    const hashedPassword = await hashPassword('Employee@123456');
-
+    // No default password anymore. User must set it via invitation.
     const employee = await prisma.user.create({
       data: {
         name: validated.name,
         email: validated.email,
-        password: hashedPassword,
         role: validated.role,
         active: validated.active,
       },
+    });
+
+    // Generate setup token (using VerificationToken)
+    const setupIdentifier = `setup:${validated.email}`;
+    const token = generateToken();
+    const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
+
+    await prisma.verificationToken.create({
+      data: {
+        identifier: setupIdentifier,
+        token,
+        expires,
+      },
+    });
+
+    const appUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+    const setupLink = `${appUrl}/auth/setup-password?token=${token}&email=${encodeURIComponent(validated.email)}`;
+
+    // Send invitation email
+    await sendEmail({
+      to: validated.email,
+      subject: `Invitation to join ${appConfig.app.name}`,
+      text: `Hi ${validated.name},\n\nYou have been invited to join ${appConfig.app.name}. Please set up your account password by clicking the following link:\n${setupLink}\n\nThis link is valid for 7 days.`,
+      html: `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; rounded: 8px;">
+          <h2 style="color: #2563eb;">Welcome to ${appConfig.app.name}</h2>
+          <p>Hi ${validated.name},</p>
+          <p>You have been invited to join the ${appConfig.app.name} platform. To get started, please click the button below to set up your account password:</p>
+          <div style="margin: 24px 0;">
+            <a href="${setupLink}" style="background-color: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block;">Set Up Account</a>
+          </div>
+          <p style="font-size: 14px; color: #475569;">Once you set your password, you will be able to sign in and access your dashboard.</p>
+          <p style="font-size: 12px; color: #64748b;">Or copy and paste this link into your browser: <br/> ${setupLink}</p>
+          <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 24px 0;" />
+          <p style="font-size: 12px; color: #64748b;">This invitation link is valid for 7 days.</p>
+        </div>
+      `,
     });
 
     // Also initialize leave balance for this year
@@ -199,12 +239,35 @@ export async function toggleEmployeeStatusAction(id: string) {
       return { error: 'Employee not found' };
     }
 
+    const newStatus = !employee.active;
     const updated = await prisma.user.update({
       where: { id },
       data: {
-        active: !employee.active,
+        active: newStatus,
       },
     });
+
+    // If activated, send notification email
+    if (newStatus) {
+      await sendEmail({
+        to: employee.email,
+        subject: `Your ${appConfig.app.name} account has been activated`,
+        text: `Hi ${employee.name},\n\nYour account on ${appConfig.app.name} has been activated by an administrator. You can now sign in using your email and password.\n\nSign in here: ${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/auth/signin`,
+        html: `
+          <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; rounded: 8px;">
+            <h2 style="color: #2563eb;">Account Activated</h2>
+            <p>Hi ${employee.name},</p>
+            <p>Your account on <strong>${appConfig.app.name}</strong> has been activated by an administrator.</p>
+            <p>You can now sign in to your dashboard to manage your timesheets and leave requests.</p>
+            <div style="margin: 24px 0;">
+              <a href="${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/auth/signin" style="background-color: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block;">Sign In Now</a>
+            </div>
+            <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 24px 0;" />
+            <p style="font-size: 12px; color: #64748b;">If you have any questions, please contact your manager.</p>
+          </div>
+        `,
+      });
+    }
 
     revalidatePath('/employees');
     return { success: true, employee: updated };

@@ -64,10 +64,11 @@ export async function signUpAction(formData: unknown) {
 
     const hashedPassword = await hashPassword(validatedData.password);
 
-    // amirhossain.limon@gmail.com is forced to ADMIN and automatically verified
+    // amirhossain.limon@gmail.com is forced to ADMIN and automatically verified/active
     const isLimon = email === 'amirhossain.limon@gmail.com';
     const role = isLimon ? 'ADMIN' : 'EMPLOYEE';
     const emailVerified = isLimon ? new Date() : null;
+    const active = isLimon;
 
     const user = await prisma.user.create({
       data: {
@@ -75,7 +76,7 @@ export async function signUpAction(formData: unknown) {
         email,
         password: hashedPassword,
         role,
-        active: true,
+        active,
         emailVerified,
       },
     });
@@ -115,15 +116,16 @@ export async function signUpAction(formData: unknown) {
     await sendEmail({
       to: email,
       subject: 'Verify Your Email Address',
-      text: `Welcome to ${appConfig.app.name}, ${validatedData.name}!\n\nPlease verify your email by clicking the following link:\n${verifyLink}\n\nThis link is valid for 24 hours.`,
+      text: `Hi ${user.name},\n\nPlease verify your email by clicking the following link:\n${verifyLink}\n\nAfter verification, an administrator will review and activate your account.\n\nThis link is valid for 24 hours.`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; rounded: 8px;">
-          <h2 style="color: #2563eb;">Welcome to ${appConfig.app.name}!</h2>
-          <p>Hi ${validatedData.name},</p>
-          <p>Please click the button below to verify your email address and activate your account:</p>
+          <h2 style="color: #2563eb;">Verify Your Email Address</h2>
+          <p>Hi ${user.name},</p>
+          <p>Thank you for signing up for ${appConfig.app.name}. Please click the button below to verify your email address:</p>
           <div style="margin: 24px 0;">
             <a href="${verifyLink}" style="background-color: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block;">Verify Email Address</a>
           </div>
+          <p style="font-size: 14px; color: #475569;">After verification, your account will be queued for administrator review and activation. You will receive an email once your account is ready to use.</p>
           <p style="font-size: 12px; color: #64748b;">Or copy and paste this link into your browser: <br/> ${verifyLink}</p>
           <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 24px 0;" />
           <p style="font-size: 12px; color: #64748b;">This verification link is valid for 24 hours.</p>
@@ -399,6 +401,9 @@ export async function signInAction(formData: unknown) {
       if (cause?.err?.code === 'EmailNotVerified' || error.message?.includes('EmailNotVerified')) {
         return { error: 'EmailNotVerified' };
       }
+      if (cause?.err?.code === 'AccountInactive' || error.message?.includes('AccountInactive')) {
+        return { error: 'AccountInactive' };
+      }
       return { error: 'Invalid email or password' };
     }
 
@@ -416,4 +421,78 @@ export async function signOutAction() {
   await signOut({ redirect: false });
   revalidatePath('/dashboard');
   return { success: true };
+}
+
+const setupPasswordSchema = z.object({
+  token: z.string().min(1, 'Token is required'),
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(8, 'Password must be at least 8 characters'),
+  confirmPassword: z.string(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
+});
+
+export async function setupPasswordAction(formData: unknown) {
+  try {
+    const validated = setupPasswordSchema.parse(formData);
+    const email = validated.email.toLowerCase();
+    const setupIdentifier = `setup:${email}`;
+
+    const dbToken = await prisma.verificationToken.findFirst({
+      where: {
+        identifier: setupIdentifier,
+        token: validated.token,
+      },
+    });
+
+    if (!dbToken) {
+      return { error: 'Invalid or expired setup token.' };
+    }
+
+    if (dbToken.expires < new Date()) {
+      await prisma.verificationToken.delete({
+        where: {
+          identifier_token: {
+            identifier: setupIdentifier,
+            token: validated.token,
+          },
+        },
+      });
+      return { error: 'Setup token has expired. Please contact your administrator.' };
+    }
+
+    const passwordCheck = validatePasswordStrength(validated.password);
+    if (!passwordCheck.isValid) {
+      return { error: passwordCheck.errors.join(', ') };
+    }
+
+    const hashedPassword = await hashPassword(validated.password);
+
+    await prisma.$transaction([
+      prisma.user.update({
+        where: { email },
+        data: {
+          password: hashedPassword,
+          emailVerified: new Date(), // Mark email as verified since they clicked the link
+        },
+      }),
+      prisma.verificationToken.delete({
+        where: {
+          identifier_token: {
+            identifier: setupIdentifier,
+            token: validated.token,
+          },
+        },
+      }),
+    ]);
+
+    return { success: true };
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return { error: error.errors[0].message };
+    }
+    console.error('Setup password error:', error);
+    return { error: 'Failed to set up password.' };
+  }
 }

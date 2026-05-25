@@ -53,7 +53,7 @@ model User {
   password      String?
   image         String?
   role          UserRole   @default(EMPLOYEE)
-  active        Boolean    @default(true)
+  active        Boolean    @default(false)
   
   // Relations
   timesheets    Timesheet[]
