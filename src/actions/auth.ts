@@ -8,6 +8,7 @@ import { signIn, signOut } from '@/auth';
 import { sendEmail } from '@/lib/email';
 import { revalidatePath } from 'next/cache';
 import { AuthError } from 'next-auth';
+import { appConfig } from '@/lib/config';
 
 const signUpSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -114,10 +115,10 @@ export async function signUpAction(formData: unknown) {
     await sendEmail({
       to: email,
       subject: 'Verify Your Email Address',
-      text: `Welcome to TimesheetPro, ${validatedData.name}!\n\nPlease verify your email by clicking the following link:\n${verifyLink}\n\nThis link is valid for 24 hours.`,
+      text: `Welcome to ${appConfig.app.name}, ${validatedData.name}!\n\nPlease verify your email by clicking the following link:\n${verifyLink}\n\nThis link is valid for 24 hours.`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; rounded: 8px;">
-          <h2 style="color: #2563eb;">Welcome to TimesheetPro!</h2>
+          <h2 style="color: #2563eb;">Welcome to ${appConfig.app.name}!</h2>
           <p>Hi ${validatedData.name},</p>
           <p>Please click the button below to verify your email address and activate your account:</p>
           <div style="margin: 24px 0;">

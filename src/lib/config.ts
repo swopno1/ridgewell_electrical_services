@@ -2,19 +2,19 @@
 export const appConfig = {
   // Application Meta
   app: {
-    name: 'TimesheetPro',
+    name: 'Ridgewell ES',
     description: 'Employee Timesheet & Leave Management System',
     version: '0.1.0',
   },
 
   // Company Info
   company: {
-    name: 'Your Company Name',
-    email: 'support@company.com',
-    phone: '+1 (555) 123-4567',
-    website: 'https://company.com',
-    address: 'Your Company Address',
-    logo: '/logo.svg',
+    name: 'Ridgewell Electrical Services LTD.',
+    email: 'support@ridgewelles.co.uk',
+    phone: '+44 (0) 123 4567',
+    website: 'https://ridgewelles.co.uk',
+    address: 'Ridgewell Headquarters, UK',
+    logo: '/logo_ridgewell_es.png',
     favicon: '/favicon.ico',
   },
 
@@ -144,9 +144,9 @@ export const appConfig = {
 
   // Email
   email: {
-    from: 'noreply@company.com',
-    fromName: 'TimesheetPro',
-    supportEmail: 'support@company.com',
+    from: 'noreply@ridgewelles.co.uk',
+    fromName: 'Ridgewell ES',
+    supportEmail: 'support@ridgewelles.co.uk',
     enableNotifications: false, // Future feature
   },
 

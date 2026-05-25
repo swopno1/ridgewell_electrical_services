@@ -3,6 +3,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { appConfig } from '@/lib/config';
 import {
@@ -116,8 +117,14 @@ export function DashboardLayout({
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton size="lg" className="hover:bg-transparent cursor-default">
-                  <div className="flex aspect-square h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white">
-                    <Clock className="h-5 w-5" />
+                  <div className="flex aspect-square h-8 w-8 items-center justify-center rounded-lg bg-white p-1 ring-1 ring-slate-200 dark:ring-slate-800">
+                    <Image
+                      src={appConfig.company.logo}
+                      alt="Logo"
+                      width={32}
+                      height={32}
+                      className="object-contain h-full w-full"
+                    />
                   </div>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-semibold">{appConfig.app.name}</span>

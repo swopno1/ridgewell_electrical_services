@@ -7,66 +7,77 @@ import { addDays, startOfToday } from 'date-fns';
 async function main() {
   console.log('🌱 Seeding database...');
 
-  // Clear existing data (optional - remove for safety)
-  // await prisma.approval.deleteMany();
-  // await prisma.timesheet.deleteMany();
-  // await prisma.leaveRequest.deleteMany();
-  // await prisma.leaveBalance.deleteMany();
-  // await prisma.project.deleteMany();
-  // await prisma.user.deleteMany();
+  // Clear existing data (purged first for clean seed)
+  await prisma.approval.deleteMany();
+  await prisma.timesheet.deleteMany();
+  await prisma.leaveRequest.deleteMany();
+  await prisma.leaveBalance.deleteMany();
+  await prisma.project.deleteMany();
+  await prisma.auditLog.deleteMany();
+  await prisma.account.deleteMany();
+  await prisma.session.deleteMany();
+  await prisma.user.deleteMany();
 
   // 1. Create Users
   console.log('📝 Creating users...');
   
   const adminPassword = await hashPassword('Admin@123456**');
-  await prisma.user.upsert({
-    where: { email: 'amirhossain.limon@gmail.com' },
-    update: {},
-    create: {
+  
+  await prisma.user.create({
+    data: {
       name: 'Md Amir Hossain',
       email: 'amirhossain.limon@gmail.com',
       password: adminPassword,
       role: 'ADMIN',
       active: true,
+      emailVerified: new Date(),
     },
   });
 
   const managerPassword = await hashPassword('Manager@123456');
-  const manager = await prisma.user.upsert({
-    where: { email: 'manager@example.com' },
-    update: {},
-    create: {
-      name: 'John Manager',
-      email: 'manager@example.com',
-      password: managerPassword,
-      role: 'MANAGER',
-      active: true,
-    },
-  });
-
-  const employees = [];
-  const employeeEmails = [
-    { name: 'Alice Johnson', email: 'alice@example.com' },
-    { name: 'Bob Smith', email: 'bob@example.com' },
-    { name: 'Carol Williams', email: 'carol@example.com' },
-    { name: 'David Brown', email: 'david@example.com' },
-    { name: 'Eve Davis', email: 'eve@example.com' },
+  const managers = [];
+  const managerData = [
+    { name: 'Callum Foley', email: 'callum.foley@ridgewell.co.uk' },
+    { name: 'David Bernard', email: 'david.bernard@ridgewell.co.uk' },
   ];
 
-  for (const employeeData of employeeEmails) {
-    const password = await hashPassword('Employee@123456');
-    const employee = await prisma.user.upsert({
-      where: { email: employeeData.email },
-      update: {},
-      create: {
-        name: employeeData.name,
-        email: employeeData.email,
-        password,
-        role: 'EMPLOYEE',
+  for (const mgr of managerData) {
+    const created = await prisma.user.create({
+      data: {
+        name: mgr.name,
+        email: mgr.email,
+        password: managerPassword,
+        role: 'MANAGER',
         active: true,
+        emailVerified: new Date(),
       },
     });
-    employees.push(employee);
+    managers.push(created);
+  }
+
+  const employees = [];
+  const employeeData = [
+    { name: 'Louis Michael', email: 'louis.michael@ridgewell.co.uk' },
+    { name: 'Callum Begg', email: 'callum.begg@ridgewell.co.uk' },
+    { name: 'Conor Mcnaney', email: 'conor.mcnaney@ridgewell.co.uk' },
+    { name: 'Jaylan Adu-Awuah', email: 'jaylan.aduawuah@ridgewell.co.uk' },
+    { name: 'Allen Tyrell', email: 'allen.tyrell@ridgewell.co.uk' },
+    { name: 'Paul Labett', email: 'paul.labett@ridgewell.co.uk' },
+  ];
+
+  const employeePassword = await hashPassword('Employee@123456');
+  for (const emp of employeeData) {
+    const created = await prisma.user.create({
+      data: {
+        name: emp.name,
+        email: emp.email,
+        password: employeePassword,
+        role: 'EMPLOYEE',
+        active: true,
+        emailVerified: new Date(),
+      },
+    });
+    employees.push(created);
   }
 
   // 2. Create Projects
@@ -222,7 +233,7 @@ async function main() {
     if (!existingApproval) {
       await prisma.approval.create({
         data: {
-          approverUserId: manager.id,
+          approverUserId: managers[0].id,
           timesheetId: timesheet.id,
           type: 'TIMESHEET',
           approved: true,
@@ -235,15 +246,15 @@ async function main() {
 
   console.log('✨ Database seeded successfully!');
   console.log('\n📋 Seeded Data Summary:');
-  console.log(`  - Users: 1 admin, 1 manager, ${employees.length} employees`);
+  console.log(`  - Users: 1 admin, ${managers.length} managers, ${employees.length} employees`);
   console.log(`  - Projects: ${projects.length}`);
   console.log(`  - Timesheets: ${employees.length * 5}`);
   console.log(`  - Leave Requests: ${employees.length}`);
   console.log(`  - Leave Balances: ${employees.length}`);
   console.log('\n🔐 Default Credentials:');
   console.log('  Admin: amirhossain.limon@gmail.com / Admin@123456**');
-  console.log('  Manager: manager@example.com / Manager@123456');
-  console.log('  Employee: alice@example.com / Employee@123456');
+  console.log('  Manager: callum.foley@ridgewell.co.uk / Manager@123456');
+  console.log('  Employee: louis.michael@ridgewell.co.uk / Employee@123456');
   console.log('           (same password for all employees)');
 }
 

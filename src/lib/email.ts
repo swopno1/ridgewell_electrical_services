@@ -1,9 +1,10 @@
 // src/lib/email.ts
 import { Resend } from 'resend';
+import { appConfig } from './config';
 
 const resendApiKey = process.env.RESEND_API_KEY;
 const fromEmail = process.env.FROM_EMAIL || 'onboarding@resend.dev';
-const appName = 'TimesheetPro';
+const appName = appConfig.app.name;
 
 const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
