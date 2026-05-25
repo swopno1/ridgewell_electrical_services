@@ -321,7 +321,7 @@ export function ReportClient({ title, description, fetchAction }: ReportClientPr
                 <Search className="h-8 w-8 text-slate-400" />
               </div>
               <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-1">No matches found</h3>
-              <p className="text-slate-500 max-w-xs">No records match your search term "\{searchTerm\}".</p>
+              <p className="text-slate-500 max-w-xs">No records match your search term "{searchTerm}".</p>
               <Button variant="ghost" className="mt-4 text-blue-600" onClick={() => setSearchTerm('')}>
                 Clear search
               </Button>
