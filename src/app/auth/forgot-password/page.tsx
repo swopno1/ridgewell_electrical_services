@@ -12,7 +12,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { forgotPasswordAction } from '@/actions/auth';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Clock, Send, AlertTriangle } from 'lucide-react';
+import { Send, AlertTriangle } from 'lucide-react';
 import { appConfig } from '@/lib/config';
 
 const forgotFormSchema = z.object({

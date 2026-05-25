@@ -13,7 +13,7 @@ import { resetPasswordAction } from '@/actions/auth';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Clock, CheckCircle2, XCircle } from 'lucide-react';
+import { CheckCircle2, XCircle } from 'lucide-react';
 import { appConfig } from '@/lib/config';
 
 const resetFormSchema = z
