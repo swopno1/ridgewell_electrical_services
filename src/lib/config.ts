@@ -51,6 +51,7 @@ export const appConfig = {
       { label: 'Reports', href: '/reports', icon: 'BarChart3' },
       { label: 'Employees', href: '/employees', icon: 'Users', adminOnly: true },
       { label: 'Settings', href: '/settings', icon: 'Settings', adminOnly: true },
+      { label: 'Documentation', href: '/docs', icon: 'BookOpen' },
     ],
   },
 

@@ -1,43 +1,35 @@
 # TimesheetPro: Leave Requests & Balance Tracking
 
-Manage your time off efficiently with TimesheetPro. This guide explains how to monitor your leave balances, submit new requests, and manage your leave history.
+Manage your time off efficiently by tracking your entitlements and submitting requests through the Leave module.
 
-## 1. Reading the Leave Dashboard
+## 1. Understanding the Leave Dashboard
 
-The Leave Dashboard provides a real-time overview of your leave entitlements and usage for the current calendar year.
+The Leave page (`/leave`) provides a real-time view of your current standing for the calendar year.
 
-### Annual Leave Widget
-The Annual Leave card is your primary reference for vacation planning.
-- **Days Left**: Large numerical display of your remaining annual leave balance.
-- **Progress Bar**: A visual representation of used days versus total entitlement.
-- **Used vs Entitled**: Displays the exact number of days already taken and your total yearly allowance (standard is 20 days).
-
-### Sick Leave Widget
-- **Days Used**: Tracks the total number of sick days logged during the current year.
-- **Policy**: Sick leave is taken as needed. While there is no fixed limit like annual leave, all entries are logged against your official tracking records for HR purposes.
-
-### Unpaid Leave Widget
-- **Status**: Displayed as "unlimited."
-- **Policy**: Unpaid leave can be requested for situations not covered by other leave types. Approval is granted at management discretion.
+### Metrics Explained
+- **Annual Leave Progress**: A visual bar showing how many days of your yearly entitlement (typically 20 days) you have used.
+- **Remaining Days**: Your "available to spend" balance for Annual Leave.
+- **Sick Leave**: A counter showing the total number of approved sick days logged.
+- **Unpaid Leave**: A counter for any approved unpaid time off.
 
 ## 2. Submitting Leave Requests
 
-To request time off, click the **Request Leave** button on the Leave Management page.
+To request time off, follow these steps:
 
-### Submission Steps:
-1. **Select Leave Type**: Choose between **Annual Leave**, **Sick Leave**, or **Unpaid Leave**.
-2. **Choose Date Range**: Select your **Start Date** and **End Date**.
-3. **Review Dynamic Counter**: A blue informational box will appear showing the **Total requested days**. This automatically calculates workdays included in your range.
-4. **Provide Reason**: Write a brief explanation in the **Reason / Comments** field. A minimum of 10 characters is required.
-5. **Submit**: Click **Submit Request**. Your manager will be notified automatically.
+1. Navigate to **Leave** in the sidebar.
+2. Click **Request Leave**.
+3. **Select Leave Type**: Choose between **Annual**, **Sick**, or **Unpaid**.
+4. **Choose Dates**: Select the **Start Date** and **End Date**.
+5. **Review Duration**: The system will automatically calculate the total number of workdays in your selected range.
+6. **Reason**: Provide a brief explanation for your request (minimum 10 characters).
+7. Click **Submit Request**.
 
 ## 3. Balance Checks & Rules
 
-TimesheetPro enforces strict rules to ensure leave data integrity and compliance with company policy.
+TimesheetPro enforces strict balance rules to prevent payroll errors.
 
-> [!IMPORTANT]
-> **Annual Leave Limits**
-> The system will automatically block any Annual Leave request that exceeds your remaining balance. If you attempt to request more days than you have "Entitled," you will receive an error message upon submission.
+### Annual Leave Limits
+You cannot submit an Annual Leave request that exceeds your remaining balance. If you attempt to request more days than you have "Entitled," you will receive an error message upon submission.
 
 ### Tracking Behaviors
 | Leave Type | Impact on Balance | Approval Required |

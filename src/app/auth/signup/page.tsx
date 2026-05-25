@@ -13,7 +13,7 @@ import { useRouter } from 'next/navigation';
 import { signUpAction } from '@/actions/auth';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Clock, Mail, CheckCircle2, AlertTriangle } from 'lucide-react';
+import { Mail, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { appConfig } from '@/lib/config';
 
 const signUpFormSchema = z

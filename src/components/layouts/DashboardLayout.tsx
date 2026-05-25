@@ -20,6 +20,7 @@ import {
   User,
   Shield,
   Bell,
+  BookOpen,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -57,13 +58,6 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 
-interface DashboardLayoutProps {
-  children: React.ReactNode;
-  userRole?: 'ADMIN' | 'MANAGER' | 'EMPLOYEE';
-  userName?: string;
-  userEmail?: string;
-}
-
 const iconMap: Record<string, React.ComponentType<any>> = {
   LayoutDashboard,
   Clock,
@@ -73,14 +67,20 @@ const iconMap: Record<string, React.ComponentType<any>> = {
   BarChart3,
   Users,
   Settings,
+  BookOpen,
 };
 
 export function DashboardLayout({
   children,
   userRole = 'EMPLOYEE',
-  userName = 'John Doe',
-  userEmail = 'john.doe@company.com',
-}: DashboardLayoutProps) {
+  userName = 'Employee User',
+  userEmail = 'employee@example.com',
+}: {
+  children: React.ReactNode;
+  userRole?: string;
+  userName?: string;
+  userEmail?: string;
+}) {
   const pathname = usePathname();
 
   const filteredNav = appConfig.navigation.mainNav.filter((item) => {

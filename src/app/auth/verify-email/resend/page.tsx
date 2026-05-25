@@ -13,7 +13,7 @@ import { resendVerificationAction } from '@/actions/auth';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Clock, Send, AlertTriangle } from 'lucide-react';
+import { Send, AlertTriangle } from 'lucide-react';
 import { appConfig } from '@/lib/config';
 
 const resendFormSchema = z.object({

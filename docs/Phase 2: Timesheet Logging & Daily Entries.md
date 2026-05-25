@@ -1,80 +1,50 @@
 # TimesheetPro: Timesheet Logging & Daily Shift Entries
 
-Welcome to the TimesheetPro User Guide. This document provides step-by-step instructions for employees to accurately record their work hours, manage their shifts, and understand how the system processes their data.
+This guide provides instructions for Employees on how to accurately record their daily work hours, manage their logs, and understand how the system handles time calculations.
 
-## 1. Log Daily Shift
+## 1. Logging a Daily Shift
 
-Logging your daily shift is the primary way to ensure you are paid correctly and your work is tracked against the right projects.
+Recording your work hours should be done at the end of each shift or daily to ensure accuracy.
 
-### Step-by-Step Instructions:
-1. **Navigate to Timesheets**: From the sidebar, click on **Timesheets**.
-2. **Open the Log Form**: Click the **Log Hours** button located at the top right of the page.
-3. **Select Project**: Choose the active project you worked on from the "Select Project" dropdown.
-4. **Select Date**: Pick the date of the shift.
-    > [!NOTE]
-    > You can only log one timesheet entry per day. If you worked on multiple projects in a single day, please summarize the total hours and note the distribution in the "Notes" section, or consult your manager for project-specific logging.
-5. **Fill Time Parameters**: Enter your start and end times (see Section 2).
-6. **Submit**: Click **Log Time** to save your entry.
+### Steps to Log a Shift:
+1. Navigate to **Timesheets** in the sidebar.
+2. Click the **Add Entry** button (or go to `/timesheets/new`).
+3. **Select Project**: Choose the active project or client job you were working on from the dropdown menu.
+4. **Select Date**: Pick the date for the work being logged.
+5. **Set Time Parameters**:
+    - **Time On**: Select your shift start time.
+    - **Time Off**: Select your shift end time.
+    - **Break Duration**: Choose your break length (15m, 30m, 45m, 1h, 2h).
+6. **Notes / Scope of Work**: Provide a brief description of the tasks performed (e.g., "Initial wiring for Sector 4" or "General maintenance and testing").
+7. Click **Save Entry**.
 
-## 2. Entering Time Parameters
+## 2. Automated Calculations
 
-Accuracy in entering your start and end times is crucial for calculating your total hours.
+TimesheetPro automatically processes your inputs to provide clean data for payroll and project tracking.
 
-- **Time On (Start Shift)**: Enter the exact time you began your work day.
-- **Time Off (End Shift)**: Enter the exact time you finished your work day.
-- **Break Duration**: Select your total break time from the dropdown menu. Options include:
-  - **No Break (0 mins)**
-  - **15 Minutes**
-  - **30 Minutes**
-  - **45 Minutes**
-  - **1 Hour (60 mins)**
-  - **1.5 Hours (90 mins)**
-  - **2 Hours (120 mins)**
+### Total Hours Calculation
+The system calculates your net working hours by subtracting the selected **Break Duration** from the total time between **Time On** and **Time Off**.
+> *Example: 08:00 to 17:00 (9 hours) with a 1h break results in 8.0 Total Hours.*
 
-## 3. Notes & Scope of Work
+### Overtime Tracking
+The system features an automatic overtime threshold. Any hours worked beyond **8.0 hours** in a single day are automatically categorized as **Overtime (OT)**. This is displayed in your history for transparency.
 
-The **Notes / Scope of Work** field is your opportunity to provide context for your shift. This information is often used for client billing and project management.
+## 3. Timesheet Management
 
-### Guidelines for Helpful Logs:
-- **Be Specific**: Instead of "Worked on site," use "Rough-in wiring for 2nd floor office space."
-- **Include Milestones**: Note any major tasks completed or significant progress made.
-- **Clarity**: Keep summaries concise but descriptive enough for a manager to understand the work performed without further clarification.
+You can review and manage your logged hours from the main Timesheets page.
 
-## 4. Automated Calculations
+### Browsing & Filtering
+- **Search**: Use the search bar to find entries by project name.
+- **Filter**: Filter your list by status (**PENDING**, **APPROVED**, **REJECTED**) to see which entries have been processed by your manager.
 
-TimesheetPro automatically handles the math to ensure consistency across the company.
-
-### Total Hours
-The system calculates your total work hours using the following logic:
-`Total Hours = (Time Off - Time On) - Break Duration`
-
-### Daily Overtime
-The standard workday is set to **8.0 hours**. Any hours worked beyond this threshold in a single day are automatically flagged as overtime.
-- **Example**: If you work 9.5 total hours, the system will record **8.0 Standard Hours** and **1.5 Overtime Hours**.
-
-## 5. Timesheet Management
-
-You can view and manage all your historical entries from the main **Timesheets** page.
-
-### Features:
-- **Search**: Use the search bar to find entries by **Project Name** or **Client**.
-- **Filter by Status**: Use the dropdown menu to filter your view by:
-  - **All Statuses**
-  - **Pending**: Entries awaiting review.
-  - **Approved**: Entries verified by a manager (Locked).
-  - **Rejected**: Entries requiring correction.
-- **Edit/Delete**: For pending entries, click the **Edit** (pencil) or **Delete** (trash can) icons in the Actions column.
-
-## 6. Submission Constraints
-
-To maintain data integrity and payroll accuracy, certain constraints apply to your entries.
+### Editing & Deleting Logs
+If you make a mistake, you can correct it as long as the entry has not yet been approved.
+1. Locate the entry in the table.
+2. Click the **Edit** (pencil) or **Delete** (trash) icon.
+3. Confirm your changes or deletion.
 
 > [!IMPORTANT]
-> **Status-Based Locking**
-> - **PENDING**: You can freely edit or delete entries while they are in 'Pending' status.
-> - **APPROVED**: Once an entry is approved, it is locked. Approved entries **cannot** be modified or deleted. If you discover an error in an approved entry, please contact your manager.
-> - **REJECTED**: If an entry is rejected, check the notes from your manager, make the necessary corrections, and re-submit.
+> **Locked Entries**
+> Once a timesheet entry has been **APPROVED** or **REJECTED** by a manager, it is locked. You cannot edit or delete locked entries. If an approved entry requires a correction, you must contact your manager or an administrator.
 
-> [!WARNING]
-> **Duplicate Dates**
-> The system prevents multiple entries for the same date. If you need to change a log for a specific date, you must edit the existing entry rather than creating a new one.
+---
