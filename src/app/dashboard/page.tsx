@@ -58,7 +58,8 @@ export default async function DashboardPage() {
   // 3. Process Weekly Activity
   const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
   const dailyHoursMap: Record<string, number> = { Mon: 0, Tue: 0, Wed: 0, Thu: 0, Fri: 0 };
-  weeklyTimesheets.forEach((entry: any) => {
+  
+  weeklyTimesheets.forEach((entry: { date: Date; totalHours: number }) => {
     const dayName = format(entry.date, 'EEE');
     if (dayName in dailyHoursMap) {
       dailyHoursMap[dayName] += entry.totalHours;
@@ -70,9 +71,8 @@ export default async function DashboardPage() {
   }));
   const weekHoursSum = weeklyTimesheets.reduce((acc: number, entry: any) => acc + entry.totalHours, 0);
 
-  // 4. Process Monthly Data
-  const monthHoursSum = monthlyTimesheets.reduce((acc: number, entry: any) => acc + entry.totalHours, 0);
-  const monthOvertimeSum = monthlyTimesheets.reduce((acc: number, entry: any) => acc + entry.overtimeHours, 0);
+  // 4. Calculate total hours logged this week
+  const weekHoursSum = weeklyTimesheets.reduce((acc: number, entry: { totalHours: number }) => acc + entry.totalHours, 0);
 
   // 5. Fetch Recent Timesheets (Last 10)
   const recentTimesheets = await prisma.timesheet.findMany({
@@ -104,32 +104,27 @@ export default async function DashboardPage() {
     include: { user: true },
   });
 
-  const leaveRequestsParsed = recentLeaveRequests.map((l: any) => ({
-    id: l.id,
-    employeeName: l.user.name,
-    type: l.leaveType,
-    startDate: format(l.startDate, 'MMM dd'),
-    endDate: format(l.endDate, 'MMM dd'),
-    totalDays: l.totalDays,
-    status: l.status as 'PENDING' | 'APPROVED' | 'REJECTED' | 'CANCELLED',
-  }));
+  const leaveBalanceData = {
+    annualEntitled: leaveBalance?.annualEntitled ?? 20,
+    annualUsed: leaveBalance?.annualUsed ?? 0,
+    sickUsed: leaveBalance?.sickUsed ?? 0,
+    year: currentYear,
+  };
 
-  // 7. Pending Approvals Queue
-  let pendingApprovalsItems: any[] = [];
-  if (isAdminOrManager) {
-    const [pTimesheets, pLeave] = await Promise.all([
-      prisma.timesheet.findMany({
-        where: { status: 'PENDING' },
-        take: 5,
-        include: { user: true, project: true },
-        orderBy: { createdAt: 'desc' },
-      }),
-      prisma.leaveRequest.findMany({
-        where: { status: 'PENDING' },
-        take: 5,
-        include: { user: true },
-        orderBy: { createdAt: 'desc' },
-      }),
+  const remainingLeave = leaveBalanceData.annualEntitled - leaveBalanceData.annualUsed;
+
+  // 7. Query pending approvals count based on role
+  let pendingApprovalsCount = 0;
+  if (['ADMIN', 'MANAGER'].includes(userRole)) {
+    const [pendingTimesheets, pendingLeave] = await Promise.all([
+      prisma.timesheet.count({ where: { status: 'PENDING' } }),
+      prisma.leaveRequest.count({ where: { status: 'PENDING' } }),
+    ]);
+    pendingApprovalsCount = pendingTimesheets + pendingLeave;
+  } else {
+    const [pendingTimesheets, pendingLeave] = await Promise.all([
+      prisma.timesheet.count({ where: { userId: currentUserId, status: 'PENDING' } }),
+      prisma.leaveRequest.count({ where: { userId: currentUserId, status: 'PENDING' } }),
     ]);
 
     pendingApprovalsItems = [
@@ -154,51 +149,158 @@ export default async function DashboardPage() {
     ].sort((a: any, b: any) => b.createdAt.getTime() - a.createdAt.getTime()).slice(0, 5);
   }
 
-  // 8. Stats for the Metrics Bar
-  const dashboardMetrics = {
-    totalEmployees,
-    activeProjects,
-    pendingTimesheets: pendingTimesheetsCount,
-    pendingLeaveRequests: pendingLeaveRequestsCount,
-    totalHoursWeek: weekHoursSum,
-    totalHoursMonth: monthHoursSum,
-    overtimeHoursMonth: monthOvertimeSum,
-  };
-
-  // 9. Employee with Most Hours (Admin only)
-  let topEmployee = { name: 'N/A', hours: 0 };
-  if (isAdminOrManager && monthlyTimesheets.length > 0) {
-    const userHoursMap: Record<string, number> = {};
-    monthlyTimesheets.forEach((t: any) => {
-      userHoursMap[t.userId] = (userHoursMap[t.userId] || 0) + t.totalHours;
+  // 8. Query recent entries
+  let recentEntriesParsed: any[] = [];
+  if (['ADMIN', 'MANAGER'].includes(userRole)) {
+    const entries = await prisma.timesheet.findMany({
+      orderBy: { date: 'desc' },
+      take: 5,
+      include: {
+        project: true,
+        user: true,
+      },
     });
-    const sortedEntries = Object.entries(userHoursMap).sort((a: any, b: any) => b[1] - a[1]);
-    if (sortedEntries.length > 0) {
-      const [topUserId, hours] = sortedEntries[0];
-      const topUserData = await prisma.user.findUnique({ where: { id: topUserId }, select: { name: true } });
-      if (topUserData) {
-        topEmployee = { name: topUserData.name, hours };
-      }
-    }
-  }
-
-  // 10. Project Summary
-  let projectSummary: { name: string, hours: number }[] = [];
-  if (monthlyTimesheets.length > 0) {
-    const projectHoursMap: Record<string, number> = {};
-    monthlyTimesheets.forEach((t: any) => {
-      projectHoursMap[t.projectId] = (projectHoursMap[t.projectId] || 0) + t.totalHours;
+    recentEntriesParsed = entries.map((e: any) => ({
+      id: e.id,
+      date: format(e.date, 'MMM dd, yyyy'),
+      project: e.project.name,
+      employeeName: e.user.name,
+      hours: `${e.totalHours.toFixed(1)}h`,
+      status: e.status as 'PENDING' | 'APPROVED' | 'REJECTED',
+      statusColor: e.status === 'APPROVED' 
+        ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400'
+        : e.status === 'PENDING'
+        ? 'bg-amber-50 text-amber-700 dark:bg-amber-950/30 dark:text-amber-400'
+        : 'bg-red-50 text-red-700 dark:bg-red-950/30 dark:text-red-400',
+    }));
+  } else {
+    const entries = await prisma.timesheet.findMany({
+      where: { userId: currentUserId },
+      orderBy: { date: 'desc' },
+      take: 5,
+      include: {
+        project: true,
+      },
     });
-    const sortedProjects = Object.entries(projectHoursMap).sort((a: any, b: any) => b[1] - a[1]).slice(0, 3);
-    const projectDetails = await prisma.project.findMany({
-      where: { id: { in: sortedProjects.map(p => p[0]) } },
-      select: { id: true, name: true }
-    });
-    projectSummary = sortedProjects.map(sp => ({
-      name: projectDetails.find((pd: any) => pd.id === sp[0])?.name || 'Unknown',
-      hours: sp[1]
+    recentEntriesParsed = entries.map((e: any) => ({
+      id: e.id,
+      date: format(e.date, 'MMM dd, yyyy'),
+      project: e.project.name,
+      hours: `${e.totalHours.toFixed(1)}h`,
+      status: e.status as 'PENDING' | 'APPROVED' | 'REJECTED',
+      statusColor: e.status === 'APPROVED' 
+        ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400'
+        : e.status === 'PENDING'
+        ? 'bg-amber-50 text-amber-700 dark:bg-amber-950/30 dark:text-amber-400'
+        : 'bg-red-50 text-red-700 dark:bg-red-950/30 dark:text-red-400',
     }));
   }
+
+  // 9. Fetch additional data for Employee Dashboard if needed
+  let employeeData: {
+    monthHours: number;
+    pendingLeaveRequests: Array<{
+      id: string;
+      startDate: string;
+      endDate: string;
+      totalDays: number;
+      leaveType: string;
+      status: string;
+    }>;
+    upcomingLeave: Array<{
+      id: string;
+      startDate: string;
+      endDate: string;
+      totalDays: number;
+      leaveType: string;
+    }>;
+  } | null = null;
+
+  if (userRole === 'EMPLOYEE') {
+    const monthStart = startOfMonth(today);
+    const monthEnd = endOfMonth(today);
+
+    const [monthTimesheets, pendingRequests, upcomingLeave] = await Promise.all([
+      prisma.timesheet.aggregate({
+        where: {
+          userId: currentUserId,
+          date: { gte: monthStart, lte: monthEnd }
+        },
+        _sum: { totalHours: true }
+      }),
+      prisma.leaveRequest.findMany({
+        where: { userId: currentUserId, status: 'PENDING' },
+        orderBy: { startDate: 'asc' },
+        take: 3
+      }),
+      prisma.leaveRequest.findMany({
+        where: {
+          userId: currentUserId,
+          status: 'APPROVED',
+          startDate: { gte: today }
+        },
+        orderBy: { startDate: 'asc' },
+        take: 3
+      })
+    ]);
+
+    employeeData = {
+      monthHours: monthTimesheets._sum.totalHours || 0,
+      pendingLeaveRequests: pendingRequests.map((r: any) => ({
+        id: r.id,
+        startDate: format(r.startDate, 'MMM dd'),
+        endDate: format(r.endDate, 'MMM dd'),
+        totalDays: r.totalDays,
+        leaveType: r.leaveType,
+        status: r.status
+      })),
+      upcomingLeave: upcomingLeave.map((r: any) => ({
+        id: r.id,
+        startDate: format(r.startDate, 'MMM dd'),
+        endDate: format(r.endDate, 'MMM dd'),
+        totalDays: r.totalDays,
+        leaveType: r.leaveType
+      }))
+    };
+  }
+
+  // 10. Format Stats array to pass down to Client
+  const stats = [
+    {
+      title: 'Hours This Week',
+      value: `${weekHoursSum.toFixed(1)}h`,
+      description: 'Standard: 40h',
+      iconType: 'Clock' as const,
+      color: 'text-blue-600 dark:text-blue-400',
+      bgColor: 'bg-blue-50 dark:bg-blue-950/30',
+    },
+    {
+      title: 'Pending Approvals',
+      value: pendingApprovalsCount.toString(),
+      description: ['ADMIN', 'MANAGER'].includes(userRole)
+        ? 'Pending timesheets & leave'
+        : 'Your pending submissions',
+      iconType: 'AlertCircle' as const,
+      color: 'text-amber-600 dark:text-amber-400',
+      bgColor: 'bg-amber-50 dark:bg-amber-950/30',
+    },
+    {
+      title: 'Active Projects',
+      value: activeProjectsCount.toString(),
+      description: 'Jobs currently tracking',
+      iconType: 'Briefcase' as const,
+      color: 'text-emerald-600 dark:text-emerald-400',
+      bgColor: 'bg-emerald-50 dark:bg-emerald-950/30',
+    },
+    {
+      title: 'Leave Balance',
+      value: `${remainingLeave.toFixed(1)} days`,
+      description: 'Remaining annual leave',
+      iconType: 'Calendar' as const,
+      color: 'text-violet-600 dark:text-violet-400',
+      bgColor: 'bg-violet-50 dark:bg-violet-950/30',
+    },
+  ];
 
   return (
     <DashboardClientPage
@@ -208,8 +310,8 @@ export default async function DashboardPage() {
       leaveRequests={leaveRequestsParsed}
       pendingApprovals={pendingApprovalsItems}
       weeklyActivity={weeklyActivity}
-      topEmployee={topEmployee}
-      projectSummary={projectSummary}
+      leaveBalance={leaveBalanceData}
+      employeeData={employeeData}
     />
   );
 }
