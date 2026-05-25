@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Clock, CheckCircle2, XCircle, Loader2 } from 'lucide-react';
+import { CheckCircle2, XCircle, Loader2 } from 'lucide-react';
 import { appConfig } from '@/lib/config';
 
 function VerifyEmailContent() {
