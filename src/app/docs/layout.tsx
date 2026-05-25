@@ -5,11 +5,11 @@ import { ChevronLeft, BookOpen, ChevronRight } from 'lucide-react';
 
 const docsNavigation = [
   { title: 'Overview', href: '/docs', slug: '' },
-  { title: 'Phase 1: Onboarding', href: '/docs/phase-1', slug: 'phase-1' },
-  { title: 'Phase 2: Timesheets', href: '/docs/phase-2', slug: 'phase-2' },
-  { title: 'Phase 3: Leave', href: '/docs/phase-3', slug: 'phase-3' },
-  { title: 'Phase 4: Approvals', href: '/docs/phase-4', slug: 'phase-4' },
-  { title: 'Phase 5: Admin', href: '/docs/phase-5', slug: 'phase-5' },
+  { title: 'Phase 1: Onboarding', href: '/docs/getting-started', slug: 'getting-started' },
+  { title: 'Phase 2: Timesheets', href: '/docs/timesheet', slug: 'timesheet' },
+  { title: 'Phase 3: Leave', href: '/docs/leave-balances', slug: 'leave-balances' },
+  { title: 'Phase 4: Approvals', href: '/docs/manager-approvals', slug: 'manager-approvals' },
+  { title: 'Phase 5: Admin', href: '/docs/administrator-console', slug: 'administrator-console' },
 ];
 
 export default function DocsLayout({

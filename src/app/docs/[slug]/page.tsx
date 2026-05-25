@@ -10,11 +10,11 @@ interface DocPageProps {
 }
 
 const slugToFilename: Record<string, string> = {
-  'phase-1': 'Phase 1: Onboarding, Account Setup & Role Scopes.md',
-  'phase-2': 'Phase 2: Timesheet Logging & Daily Entries.md',
-  'phase-3': 'Phase 3: Leave Requests & Balance Management.md',
-  'phase-4': 'Phase 4: Manager Approvals Queue & Project Tracking.md',
-  'phase-5': 'Phase 5: Administrator Console, Directory & Reports.md',
+  'getting-started': 'Phase 1: Onboarding, Account Setup & Role Scopes.md',
+  'timesheet': 'Phase 2: Timesheet Logging & Daily Entries.md',
+  'leave-balances': 'Phase 3: Leave Requests & Balance Management.md',
+  'manager-approvals': 'Phase 4: Manager Approvals Queue & Project Tracking.md',
+  'administrator-console': 'Phase 5: Administrator Console, Directory & Reports.md',
 };
 
 export default async function DocPage({ params }: DocPageProps) {
@@ -73,7 +73,7 @@ export default async function DocPage({ params }: DocPageProps) {
 
       {/* Navigation Footer */}
       <div className="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center">
-        {slug !== 'phase-1' ? (
+        {slug !== 'getting-started' ? (
           <Link
             href={`/docs/phase-${parseInt(slug.split('-')[1]) - 1}`}
             className="flex flex-col gap-1 text-left group"
@@ -88,7 +88,7 @@ export default async function DocPage({ params }: DocPageProps) {
           <div />
         )}
 
-        {slug !== 'phase-5' ? (
+        {slug !== 'administrator-console' ? (
           <Link
             href={`/docs/phase-${parseInt(slug.split('-')[1]) + 1}`}
             className="flex flex-col gap-1 text-right group"
@@ -109,10 +109,10 @@ export default async function DocPage({ params }: DocPageProps) {
 
 export async function generateStaticParams() {
   return [
-    { slug: 'phase-1' },
-    { slug: 'phase-2' },
-    { slug: 'phase-3' },
-    { slug: 'phase-4' },
-    { slug: 'phase-5' },
+    { slug: 'getting-started' },
+    { slug: 'timesheet' },
+    { slug: 'leave-balances' },
+    { slug: 'manager-approvals' },
+    { slug: 'administrator-console' },
   ];
 }

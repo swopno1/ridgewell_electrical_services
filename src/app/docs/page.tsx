@@ -5,7 +5,7 @@ const categories = [
   {
     title: 'Getting Started',
     description: 'Learn how to set up your account, verify your email, and understand your role within the system.',
-    href: '/docs/phase-1',
+    href: '/docs/getting-started',
     icon: Shield,
     color: 'text-blue-600',
     bgColor: 'bg-blue-100',
@@ -13,7 +13,7 @@ const categories = [
   {
     title: 'Timesheet Logging',
     description: 'A complete guide to logging your daily shifts, entering time parameters, and managing your log history.',
-    href: '/docs/phase-2',
+    href: '/docs/timesheet',
     icon: Clock,
     color: 'text-emerald-600',
     bgColor: 'bg-emerald-100',
@@ -21,7 +21,7 @@ const categories = [
   {
     title: 'Leave & Balances',
     description: 'How to check your leave entitlements, submit requests for time off, and track your balance status.',
-    href: '/docs/phase-3',
+    href: '/docs/leave-balances',
     icon: Calendar,
     color: 'text-purple-600',
     bgColor: 'bg-purple-100',
@@ -29,7 +29,7 @@ const categories = [
   {
     title: 'Manager Approvals',
     description: 'Guidance for managers on reviewing submissions, handling rejections, and auditing project performance.',
-    href: '/docs/phase-4',
+    href: '/docs/manager-approvals',
     icon: CheckSquare,
     color: 'text-amber-600',
     bgColor: 'bg-amber-100',
@@ -37,7 +37,7 @@ const categories = [
   {
     title: 'Administrator Console',
     description: 'Advanced documentation for system administrators on employee directory management and financial reporting.',
-    href: '/docs/phase-5',
+    href: '/docs/administrator-console',
     icon: Settings,
     color: 'text-slate-600',
     bgColor: 'bg-slate-100',

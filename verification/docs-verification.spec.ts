@@ -7,12 +7,12 @@ test('Documentation routes are accessible', async ({ page }) => {
   await page.screenshot({ path: 'verification/docs-index.png' });
 
   // Go to Phase 1 docs
-  await page.goto('http://localhost:3000/docs/phase-1');
+  await page.goto('http://localhost:3000/docs/getting-started');
   await expect(page.locator('h1')).toContainText('TimesheetPro User Guide');
-  await page.screenshot({ path: 'verification/docs-phase-1.png' });
+  await page.screenshot({ path: 'verification/docs-getting-started.png' });
 
   // Go to Phase 2 docs
-  await page.goto('http://localhost:3000/docs/phase-2');
+  await page.goto('http://localhost:3000/docs/timesheet');
   await expect(page.locator('h1')).toContainText('TimesheetPro: Timesheet Logging & Daily Shift Entries');
-  await page.screenshot({ path: 'verification/docs-phase-2.png' });
+  await page.screenshot({ path: 'verification/docs-timesheet.png' });
 });
