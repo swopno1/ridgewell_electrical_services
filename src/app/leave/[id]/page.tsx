@@ -54,7 +54,7 @@ export default async function LeaveDetailPage({ params }: DetailPageProps) {
     startDate: leaveRequest.startDate.toISOString().split('T')[0],
     endDate: leaveRequest.endDate.toISOString().split('T')[0],
     createdAt: leaveRequest.createdAt.toISOString(),
-    approvals: leaveRequest.approvals.map((app) => ({
+    approvals: leaveRequest.approvals.map((app: any) => ({
       ...app,
       approvedAt: app.approvedAt ? app.approvedAt.toISOString() : null,
     })),
