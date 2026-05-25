@@ -358,3 +358,44 @@ export async function getLeaveRequestsAction(
   }
 }
 
+
+export async function getLeaveRequestsByDateRange(
+  userId: string,
+  startDate: Date,
+  endDate: Date
+) {
+  try {
+    const leaveRequests = await prisma.leaveRequest.findMany({
+      where: {
+        userId,
+        OR: [
+          {
+            startDate: {
+              lte: endDate,
+            },
+            endDate: {
+              gte: startDate,
+            },
+          },
+        ],
+      },
+      include: {
+        approvals: {
+          include: { approverUser: true },
+        },
+      },
+      orderBy: { startDate: 'asc' },
+    });
+
+    return {
+      success: true,
+      leaveRequests: leaveRequests.map((l: any) => ({
+        ...l,
+        startDate: l.startDate.toISOString().split('T')[0],
+        endDate: l.endDate.toISOString().split('T')[0],
+      })),
+    };
+  } catch (error: any) {
+    return { error: error.message || 'Failed to fetch leave requests' };
+  }
+}

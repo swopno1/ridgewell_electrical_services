@@ -45,7 +45,8 @@ export const appConfig = {
     mainNav: [
       { label: 'Dashboard', href: '/dashboard', icon: 'LayoutDashboard' },
       { label: 'Timesheets', href: '/timesheets', icon: 'Clock' },
-      { label: 'Leave', href: '/leave', icon: 'Calendar' },
+      { label: 'Leave', href: '/leave', icon: 'CalendarClock' },
+      { label: 'Calendar', href: '/calendar', icon: 'Calendar' },
       { label: 'Projects', href: '/projects', icon: 'Briefcase' },
       { label: 'Reports', href: '/reports', icon: 'BarChart3' },
       { label: 'Employees', href: '/employees', icon: 'Users', adminOnly: true },
