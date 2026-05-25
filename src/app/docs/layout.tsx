@@ -1,16 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
 import { appConfig } from '@/lib/config';
-import { ChevronLeft, BookOpen, ChevronRight } from 'lucide-react';
-
-const docsNavigation = [
-  { title: 'Overview', href: '/docs', slug: '' },
-  { title: 'Phase 1: Onboarding', href: '/docs/getting-started', slug: 'getting-started' },
-  { title: 'Phase 2: Timesheets', href: '/docs/timesheet', slug: 'timesheet' },
-  { title: 'Phase 3: Leave', href: '/docs/leave-balances', slug: 'leave-balances' },
-  { title: 'Phase 4: Approvals', href: '/docs/manager-approvals', slug: 'manager-approvals' },
-  { title: 'Phase 5: Admin', href: '/docs/administrator-console', slug: 'administrator-console' },
-];
+import { ChevronLeft, BookOpen } from 'lucide-react';
+import { Sidebar } from './Sidebar';
 
 export default function DocsLayout({
   children,
@@ -50,21 +42,7 @@ export default function DocsLayout({
         <div className="flex flex-col md:flex-row gap-10 py-8 lg:py-12">
           {/* Sidebar */}
           <aside className="w-full md:w-64 shrink-0">
-            <nav className="sticky top-28 space-y-1">
-              <p className="px-3 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4">
-                Documentation
-              </p>
-              {docsNavigation.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="group flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-900 dark:hover:text-slate-100 transition-colors"
-                >
-                  <span>{item.title}</span>
-                  <ChevronRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </Link>
-              ))}
-            </nav>
+            <Sidebar />
           </aside>
 
           {/* Main Content */}
