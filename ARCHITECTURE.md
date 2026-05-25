@@ -6,7 +6,7 @@ This document outlines the architectural decisions and patterns used in Timeshee
 
 ## 1. Technology Choices
 
-### Next.js 15 + App Router
+### Next.js 16 + App Router
 
 **Why:**
 - Server Components enable server-side rendering by default
