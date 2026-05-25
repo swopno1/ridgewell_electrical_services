@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
 export default function ReportsLoading() {
   return (
-    <DashboardLayout>
+    <DashboardLayout userRole="" userName="Loading..." userEmail="">
       <div className="space-y-6">
         <div>
           <Skeleton className="h-8 w-64 mb-2" />

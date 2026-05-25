@@ -57,7 +57,7 @@ export default async function EmployeesPage({ searchParams }: PageProps) {
   const isAdmin = session.user.role === 'ADMIN';
 
   return (
-    <DashboardLayout userRole={session.user.role as any} userName={session.user.name || ''} userEmail={session.user.email || ''}>
+    <DashboardLayout userRole={session.user.role as string} userName={session.user.name || ''} userEmail={session.user.email || ''}>
       <EmployeeClientPage
         employees={employees as any}
         totalCount={totalCount}

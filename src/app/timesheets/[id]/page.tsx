@@ -59,7 +59,7 @@ export default async function EditTimesheetPage({ params }: EditTimesheetPagePro
 
   return (
     <DashboardLayout
-      userRole={session.user.role as any}
+      userRole={session.user.role as string}
       userName={session.user.name || ''}
       userEmail={session.user.email || ''}
     >

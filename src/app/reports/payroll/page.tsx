@@ -11,7 +11,7 @@ export default async function PayrollReportPage() {
   }
 
   return (
-    <DashboardLayout>
+    <DashboardLayout userRole={session.user.role as string} userName={session.user.name || ""} userEmail={session.user.email || ""}>
       <ReportClient
         title="Payroll Summary Report"
         description="Overview of employee hours, overtime, and leave for the selected period."

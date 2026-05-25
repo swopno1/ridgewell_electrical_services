@@ -11,7 +11,7 @@ export default async function HoursSummaryPage() {
   }
 
   return (
-    <DashboardLayout>
+    <DashboardLayout userRole={session.user.role as string} userName={session.user.name || ""} userEmail={session.user.email || ""}>
       <ReportClient
         title="Hours Summary Report"
         description="Detailed breakdown of regular and overtime hours by employee."

@@ -54,7 +54,7 @@ export default async function ProjectsPage({ searchParams }: PageProps) {
   const isManagerOrAdmin = ['ADMIN', 'MANAGER'].includes(session.user.role || '');
 
   return (
-    <DashboardLayout userRole={session.user.role as any} userName={session.user.name || ''} userEmail={session.user.email || ''}>
+    <DashboardLayout userRole={session.user.role as string} userName={session.user.name || ''} userEmail={session.user.email || ''}>
       <ProjectClientPage
         projects={projects as any}
         totalCount={totalCount}
