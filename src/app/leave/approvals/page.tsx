@@ -50,8 +50,8 @@ export default async function LeaveApprovalsPage({ searchParams }: PageProps) {
   });
 
   const pendingCount = pendingRequests.length;
-  const pendingDays = pendingRequests.reduce((sum, req) => sum + req.totalDays, 0);
-  const uniqueUsers = new Set(pendingRequests.map((req) => req.userId));
+  const pendingDays = pendingRequests.reduce((sum: number, req: any) => sum + req.totalDays, 0);
+  const uniqueUsers = new Set(pendingRequests.map((req: any) => req.userId));
   const submittingEmployees = uniqueUsers.size;
 
   const stats = {

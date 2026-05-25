@@ -1,9 +1,7 @@
-// src/app/dashboard/page.tsx
-
 import { prisma } from '@/lib/prisma';
 import { getSession } from '@/lib/session';
 import { redirect } from 'next/navigation';
-import { startOfWeek, endOfWeek, format, startOfToday } from 'date-fns';
+import { startOfWeek, endOfWeek, format, startOfToday, startOfMonth, endOfMonth } from 'date-fns';
 import { DashboardClientPage } from './DashboardClientPage';
 
 export default async function DashboardPage() {
@@ -42,7 +40,7 @@ export default async function DashboardPage() {
   const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
   const dailyHoursMap: Record<string, number> = { Mon: 0, Tue: 0, Wed: 0, Thu: 0, Fri: 0 };
   
-  weeklyTimesheets.forEach((entry) => {
+  weeklyTimesheets.forEach((entry: { date: Date; totalHours: number }) => {
     const dayName = format(entry.date, 'EEE');
     if (dayName in dailyHoursMap) {
       dailyHoursMap[dayName] += entry.totalHours;
@@ -55,7 +53,7 @@ export default async function DashboardPage() {
   }));
 
   // 4. Calculate total hours logged this week
-  const weekHoursSum = weeklyTimesheets.reduce((acc, entry) => acc + entry.totalHours, 0);
+  const weekHoursSum = weeklyTimesheets.reduce((acc: number, entry: { totalHours: number }) => acc + entry.totalHours, 0);
 
   // 5. Query active projects count
   const activeProjectsCount = await prisma.project.count({
@@ -72,9 +70,15 @@ export default async function DashboardPage() {
       },
     },
   });
-  const remainingLeave = leaveBalance 
-    ? (leaveBalance.annualEntitled - leaveBalance.annualUsed) 
-    : 20; // Default entitlement if none exists
+
+  const leaveBalanceData = {
+    annualEntitled: leaveBalance?.annualEntitled ?? 20,
+    annualUsed: leaveBalance?.annualUsed ?? 0,
+    sickUsed: leaveBalance?.sickUsed ?? 0,
+    year: currentYear,
+  };
+
+  const remainingLeave = leaveBalanceData.annualEntitled - leaveBalanceData.annualUsed;
 
   // 7. Query pending approvals count based on role
   let pendingApprovalsCount = 0;
@@ -93,7 +97,7 @@ export default async function DashboardPage() {
   }
 
   // 8. Query recent entries
-  let recentEntriesParsed = [];
+  let recentEntriesParsed: any[] = [];
   if (['ADMIN', 'MANAGER'].includes(userRole)) {
     const entries = await prisma.timesheet.findMany({
       orderBy: { date: 'desc' },
@@ -103,7 +107,7 @@ export default async function DashboardPage() {
         user: true,
       },
     });
-    recentEntriesParsed = entries.map((e) => ({
+    recentEntriesParsed = entries.map((e: any) => ({
       id: e.id,
       date: format(e.date, 'MMM dd, yyyy'),
       project: e.project.name,
@@ -125,7 +129,7 @@ export default async function DashboardPage() {
         project: true,
       },
     });
-    recentEntriesParsed = entries.map((e) => ({
+    recentEntriesParsed = entries.map((e: any) => ({
       id: e.id,
       date: format(e.date, 'MMM dd, yyyy'),
       project: e.project.name,
@@ -139,7 +143,75 @@ export default async function DashboardPage() {
     }));
   }
 
-  // 9. Format Stats array to pass down to Client
+  // 9. Fetch additional data for Employee Dashboard if needed
+  let employeeData: {
+    monthHours: number;
+    pendingLeaveRequests: Array<{
+      id: string;
+      startDate: string;
+      endDate: string;
+      totalDays: number;
+      leaveType: string;
+      status: string;
+    }>;
+    upcomingLeave: Array<{
+      id: string;
+      startDate: string;
+      endDate: string;
+      totalDays: number;
+      leaveType: string;
+    }>;
+  } | null = null;
+
+  if (userRole === 'EMPLOYEE') {
+    const monthStart = startOfMonth(today);
+    const monthEnd = endOfMonth(today);
+
+    const [monthTimesheets, pendingRequests, upcomingLeave] = await Promise.all([
+      prisma.timesheet.aggregate({
+        where: {
+          userId: currentUserId,
+          date: { gte: monthStart, lte: monthEnd }
+        },
+        _sum: { totalHours: true }
+      }),
+      prisma.leaveRequest.findMany({
+        where: { userId: currentUserId, status: 'PENDING' },
+        orderBy: { startDate: 'asc' },
+        take: 3
+      }),
+      prisma.leaveRequest.findMany({
+        where: {
+          userId: currentUserId,
+          status: 'APPROVED',
+          startDate: { gte: today }
+        },
+        orderBy: { startDate: 'asc' },
+        take: 3
+      })
+    ]);
+
+    employeeData = {
+      monthHours: monthTimesheets._sum.totalHours || 0,
+      pendingLeaveRequests: pendingRequests.map((r: any) => ({
+        id: r.id,
+        startDate: format(r.startDate, 'MMM dd'),
+        endDate: format(r.endDate, 'MMM dd'),
+        totalDays: r.totalDays,
+        leaveType: r.leaveType,
+        status: r.status
+      })),
+      upcomingLeave: upcomingLeave.map((r: any) => ({
+        id: r.id,
+        startDate: format(r.startDate, 'MMM dd'),
+        endDate: format(r.endDate, 'MMM dd'),
+        totalDays: r.totalDays,
+        leaveType: r.leaveType
+      }))
+    };
+  }
+
+  // 10. Format Stats array to pass down to Client
   const stats = [
     {
       title: 'Hours This Week',
@@ -183,6 +255,8 @@ export default async function DashboardPage() {
       stats={stats}
       recentEntries={recentEntriesParsed}
       weeklyActivity={weeklyActivity}
+      leaveBalance={leaveBalanceData}
+      employeeData={employeeData}
     />
   );
 }
