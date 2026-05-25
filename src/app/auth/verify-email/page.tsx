@@ -6,6 +6,7 @@ import { verifyEmailAction } from '@/actions/auth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Clock, CheckCircle2, XCircle, Loader2 } from 'lucide-react';
 import { appConfig } from '@/lib/config';
 
@@ -45,9 +46,15 @@ function VerifyEmailContent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-slate-900 px-4 py-12">
       <div className="w-full max-w-md">
-        <div className="flex flex-col items-center mb-8">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-600 text-white shadow-md mb-4">
-            <Clock className="h-6 w-6" />
+        <div className="flex flex-col items-center">
+          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white p-2 ring-1 ring-slate-200 dark:ring-slate-800 shadow-md mb-4">
+            <Image
+              src={appConfig.company.logo}
+              alt="Logo"
+              width={64}
+              height={64}
+              className="object-contain"
+            />
           </div>
           <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
             {appConfig.app.name}
