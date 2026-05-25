@@ -1,6 +1,4 @@
-// src/app/dashboard/DashboardClientPage.tsx
 'use client';
-
 
 import { DashboardLayout } from '@/components/layouts/DashboardLayout';
 import {
@@ -12,14 +10,10 @@ import {
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
-  Clock,
-  AlertCircle,
-  Calendar,
-  Briefcase,
-  ArrowRight,
   Plus,
   FileSpreadsheet,
   TrendingUp,
+  User,
 } from 'lucide-react';
 import Link from 'next/link';
 import { EmployeeDashboard } from '@/components/widgets/EmployeeDashboard';
@@ -83,17 +77,12 @@ interface DashboardClientPageProps {
   } | null;
 }
 
-const iconMap = {
-  Clock,
-  AlertCircle,
-  Briefcase,
-  Calendar,
-};
-
 export function DashboardClientPage({
   user,
-  stats,
+  metrics,
   recentEntries,
+  leaveRequests,
+  pendingApprovals,
   weeklyActivity,
   leaveBalance,
   employeeData
@@ -102,7 +91,7 @@ export function DashboardClientPage({
     return fullName.split(' ')[0] || 'User';
   };
 
-  const isManagerOrAdmin = ['ADMIN', 'MANAGER'].includes(user.role);
+  const isAdminOrManager = ['ADMIN', 'MANAGER'].includes(user.role);
 
   return (
     <DashboardLayout>
