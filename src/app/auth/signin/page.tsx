@@ -13,7 +13,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { signInAction } from '@/actions/auth';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { appConfig } from '@/lib/config';
 
 const signInFormSchema = z.object({
@@ -31,12 +31,16 @@ function SignInContent() {
   const [isLoading, setIsLoading] = React.useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
   const [unverifiedEmail, setUnverifiedEmail] = React.useState<string | null>(null);
+  const [isInactive, setIsInactive] = React.useState(false);
 
   // Read error parameter from URL redirect
   React.useEffect(() => {
     const urlError = searchParams.get('error');
     if (urlError === 'EmailNotVerified') {
       setError('Your email is not verified. Please verify your email to log in.');
+    } else if (urlError === 'AccountInactive') {
+      setError('Your account is pending administrator approval.');
+      setIsInactive(true);
     } else if (urlError) {
       setError('Sign in failed. Please check your credentials.');
     }
@@ -58,6 +62,7 @@ function SignInContent() {
     setIsLoading(false);
     setError(null);
     setUnverifiedEmail(null);
+    setIsInactive(false);
     setIsLoading(true);
 
     try {
@@ -66,6 +71,9 @@ function SignInContent() {
         if (response.error === 'EmailNotVerified') {
           setUnverifiedEmail(data.email);
           setError('Your email is not verified. You must verify it before signing in.');
+        } else if (response.error === 'AccountInactive') {
+          setIsInactive(true);
+          setError('Your account is pending administrator approval.');
         } else {
           setError(response.error);
         }
@@ -115,8 +123,15 @@ function SignInContent() {
           <CardContent>
             <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
               {error && (
-                <div className="p-3.5 text-sm rounded-lg bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800/50 text-red-600 dark:text-red-400 flex flex-col gap-2">
-                  <span className="font-medium">{error}</span>
+                <div className={`p-3.5 text-sm rounded-lg flex flex-col gap-2 ${
+                  isInactive
+                  ? 'bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/50 text-amber-700 dark:text-amber-400'
+                  : 'bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800/50 text-red-600 dark:text-red-400'
+                }`}>
+                  <div className="flex items-start gap-2">
+                    {isInactive ? <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" /> : null}
+                    <span className="font-medium">{error}</span>
+                  </div>
                   {unverifiedEmail && (
                     <Link
                       href={`/auth/verify-email/resend?email=${encodeURIComponent(unverifiedEmail)}`}
@@ -124,6 +139,12 @@ function SignInContent() {
                     >
                       Resend verification link
                     </Link>
+                  )}
+                  {isInactive && (
+                    <p className="text-xs leading-normal opacity-90">
+                      An administrator needs to review and activate your account before you can sign in.
+                      You will receive an email once your account has been approved.
+                    </p>
                   )}
                 </div>
               )}

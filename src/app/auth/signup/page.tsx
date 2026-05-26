@@ -13,7 +13,7 @@ import { useRouter } from 'next/navigation';
 import { signUpAction } from '@/actions/auth';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Mail, CheckCircle2, AlertTriangle } from 'lucide-react';
+import { CheckCircle2, Mail, AlertTriangle } from 'lucide-react';
 import { appConfig } from '@/lib/config';
 
 const signUpFormSchema = z
@@ -107,7 +107,8 @@ export default function SignUpPage() {
             ) : (
               <>
                 <p>
-                  Please click the link in that email to activate your account. The link is valid for 24 hours.
+                  Please click the link in that email to verify your email address.
+                  <strong> After verification, an administrator will need to approve your account.</strong>
                 </p>
                 <div className="p-3 text-xs bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/30 rounded-lg text-amber-700 dark:text-amber-400 flex items-start gap-2">
                   <AlertTriangle className="h-4 w-4 shrink-0 mt-0.5" />

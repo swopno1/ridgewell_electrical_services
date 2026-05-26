@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import Link from 'next/link';
 import Image from 'next/image';
-import { CheckCircle2, XCircle, Loader2 } from 'lucide-react';
+import { CheckCircle2, XCircle, Loader2, AlertCircle } from 'lucide-react';
 import { appConfig } from '@/lib/config';
 
 function VerifyEmailContent() {
@@ -85,7 +85,7 @@ function VerifyEmailContent() {
             
             <CardDescription className="text-slate-500">
               {status === 'loading' && 'Checking verification token structure.'}
-              {status === 'success' && 'Your account has been verified and activated.'}
+              {status === 'success' && 'Your email address has been verified.'}
               {status === 'error' && (errorMessage || 'The link may have expired or is invalid.')}
             </CardDescription>
           </CardHeader>
@@ -95,7 +95,16 @@ function VerifyEmailContent() {
               <p>Please wait while we verify your activation token with the database...</p>
             )}
             {status === 'success' && (
-              <p>Thank you! Your email is verified. You can now log into your employee dashboard.</p>
+              <div className="space-y-4">
+                <p>Thank you! Your email is verified.</p>
+                <div className="p-3 bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/30 rounded-lg text-amber-700 dark:text-amber-400 flex items-start gap-2 text-xs">
+                  <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
+                  <span className="text-left leading-normal">
+                    <strong>Pending Approval:</strong> An administrator will now review your account.
+                    You will receive a notification email once your account has been activated.
+                  </span>
+                </div>
+              </div>
             )}
             {status === 'error' && (
               <p>Please request a new email verification link to activate your account.</p>
@@ -110,7 +119,7 @@ function VerifyEmailContent() {
             )}
             {status === 'error' && (
               <>
-                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white" render={<Link href={`/auth/verify-email/resend?email=${encodeURIComponent(email)}`} />}>
+                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white" render={<Link href={`/auth/verify-email/resend?email=${encodeURIComponent(email || '')}`} />}>
                   Resend Verification Link
                 </Button>
                 <Link
