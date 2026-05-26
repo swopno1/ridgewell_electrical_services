@@ -9,7 +9,7 @@ import { revalidatePath } from 'next/cache';
 import { notifyTimesheetSubmission, notifyTimesheetStatusChange } from '@/lib/notifications';
 
 const createTimesheetSchema = z.object({
-  projectId: z.string(),
+  projectId: z.string().min(1, 'Please select a project'),
   date: z.coerce.date(),
   timeOn: z.coerce.date(),
   timeOff: z.coerce.date(),

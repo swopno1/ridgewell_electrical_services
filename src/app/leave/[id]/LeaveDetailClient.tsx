@@ -19,16 +19,18 @@ import {
 import Link from 'next/link';
 import { cancelLeaveRequestAction, approveLeaveRequestAction, rejectLeaveRequestAction } from '@/actions/leave';
 import { ApprovalDialog } from '@/components/dialogs/ApprovalDialog';
+import { ConfirmDialog } from '@/components/dialogs/ConfirmDialog';
 
 interface Approval {
   id: string;
-  approved: boolean | null;
-  comment: string | null;
-  approvedAt: string | null;
+  approverUserId: string;
   approverUser: {
     name: string;
     email: string;
   };
+  approved: boolean;
+  comment: string | null;
+  approvedAt: string | null;
 }
 
 interface LeaveRequest {
@@ -63,9 +65,13 @@ export function LeaveDetailClient({
   const [isPending, startTransition] = React.useTransition();
   const [reviewOpen, setReviewOpen] = React.useState(false);
   const [isRejectMode, setIsRejectMode] = React.useState(false);
+  const [cancelOpen, setCancelOpen] = React.useState(false);
 
   const handleCancel = async () => {
-    if (!confirm('Are you sure you want to cancel this leave request?')) return;
+    setCancelOpen(true);
+  };
+
+  const handleCancelConfirm = async () => {
     startTransition(async () => {
       const res = await cancelLeaveRequestAction(leaveRequest.id, currentUserId);
       if (res.error) {
@@ -77,7 +83,6 @@ export function LeaveDetailClient({
   };
 
   const handleApproveQuick = async () => {
-    if (!confirm('Are you sure you want to approve this leave request?')) return;
     startTransition(async () => {
       const res = await approveLeaveRequestAction(leaveRequest.id, currentUserId);
       if (res.error) {
@@ -89,115 +94,101 @@ export function LeaveDetailClient({
   };
 
   const handleApprovalSubmit = async (approved: boolean, comment?: string) => {
-    if (approved) {
-      const res = await approveLeaveRequestAction(leaveRequest.id, currentUserId, comment);
-      if (res.error) throw new Error(res.error);
-    } else {
-      if (!comment) throw new Error('A comment is required for rejection');
-      const res = await rejectLeaveRequestAction(leaveRequest.id, currentUserId, comment);
-      if (res.error) throw new Error(res.error);
+    try {
+      const res = approved
+        ? await approveLeaveRequestAction(leaveRequest.id, currentUserId, comment)
+        : await rejectLeaveRequestAction(leaveRequest.id, currentUserId, comment || '');
+
+      if (res.error) {
+        alert(res.error);
+      } else {
+        router.refresh();
+      }
+    } finally {
+      setReviewOpen(false);
     }
-    router.refresh();
   };
 
-  const getStatusBadge = (status: LeaveRequest['status']) => {
+  const getStatusBadge = (status: string) => {
     switch (status) {
       case 'APPROVED':
         return (
-          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400">
-            <CheckCircle className="h-3.5 w-3.5" />
+          <span className="inline-flex items-center rounded-md bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-inset ring-emerald-700/10 dark:bg-emerald-900/20 dark:text-emerald-400">
             Approved
           </span>
         );
       case 'REJECTED':
         return (
-          <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-3 py-1 text-xs font-semibold text-red-700 dark:bg-red-950/30 dark:text-red-400">
-            <XCircle className="h-3.5 w-3.5" />
+          <span className="inline-flex items-center rounded-md bg-red-50 px-2.5 py-1 text-xs font-semibold text-red-700 ring-1 ring-inset ring-red-700/10 dark:bg-red-900/20 dark:text-red-400">
             Rejected
           </span>
         );
       case 'CANCELLED':
         return (
-          <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600 dark:bg-slate-900 dark:text-slate-400">
-            <XOctagon className="h-3.5 w-3.5" />
+          <span className="inline-flex items-center rounded-md bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600 ring-1 ring-inset ring-slate-600/10 dark:bg-slate-800 dark:text-slate-400">
             Cancelled
           </span>
         );
       default:
         return (
-          <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700 dark:bg-amber-950/30 dark:text-amber-400">
-            <AlertCircle className="h-3.5 w-3.5" />
+          <span className="inline-flex items-center rounded-md bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-700 ring-1 ring-inset ring-amber-700/10 dark:bg-amber-900/20 dark:text-amber-400">
             Pending Review
           </span>
         );
     }
   };
 
-  const getLeaveTypeLabel = (type: LeaveRequest['leaveType']) => {
+  const getLeaveTypeLabel = (type: string) => {
     switch (type) {
       case 'ANNUAL':
         return 'Annual Leave';
       case 'SICK':
         return 'Sick Leave';
-      default:
+      case 'UNPAID':
         return 'Unpaid Leave';
+      default:
+        return type;
     }
   };
 
-  // Find the primary approval record
-  const primaryApproval = leaveRequest.approvals.find(
-    (a) => a.approved === true || a.approved === false
-  );
+  const primaryApproval = leaveRequest.approvals[0];
 
   return (
-    <div className="space-y-6">
-      {/* Header / Back Link */}
-      <div>
-        <div className="flex items-center gap-2">
-          <Button
-            variant="ghost"
-            size="icon-xs"
-            render={<Link href="/leave" />}
-            className="text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
-          >
-            <ArrowLeft className="h-4 w-4" />
-          </Button>
-          <span className="text-sm font-medium text-slate-500">Back to Leave List</span>
-        </div>
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-2">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
-              Leave Request Details
-            </h1>
-            <p className="text-slate-500 text-sm mt-0.5">
-              Request ID: <span className="font-mono text-xs">{leaveRequest.id}</span>
-            </p>
-          </div>
-          <div>{getStatusBadge(leaveRequest.status)}</div>
-        </div>
-      </div>
+    <div className="max-w-5xl mx-auto space-y-6">
+      {/* Back link */}
+      <Link
+        href="/leave"
+        className="inline-flex items-center text-sm font-medium text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition-colors"
+      >
+        <ArrowLeft className="h-4 w-4 mr-1.5" />
+        Back to Leave Management
+      </Link>
 
-      {/* Main Content Split */}
-      <div className="grid gap-6 md:grid-cols-3">
-        {/* Request Details (Left Col) */}
-        <div className="md:col-span-2 space-y-6">
-          <Card className="border border-slate-200 dark:border-slate-800 shadow-xs bg-white dark:bg-slate-950">
-            <CardHeader className="border-b border-slate-100 dark:border-slate-800">
-              <CardTitle className="text-lg font-semibold text-slate-900 dark:text-white">
-                Leave Details
-              </CardTitle>
-              <CardDescription>
-                Summary of the requested dates and reason.
-              </CardDescription>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Detail Card (Left Col) */}
+        <div className="lg:col-span-2 space-y-6">
+          <Card className="border border-slate-200 dark:border-slate-800 shadow-xs bg-white dark:bg-slate-950 overflow-hidden">
+            <CardHeader className="bg-slate-50/50 dark:bg-slate-900/50 border-b border-slate-100 dark:border-slate-800">
+              <div className="flex items-center justify-between">
+                <div className="space-y-1">
+                  <CardTitle className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    Leave Request Details
+                  </CardTitle>
+                  <CardDescription className="text-slate-500">
+                    Request ID: {leaveRequest.id.toUpperCase()}
+                  </CardDescription>
+                </div>
+                {getStatusBadge(leaveRequest.status)}
+              </div>
             </CardHeader>
-            <CardContent className="pt-6 space-y-6">
+            <CardContent className="pt-6 space-y-8">
               <div className="grid grid-cols-2 gap-6">
-                <div>
-                  <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-                    Employee
+                <div className="flex flex-col">
+                  <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                    <User className="h-4 w-4 text-slate-500" />
+                    Requester
                   </h4>
                   <div className="flex items-center gap-2 mt-1.5">
-                    <User className="h-4 w-4 text-slate-500" />
                     <span className="text-sm font-semibold text-slate-800 dark:text-slate-200">
                       {leaveRequest.user?.name}
                     </span>
@@ -413,6 +404,16 @@ export function LeaveDetailClient({
             ? 'Provide a brief reason explaining why this leave request is being rejected. This comment will be visible to the employee.'
             : 'Add a comment to log with this approval. This is optional.'
         }
+      />
+
+      <ConfirmDialog
+        isOpen={cancelOpen}
+        onClose={() => setCancelOpen(false)}
+        onConfirm={handleCancelConfirm}
+        title="Cancel Leave Request"
+        description="Are you sure you want to cancel this leave request? This action cannot be undone."
+        confirmText="Cancel Request"
+        variant="destructive"
       />
     </div>
   );

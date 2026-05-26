@@ -12,16 +12,12 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import {
-  CheckCircle,
-  XCircle,
-  AlertCircle,
   Search,
   ChevronLeft,
   ChevronRight,
   Eye,
   Check,
   X,
-  XOctagon,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -48,9 +44,9 @@ interface LeaveTableProps {
   onPageChange: (page: number) => void;
   onSearchChange: (search: string) => void;
   onStatusFilter: (status: string) => void;
-  onCancel?: (id: string) => Promise<void>;
-  onApprove?: (id: string) => Promise<void>;
-  onReject?: (id: string) => Promise<void>;
+  onCancel?: (id: string) => void;
+  onApprove?: (id: string) => void;
+  onReject?: (id: string) => void;
   isManagerOrAdmin?: boolean;
 }
 
@@ -65,51 +61,47 @@ export function LeaveTable({
   onCancel,
   onApprove,
   onReject,
-  isManagerOrAdmin = false,
+  isManagerOrAdmin,
 }: LeaveTableProps) {
   const [searchVal, setSearchVal] = React.useState('');
   const [statusFilter, setStatusFilter] = React.useState('ALL');
-  const [isPending, startTransition] = React.useTransition();
+  const [isPending] = React.useTransition();
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSearchChange(searchVal);
   };
 
-  const getStatusBadge = (status: LeaveRequest['status']) => {
+  const getStatusBadge = (status: string) => {
     switch (status) {
       case 'APPROVED':
         return (
-          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400">
-            <CheckCircle className="h-3 w-3" />
+          <span className="inline-flex items-center rounded-md bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-700/10 dark:bg-emerald-900/20 dark:text-emerald-400">
             Approved
           </span>
         );
       case 'REJECTED':
         return (
-          <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-2.5 py-0.5 text-xs font-semibold text-red-700 dark:bg-red-950/30 dark:text-red-400">
-            <XCircle className="h-3 w-3" />
+          <span className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-700/10 dark:bg-red-900/20 dark:text-red-400">
             Rejected
           </span>
         );
       case 'CANCELLED':
         return (
-          <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-600 dark:bg-slate-900 dark:text-slate-400">
-            <XOctagon className="h-3 w-3" />
+          <span className="inline-flex items-center rounded-md bg-slate-100 px-2 py-1 text-xs font-medium text-slate-600 ring-1 ring-inset ring-slate-600/10 dark:bg-slate-800 dark:text-slate-400">
             Cancelled
           </span>
         );
       default:
         return (
-          <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-semibold text-amber-700 dark:bg-amber-950/30 dark:text-amber-400">
-            <AlertCircle className="h-3 w-3" />
-            Pending
+          <span className="inline-flex items-center rounded-md bg-amber-50 px-2 py-1 text-xs font-medium text-amber-700 ring-1 ring-inset ring-amber-700/10 dark:bg-amber-900/20 dark:text-amber-400">
+            Pending Review
           </span>
         );
     }
   };
 
-  const getLeaveTypeBadge = (type: LeaveRequest['leaveType']) => {
+  const getLeaveTypeBadge = (type: string) => {
     switch (type) {
       case 'ANNUAL':
         return (
@@ -240,9 +232,7 @@ export function LeaveTable({
                               title="Approve Leave"
                               onClick={() => {
                                 if (onApprove) {
-                                  startTransition(async () => {
-                                    await onApprove(entry.id);
-                                  });
+                                  onApprove(entry.id);
                                 }
                               }}
                               className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 dark:hover:bg-emerald-950/20"
@@ -256,9 +246,7 @@ export function LeaveTable({
                               title="Reject Leave"
                               onClick={() => {
                                 if (onReject) {
-                                  startTransition(async () => {
-                                    await onReject(entry.id);
-                                  });
+                                  onReject(entry.id);
                                 }
                               }}
                               className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/20"
@@ -275,13 +263,7 @@ export function LeaveTable({
                             size="sm"
                             disabled={isPending}
                             title="Cancel Leave Request"
-                            onClick={() => {
-                              if (confirm('Are you sure you want to cancel this leave request?')) {
-                                startTransition(async () => {
-                                  await onCancel(entry.id);
-                                });
-                              }
-                            }}
+                            onClick={() => onCancel(entry.id)}
                             className="text-red-650 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/20 text-xs font-semibold px-2 h-7"
                           >
                             Cancel
