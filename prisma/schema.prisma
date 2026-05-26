@@ -54,6 +54,11 @@ model User {
   image         String?
   role          UserRole   @default(EMPLOYEE)
   active        Boolean    @default(false)
+  hourlyRate    Float?     @default(0)
+  overtimeRate  Float?     @default(0)
+  annualLeaveQuota Float?  @default(20)
+  designation   String?    @default("Employee")
+  standardWorkHours Float? @default(8)
   
   // Relations
   timesheets    Timesheet[]
@@ -253,3 +258,6 @@ model AuditLog {
   @@index([userId])
   @@index([createdAt])
 }
+
+// Added fields for employee salary details
+// Updating User model is not possible with append, I need to rewrite or use sed.

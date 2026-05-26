@@ -125,7 +125,7 @@ export const appConfig = {
     calendar: true,
     approvals: true,
     multipleApprovers: false, // MVP: single approver
-    notifications: false, // Future feature
+    notifications: true,
     integrations: false, // Future feature
     advancedAnalytics: false, // Future feature
     geolocation: false, // Future feature
@@ -148,7 +148,7 @@ export const appConfig = {
     from: 'noreply@ridgewelles.co.uk',
     fromName: 'Ridgewell ES',
     supportEmail: 'support@ridgewelles.co.uk',
-    enableNotifications: false, // Future feature
+    enableNotifications: true,
   },
 
   // Security

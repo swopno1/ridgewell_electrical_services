@@ -42,6 +42,14 @@ export async function generatePayrollSummary(startDate?: Date, endDate?: Date) {
       let sickLeaveDays = 0;
       let unpaidLeaveDays = 0;
 
+      const hourlyRate = emp.hourlyRate || 0;
+      const overtimeRate = emp.overtimeRate || 0;
+
+      const regularPay = totalRegularHours * hourlyRate;
+      const overtimePay = totalOvertimeHours * overtimeRate;
+      const totalPay = regularPay + overtimePay;
+
+      let totalLeaveDays = 0;
       emp.leaveRequests.forEach((lr: any) => {
         const lrStart = lr.startDate < start ? start : lr.startDate;
         const lrEnd = lr.endDate > end ? end : lr.endDate;
@@ -55,13 +63,18 @@ export async function generatePayrollSummary(startDate?: Date, endDate?: Date) {
 
       return {
         'Employee Name': emp.name,
-        'Email': emp.email,
+        'Designation': emp.designation || 'Employee',
         'Regular Hours': totalRegularHours.toFixed(2),
         'Overtime Hours': totalOvertimeHours.toFixed(2),
         'Total Hours': (totalRegularHours + totalOvertimeHours).toFixed(2),
         'Annual Leave (Days)': annualLeaveDays,
         'Sick Leave (Days)': sickLeaveDays,
         'Unpaid Leave (Days)': unpaidLeaveDays,
+        'Leave Days': totalLeaveDays,
+        'Hourly Rate': hourlyRate.toFixed(2),
+        'Regular Pay': regularPay.toFixed(2),
+        'Overtime Pay': overtimePay.toFixed(2),
+        'Total Gross Pay': totalPay.toFixed(2),
       };
     });
 
@@ -89,7 +102,7 @@ export async function generateHoursSummary(startDate?: Date, endDate?: Date) {
       },
       include: {
         user: {
-          select: { id: true, name: true },
+          select: { id: true, name: true, designation: true },
         },
       },
     });
@@ -100,6 +113,7 @@ export async function generateHoursSummary(startDate?: Date, endDate?: Date) {
       if (!summaryMap[ts.userId]) {
         summaryMap[ts.userId] = {
           'Employee Name': ts.user.name,
+          'Designation': ts.user.designation || 'Employee',
           'Regular Hours': 0,
           'Overtime Hours': 0,
           'Total Hours': 0,

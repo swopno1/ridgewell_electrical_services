@@ -1,19 +1,23 @@
-// src/actions/employee.ts
 'use server';
 
 import { prisma } from '@/lib/prisma';
-import { z } from 'zod';
+import * as z from 'zod';
 import { getSession } from '@/lib/session';
 import { revalidatePath } from 'next/cache';
+import { hashPassword } from '@/lib/auth-utils';
 import { sendEmail } from '@/lib/email';
 import { appConfig } from '@/lib/config';
-import { hashPassword } from '@/lib/auth-utils';
 
 const employeeSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
   email: z.string().email('Invalid email address'),
   role: z.enum(['ADMIN', 'MANAGER', 'EMPLOYEE']),
   active: z.boolean().default(true),
+  hourlyRate: z.coerce.number().min(0).optional(),
+  overtimeRate: z.coerce.number().min(0).optional(),
+  annualLeaveQuota: z.coerce.number().min(0).optional(),
+  designation: z.string().optional(),
+  standardWorkHours: z.coerce.number().min(1).max(24).optional(),
   password: z.string().optional().or(z.literal('')),
 });
 
@@ -123,13 +127,17 @@ export async function createEmployeeAction(data: unknown) {
       return { error: 'Email already registered' };
     }
 
-    // No default password anymore. User must set it via invitation.
     const employee = await prisma.user.create({
       data: {
         name: validated.name,
         email: validated.email,
         role: validated.role,
         active: validated.active,
+        hourlyRate: validated.hourlyRate || 0,
+        overtimeRate: validated.overtimeRate || 0,
+        annualLeaveQuota: validated.annualLeaveQuota || 20,
+        designation: validated.designation || 'Employee',
+        standardWorkHours: validated.standardWorkHours || 8,
       },
     });
 
@@ -176,7 +184,7 @@ export async function createEmployeeAction(data: unknown) {
       data: {
         userId: employee.id,
         year,
-        annualEntitled: 20,
+        annualEntitled: validated.annualLeaveQuota || 20,
         annualUsed: 0,
         sickUsed: 0,
       },
@@ -213,6 +221,11 @@ export async function updateEmployeeAction(id: string, data: unknown) {
       email: validated.email,
       role: validated.role,
       active: validated.active,
+      hourlyRate: validated.hourlyRate ?? 0,
+      overtimeRate: validated.overtimeRate ?? 0,
+      annualLeaveQuota: validated.annualLeaveQuota ?? 20,
+      designation: validated.designation ?? 'Employee',
+      standardWorkHours: validated.standardWorkHours ?? 8,
     };
 
     if (validated.password) {
@@ -223,6 +236,19 @@ export async function updateEmployeeAction(id: string, data: unknown) {
       where: { id },
       data: updateData,
     });
+
+    // Update leave balance if quota changed for current year
+    const year = new Date().getFullYear();
+    const balance = await prisma.leaveBalance.findUnique({
+      where: { userId_year: { userId: id, year } },
+    });
+
+    if (balance && validated.annualLeaveQuota !== undefined && balance.annualEntitled !== validated.annualLeaveQuota) {
+      await prisma.leaveBalance.update({
+        where: { id: balance.id },
+        data: { annualEntitled: validated.annualLeaveQuota },
+      });
+    }
 
     revalidatePath('/employees');
     revalidatePath(`/employees/${id}`);
