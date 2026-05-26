@@ -3,6 +3,7 @@
 
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
+import { appConfig } from '@/lib/config';
 import { getSession } from '@/lib/session';
 import { differenceInMinutes } from 'date-fns';
 import { revalidatePath } from 'next/cache';
@@ -27,7 +28,7 @@ export async function createTimesheetAction(data: unknown, userId: string) {
     const totalHours = workMinutes / 60;
 
     // Calculate overtime
-    const overtimeHours = totalHours > 8 ? totalHours - 8 : 0;
+    const overtimeHours = totalHours > appConfig.timesheet.overtimeThreshold ? totalHours - appConfig.timesheet.overtimeThreshold : 0;
 
     // Check for existing entry
     const existingEntry = await prisma.timesheet.findUnique({
@@ -101,7 +102,7 @@ export async function updateTimesheetAction(
     const totalMinutes = differenceInMinutes(validated.timeOff, validated.timeOn);
     const workMinutes = totalMinutes - validated.breakDuration;
     const totalHours = workMinutes / 60;
-    const overtimeHours = totalHours > 8 ? totalHours - 8 : 0;
+    const overtimeHours = totalHours > appConfig.timesheet.overtimeThreshold ? totalHours - appConfig.timesheet.overtimeThreshold : 0;
 
     const updated = await prisma.timesheet.update({
       where: { id: timesheetId },
