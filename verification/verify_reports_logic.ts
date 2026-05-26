@@ -1,14 +1,4 @@
-import { generatePayrollSummary } from '../src/actions/report';
 import { prisma } from '../src/lib/prisma';
-
-// Use a simple mock approach since we are using tsx
-const mockSession = {
-  user: { id: 'admin-id', role: 'ADMIN', email: 'admin@example.com', name: 'Admin' }
-};
-
-// We will temporarily modify report.ts to use a mock session if we were really desperate,
-// but let's just try to see if we can run it by passing session if the action allowed it.
-// It doesn't.
 
 async function verify() {
   console.log('Testing generatePayrollSummary logic (Simplified)...');
