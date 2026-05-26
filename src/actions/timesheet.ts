@@ -1,4 +1,3 @@
-// src/actions/timesheet.ts
 'use server';
 
 import { prisma } from '@/lib/prisma';
@@ -8,7 +7,7 @@ import { differenceInMinutes } from 'date-fns';
 import { revalidatePath } from 'next/cache';
 
 const createTimesheetSchema = z.object({
-  projectId: z.string().uuid(),
+  projectId: z.string(),
   date: z.coerce.date(),
   timeOn: z.coerce.date(),
   timeOff: z.coerce.date(),
@@ -20,14 +19,22 @@ export async function createTimesheetAction(data: unknown, userId: string) {
   try {
     const validated = createTimesheetSchema.parse(data);
 
+    // Fetch user for standard work hours
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { standardWorkHours: true },
+    });
+
+    const standardHours = user?.standardWorkHours || 8;
+
     // Calculate total hours
     const totalMinutes = differenceInMinutes(validated.timeOff, validated.timeOn);
     const breakMinutes = validated.breakDuration;
     const workMinutes = totalMinutes - breakMinutes;
     const totalHours = workMinutes / 60;
 
-    // Calculate overtime
-    const overtimeHours = totalHours > 8 ? totalHours - 8 : 0;
+    // Calculate overtime based on user's standard work hours
+    const overtimeHours = totalHours > standardHours ? totalHours - standardHours : 0;
 
     // Check for existing entry
     const existingEntry = await prisma.timesheet.findUnique({
@@ -83,6 +90,7 @@ export async function updateTimesheetAction(
 
     const timesheet = await prisma.timesheet.findUnique({
       where: { id: timesheetId },
+      include: { user: { select: { standardWorkHours: true } } },
     });
 
     if (!timesheet) {
@@ -98,10 +106,12 @@ export async function updateTimesheetAction(
       return { error: 'Unauthorized' };
     }
 
+    const standardHours = timesheet.user?.standardWorkHours || 8;
+
     const totalMinutes = differenceInMinutes(validated.timeOff, validated.timeOn);
     const workMinutes = totalMinutes - validated.breakDuration;
     const totalHours = workMinutes / 60;
-    const overtimeHours = totalHours > 8 ? totalHours - 8 : 0;
+    const overtimeHours = totalHours > standardHours ? totalHours - standardHours : 0;
 
     const updated = await prisma.timesheet.update({
       where: { id: timesheetId },
@@ -342,4 +352,3 @@ export async function getTimesheetsAction(
     return { error: error.message || 'Failed to fetch timesheets' };
   }
 }
-

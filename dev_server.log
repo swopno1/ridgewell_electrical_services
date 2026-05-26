@@ -5,10 +5,10 @@
 ▲ Next.js 16.2.6 (Turbopack)
 - Local:         http://localhost:3000
 - Network:       http://192.168.0.2:3000
-✓ Ready in 541ms
+✓ Ready in 526ms
 
 ○ Compiling /auth/signin ...
- GET /auth/signin 200 in 6.6s (next.js: 5.8s, application-code: 772ms)
+ GET /auth/signin 200 in 6.5s (next.js: 5.8s, application-code: 711ms)
 [browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
 
 - A server/client branch `if (typeof window !== 'undefined')`.
@@ -85,5 +85,5 @@ https://react.dev/link/hydration-mismatch
                         ...
                   ...
  
- GET /auth/signup 200 in 1301ms (next.js: 1175ms, application-code: 126ms)
- GET /auth/setup-password?token=test&email=test@example.com 200 in 1157ms (next.js: 963ms, application-code: 193ms)
+ ELIFECYCLE  Command failed.
+[?25h
