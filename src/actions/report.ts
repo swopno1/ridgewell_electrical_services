@@ -49,7 +49,6 @@ export async function generatePayrollSummary(startDate?: Date, endDate?: Date) {
       const overtimePay = totalOvertimeHours * overtimeRate;
       const totalPay = regularPay + overtimePay;
 
-      let totalLeaveDays = 0;
       emp.leaveRequests.forEach((lr: any) => {
         const lrStart = lr.startDate < start ? start : lr.startDate;
         const lrEnd = lr.endDate > end ? end : lr.endDate;
@@ -61,6 +60,8 @@ export async function generatePayrollSummary(startDate?: Date, endDate?: Date) {
         else if (lr.leaveType === 'UNPAID') unpaidLeaveDays += diffDays;
       });
 
+      const totalLeaveDays = annualLeaveDays + sickLeaveDays + unpaidLeaveDays;
+
       return {
         'Employee Name': emp.name,
         'Designation': emp.designation || 'Employee',
@@ -70,7 +71,7 @@ export async function generatePayrollSummary(startDate?: Date, endDate?: Date) {
         'Annual Leave (Days)': annualLeaveDays,
         'Sick Leave (Days)': sickLeaveDays,
         'Unpaid Leave (Days)': unpaidLeaveDays,
-        'Leave Days': totalLeaveDays,
+        'Total Leave Days': totalLeaveDays,
         'Hourly Rate': hourlyRate.toFixed(2),
         'Regular Pay': regularPay.toFixed(2),
         'Overtime Pay': overtimePay.toFixed(2),
