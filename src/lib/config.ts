@@ -105,7 +105,7 @@ export const appConfig = {
     currencySymbol: '$',
     decimalPlaces: 2,
     hourlyRateEditable: true,
-    overtimeMultiplier: 1.5,
+    overtimeMultiplier: 1.25,
   },
 
   // Report Settings
