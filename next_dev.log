@@ -2,22 +2,6 @@
 > timesheet-management@0.1.0 dev /app
 > next dev
 
-▲ Next.js 16.2.6 (Turbopack)
-- Local:         http://localhost:3000
-- Network:       http://192.168.0.2:3000
-✓ Ready in 543ms
-Attention: Next.js now collects completely anonymous telemetry regarding usage.
-This information is used to shape Next.js' roadmap and prioritize features.
-You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
-https://nextjs.org/telemetry
-
-
-○ Compiling /docs/[slug] ...
- GET /docs/getting-started 404 in 5.2s (next.js: 4.5s, generate-params: 634ms, application-code: 699ms)
- GET /docs/getting-started 404 in 188ms (next.js: 27ms, generate-params: 22ms, application-code: 161ms)
- GET /docs/onboarding 200 in 195ms (next.js: 27ms, generate-params: 21ms, application-code: 168ms)
- GET /docs/onboarding 200 in 162ms (next.js: 25ms, generate-params: 20ms, application-code: 137ms)
- GET /docs/onboarding 200 in 129ms (next.js: 24ms, generate-params: 20ms, application-code: 105ms)
- GET /docs/onboarding 200 in 142ms (next.js: 24ms, generate-params: 20ms, application-code: 117ms)
+sh: 1: next: not found
  ELIFECYCLE  Command failed.
-[?25h
+ WARN   Local package.json exists, but node_modules missing, did you mean to install?
