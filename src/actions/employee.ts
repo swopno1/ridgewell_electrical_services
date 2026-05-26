@@ -7,6 +7,7 @@ import { getSession } from '@/lib/session';
 import { revalidatePath } from 'next/cache';
 import { sendEmail } from '@/lib/email';
 import { appConfig } from '@/lib/config';
+import { hashPassword } from '@/lib/auth-utils';
 
 const employeeSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
