@@ -1,4 +1,3 @@
-// src/app/employees/[id]/page.tsx
 import { getSession } from '@/lib/session';
 import { DashboardLayout } from '@/components/layouts/DashboardLayout';
 import { EmployeeForm } from '@/components/forms/EmployeeForm';
@@ -42,6 +41,11 @@ export default async function EditEmployeePage({ params }: EditEmployeePageProps
             email: employee.email,
             role: employee.role as any,
             active: employee.active,
+            hourlyRate: employee.hourlyRate,
+            overtimeRate: employee.overtimeRate,
+            annualLeaveQuota: employee.annualLeaveQuota,
+            designation: employee.designation,
+            standardWorkHours: employee.standardWorkHours,
           }}
           onSubmit={handleUpdateEmployee}
         />

@@ -1,4 +1,3 @@
-// src/actions/leave.ts
 'use server';
 
 import { prisma } from '@/lib/prisma';
@@ -6,6 +5,7 @@ import { z } from 'zod';
 import { differenceInDays } from 'date-fns';
 import { getSession } from '@/lib/session';
 import { revalidatePath } from 'next/cache';
+import { notifyLeaveSubmission, notifyLeaveStatusChange } from '@/lib/notifications';
 
 const createLeaveRequestSchema = z.object({
   leaveType: z.enum(['ANNUAL', 'SICK', 'UNPAID']),
@@ -38,6 +38,9 @@ export async function createLeaveRequestAction(data: unknown, userId: string) {
         user: true,
       },
     });
+
+    // Send notification
+    await notifyLeaveSubmission(leaveRequest);
 
     revalidatePath('/leave');
     revalidatePath('/dashboard');
@@ -148,11 +151,16 @@ export async function approveLeaveRequestAction(
     });
 
     if (!balance) {
+      const user = await prisma.user.findUnique({
+        where: { id: leaveRequest.userId },
+        select: { annualLeaveQuota: true },
+      });
+
       balance = await prisma.leaveBalance.create({
         data: {
           userId: leaveRequest.userId,
           year,
-          annualEntitled: 20,
+          annualEntitled: user?.annualLeaveQuota || 20,
           annualUsed: 0,
           sickUsed: 0,
         },
@@ -194,6 +202,9 @@ export async function approveLeaveRequestAction(
         : null,
     ]);
 
+    // Send notification
+    await notifyLeaveStatusChange(updated, true, comment);
+
     revalidatePath('/leave');
     revalidatePath('/dashboard');
     return { success: true, leaveRequest: updated };
@@ -234,6 +245,9 @@ export async function rejectLeaveRequestAction(
       }),
     ]);
 
+    // Send notification
+    await notifyLeaveStatusChange(updated, false, comment);
+
     revalidatePath('/leave');
     revalidatePath('/dashboard');
     return { success: true, leaveRequest: updated };
@@ -267,11 +281,16 @@ export async function getLeaveBalance(userId: string, year: number) {
     });
 
     if (!balance) {
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+        select: { annualLeaveQuota: true },
+      });
+
       balance = await prisma.leaveBalance.create({
         data: {
           userId,
           year,
-          annualEntitled: 20,
+          annualEntitled: user?.annualLeaveQuota || 20,
           annualUsed: 0,
           sickUsed: 0,
         },

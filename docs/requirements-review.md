@@ -12,11 +12,11 @@ This document evaluates the current state of the application against the require
 *   **Work Calendar**: Integrated calendar view for ongoing work and leave logs as requested.
 *   **Tech Stack**: Modern, scalable architecture (Next.js 16, React 19, Prisma 7) that ensures the "can be adapted going forward" requirement is met.
 *   **Branding**: Integration of the Ridgewell ES logo and color scheme in the UI.
+*   **Overtime Multiplier**: The client explicitly requested "Overtime hours at time and a quarter" (1.25x). This is now correctly configured in `src/lib/config.ts` and utilized across the system.
+*   **Data Export Specifics**: The payroll report format has been finalized to include detailed leave type breakdowns (Annual, Sick, Unpaid), total leave counts, and calculated gross pay (Regular + Overtime) based on employee-specific hourly rates and standard work hours.
 
 ## 2. What We Missed (Discrepancies)
-*   **Overtime Multiplier**: The client explicitly requested "Overtime hours at time and a quarter" (1.25x). The current configuration in `src/lib/config.ts` is set to **1.5x**. This needs to be adjusted.
 *   **Email Notifications**: While discussed as a potential feature, email notifications for "Timesheet Submitted" or "Leave Approved" are not currently active (fallback to console logging).
-*   **Data Export Specifics**: The "Example of your current payroll report format" was mentioned by the client but might not be fully mirrored in the current CSV export structure.
 
 ## 3. What We Overdid (Extra Value)
 *   **Documentation System**: An integrated, markdown-based documentation system (/docs) which exceeds the typical requirements for a 10-user internal app.
@@ -25,7 +25,7 @@ This document evaluates the current state of the application against the require
 *   **Audit Logging**: Integrated audit logs for tracking changes, which provides enterprise-level security for a small company.
 
 ## 4. Suggestions for Improvement
-*   **Automated Overtime Calculation**: Currently set to an 8-hour threshold. We should confirm with the client if overtime starts after a specific time or if it's weekly-based (e.g., after 40 hours).
-*   **Hourly Rates**: Add an optional "Hourly Rate" field to employees to allow the system to calculate the actual cost of jobs, making the "Project Report" even more valuable.
+*   **Automated Overtime Calculation**: Now dynamically calculated based on each employee's "Standard Work Hours" (e.g., 8 hours/day), ensuring accurate payroll for both full-time and part-time staff.
+*   **Hourly Rates**: Already implemented on the User model, allowing for real-time gross pay calculation in payroll reports.
 *   **Shift Reminders**: Implement simple browser notifications or email reminders for employees who haven't submitted their timesheets by Friday afternoon.
 *   **PDF Customization**: Add the company logo and professional header to the PDF exports to make them "accountant-ready".

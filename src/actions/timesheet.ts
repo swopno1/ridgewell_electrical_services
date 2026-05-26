@@ -1,11 +1,12 @@
-// src/actions/timesheet.ts
 'use server';
 
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
+import { appConfig } from '@/lib/config';
 import { getSession } from '@/lib/session';
 import { differenceInMinutes } from 'date-fns';
 import { revalidatePath } from 'next/cache';
+import { notifyTimesheetSubmission, notifyTimesheetStatusChange } from '@/lib/notifications';
 
 const createTimesheetSchema = z.object({
   projectId: z.string().min(1, 'Please select a project'),
@@ -20,14 +21,21 @@ export async function createTimesheetAction(data: unknown, userId: string) {
   try {
     const validated = createTimesheetSchema.parse(data);
 
+    // Fetch user for standard work hours
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { standardWorkHours: true },
+    });
+
+    const threshold = user?.standardWorkHours ?? appConfig.timesheet.overtimeThreshold;
+
     // Calculate total hours
     const totalMinutes = differenceInMinutes(validated.timeOff, validated.timeOn);
-    const breakMinutes = validated.breakDuration;
-    const workMinutes = totalMinutes - breakMinutes;
+    const workMinutes = totalMinutes - validated.breakDuration;
     const totalHours = workMinutes / 60;
 
-    // Calculate overtime
-    const overtimeHours = totalHours > 8 ? totalHours - 8 : 0;
+    // Calculate overtime based on user's standard work hours
+    const overtimeHours = totalHours > threshold ? totalHours - threshold : 0;
 
     // Check for existing entry
     const existingEntry = await prisma.timesheet.findUnique({
@@ -62,6 +70,9 @@ export async function createTimesheetAction(data: unknown, userId: string) {
       },
     });
 
+    // Send notification
+    await notifyTimesheetSubmission(timesheet);
+
     revalidatePath('/timesheets');
     revalidatePath('/dashboard');
     return { success: true, timesheet };
@@ -83,6 +94,7 @@ export async function updateTimesheetAction(
 
     const timesheet = await prisma.timesheet.findUnique({
       where: { id: timesheetId },
+      include: { user: { select: { standardWorkHours: true } } },
     });
 
     if (!timesheet) {
@@ -98,10 +110,14 @@ export async function updateTimesheetAction(
       return { error: 'Unauthorized' };
     }
 
+    const threshold = timesheet.user?.standardWorkHours ?? appConfig.timesheet.overtimeThreshold;
+
     const totalMinutes = differenceInMinutes(validated.timeOff, validated.timeOn);
     const workMinutes = totalMinutes - validated.breakDuration;
     const totalHours = workMinutes / 60;
-    const overtimeHours = totalHours > 8 ? totalHours - 8 : 0;
+
+    // Calculate overtime based on user's standard work hours
+    const overtimeHours = totalHours > threshold ? totalHours - threshold : 0;
 
     const updated = await prisma.timesheet.update({
       where: { id: timesheetId },
@@ -191,6 +207,9 @@ export async function approveTimesheetAction(
       }),
     ]);
 
+    // Send notification
+    await notifyTimesheetStatusChange(updated, true, comment);
+
     revalidatePath('/timesheets');
     revalidatePath('/dashboard');
     return { success: true, timesheet: updated };
@@ -230,6 +249,9 @@ export async function rejectTimesheetAction(
         },
       }),
     ]);
+
+    // Send notification
+    await notifyTimesheetStatusChange(updated, false, comment);
 
     revalidatePath('/timesheets');
     revalidatePath('/dashboard');
@@ -342,4 +364,3 @@ export async function getTimesheetsAction(
     return { error: error.message || 'Failed to fetch timesheets' };
   }
 }
-

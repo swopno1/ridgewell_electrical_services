@@ -67,9 +67,9 @@ export const docsConfig: DocEntry[] = [
   },
   {
     slug: 'maintenance',
-    title: 'Maintenance & Hosting',
+    title: 'Release Notes & Maintenance',
     filename: 'maintenance-proposal.md',
-    description: 'Proposals for ongoing application maintenance, hosting options, and regular service workflows.',
+    description: 'Review the MVP release notes, finalized hosting strategy, and the ongoing "Steady-State" maintenance plan.',
     icon: Server,
     color: 'text-rose-600',
     bgColor: 'bg-rose-100',

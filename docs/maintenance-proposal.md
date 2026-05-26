@@ -1,43 +1,51 @@
-# Maintenance & Hosting Proposal
+# Release Notes & Maintenance Proposal
 
-To ensure TimesheetPro continues to run smoothly and scales with Ridgewell ES, we propose the following hosting and maintenance plan.
+This document outlines the version 1.0 (MVP) release for Ridgewell Electrical Services LTD (Ridgewell ES) and details the recommended infrastructure and ongoing support strategy to ensure system stability.
 
-## 1. Hosting Options
+## 1. Version 1.0 Release Notes (MVP)
 
-### Option A: Vercel (Recommended for Launch)
-*   **Plan**: Hobby / Pro
-*   **Cost**: $0 - $20/month
-*   **Pros**: Fastest performance, seamless deployments, automatic SSL, global CDN.
-*   **Cons**: Managed platform (less control over the server environment).
+The initial release of TimesheetPro provides a robust foundation for Ridgewell ES's workforce management. Key features delivered in this version include:
 
-### Option B: Hostinger VPS
-*   **Plan**: KVM 2 or higher
-*   **Cost**: Approx. $5 - $12/month
-*   **Pros**: Dedicated resources, full control, fixed costs, lower long-term price for database + app.
-*   **Cons**: Requires manual setup, security hardening, and ongoing OS updates.
+*   **Employee Management**: Centralized directory with role-based access control (Admin, Manager, Employee).
+*   **Timesheet System**: Daily shift logging with automatic break deductions and overtime calculations (1.25x multiplier).
+*   **Leave Management**: Full lifecycle for Annual, Sick, and Unpaid leave with entitlement tracking.
+*   **Manager Approvals**: Dedicated queues for timesheet and leave request verification.
+*   **Reporting & Analytics**: Project-based labor auditing and individual employee performance summaries.
+*   **Integrated Documentation**: In-app user guides and system documentation.
 
-**Recommendation**: Start with **Vercel Hobby** for the first 1-2 months to verify the app in production. If the team grows or you hit platform limits, migrate to **Hostinger VPS** for cost efficiency.
+## 2. Finalized Hosting Strategy
 
-## 2. Maintenance System (Retainer)
+To ensure high performance and zero-downtime deployments, we have selected Vercel as the primary hosting provider.
 
-We suggest a monthly maintenance system to keep the application secure and up-to-date.
+### Hosting Option: Vercel
+*   **Plan**: Hobby (Standard)
+*   **Estimated Cost**: $0/month (Upgrade to Pro only if team size or bandwidth exceeds Hobby limits)
+*   **Key Benefits**:
+    *   **Global Edge Network**: Sub-second page loads for all UK-based employees.
+    *   **Automated CI/CD**: Seamless updates and instant rollbacks if needed.
+    *   **Managed Security**: Automatic SSL certificates and DDoS protection.
+    *   **Database**: Integration with Render Postgres for reliable data persistence.
 
-### The "Steady-State" Plan - $150/month
-*   **Security Updates**: Monthly patching of dependencies and Prisma schema audits.
-*   **Database Backups**: Automated daily backups with off-site storage.
-*   **Bug Support**: 48-hour response time for any critical issues.
-*   **Small Tweaks**: Up to 2 hours of development time for minor UI changes or report adjustments.
-*   **Health Monitoring**: Setting up UptimeRobot/Render alerts to ensure 99.9% availability.
+## 3. Maintenance System: The "Steady-State" Plan
 
-## 3. Regular Service Workflow
+To keep the application secure, performant, and up-to-date with evolving web standards, we suggest a monthly maintenance retainer.
 
-To manage requests efficiently, we will implement a simple "Service Portal" or Shared Document:
-1.  **Request**: Client submits a feature request or bug report via a dedicated email/form.
-2.  **Review**: We categorize the request (Maintenance vs. New Feature).
-3.  **Execution**: Maintenance items are handled within the retainer. New features are quoted separately at a discounted hourly rate for retainer clients.
-4.  **Deployment**: All changes are tested in a 'Staging' environment before being pushed to the live Ridgewell ES production site.
+### Plan Investment: $100/month
 
-## 4. Next Steps
-1.  Confirm hosting preference (Vercel vs. Hostinger).
-2.  Approve the maintenance retainer.
-3.  Finalize the "Time and a Quarter" multiplier adjustment.
+This comprehensive support package ensures your business operations remain uninterrupted:
+
+*   **Security Updates**: Monthly patching of all system dependencies and periodic Prisma schema audits to protect sensitive data.
+*   **Database Backups**: Automated daily backups of the production database with off-site storage to ensure data integrity and disaster recovery.
+*   **Bug Support**: Priority 48-hour response time for any critical issues or system-level bugs identified in the production environment.
+*   **Small Tweaks**: Up to 2 hours of development time per month for minor UI adjustments, text changes, or report refinements.
+*   **Health Monitoring**: Implementation of professional monitoring (UptimeRobot/Render alerts) to ensure 99.9% availability and proactive incident response.
+
+## 4. Service Workflow
+
+1.  **Request Submission**: Client submits minor requests or bug reports via the official support channel.
+2.  **Triage**: We categorize the request under "Maintenance" (included) or "Feature Enhancement" (quoted separately).
+3.  **Deployment**: All updates are validated in a staging environment before being deployed to the live Ridgewell ES production site.
+
+---
+**Prepared for**: Ridgewell Electrical Services LTD.
+**Date**: May 26, 2026
