@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { differenceInDays } from 'date-fns';
 import { getSession } from '@/lib/session';
 import { revalidatePath } from 'next/cache';
+import { notifyLeaveSubmission, notifyLeaveStatusChange } from '@/lib/notifications';
 
 const createLeaveRequestSchema = z.object({
   leaveType: z.enum(['ANNUAL', 'SICK', 'UNPAID']),
@@ -38,6 +39,9 @@ export async function createLeaveRequestAction(data: unknown, userId: string) {
         user: true,
       },
     });
+
+    // Send notification
+    await notifyLeaveSubmission(leaveRequest);
 
     revalidatePath('/leave');
     revalidatePath('/dashboard');
@@ -194,6 +198,9 @@ export async function approveLeaveRequestAction(
         : null,
     ]);
 
+    // Send notification
+    await notifyLeaveStatusChange(updated, true, comment);
+
     revalidatePath('/leave');
     revalidatePath('/dashboard');
     return { success: true, leaveRequest: updated };
@@ -233,6 +240,9 @@ export async function rejectLeaveRequestAction(
         },
       }),
     ]);
+
+    // Send notification
+    await notifyLeaveStatusChange(updated, false, comment);
 
     revalidatePath('/leave');
     revalidatePath('/dashboard');

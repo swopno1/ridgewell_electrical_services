@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { getSession } from '@/lib/session';
 import { differenceInMinutes } from 'date-fns';
 import { revalidatePath } from 'next/cache';
+import { notifyTimesheetSubmission, notifyTimesheetStatusChange } from '@/lib/notifications';
 
 const createTimesheetSchema = z.object({
   projectId: z.string().uuid(),
@@ -61,6 +62,9 @@ export async function createTimesheetAction(data: unknown, userId: string) {
         user: true,
       },
     });
+
+    // Send notification
+    await notifyTimesheetSubmission(timesheet);
 
     revalidatePath('/timesheets');
     revalidatePath('/dashboard');
@@ -191,6 +195,9 @@ export async function approveTimesheetAction(
       }),
     ]);
 
+    // Send notification
+    await notifyTimesheetStatusChange(updated, true, comment);
+
     revalidatePath('/timesheets');
     revalidatePath('/dashboard');
     return { success: true, timesheet: updated };
@@ -230,6 +237,9 @@ export async function rejectTimesheetAction(
         },
       }),
     ]);
+
+    // Send notification
+    await notifyTimesheetStatusChange(updated, false, comment);
 
     revalidatePath('/timesheets');
     revalidatePath('/dashboard');
@@ -342,4 +352,3 @@ export async function getTimesheetsAction(
     return { error: error.message || 'Failed to fetch timesheets' };
   }
 }
-
