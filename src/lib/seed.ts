@@ -20,7 +20,7 @@ async function main() {
   // 1. Create Users
   console.log('📝 Creating admin user...');
   
-  const adminPassword = await hashPassword('Admin@123456**');
+  const adminPassword = await hashPassword('5WordKomuna*');
   
   const admin = await prisma.user.create({
     data: {
