@@ -27,18 +27,15 @@ export async function createTimesheetAction(data: unknown, userId: string) {
       select: { standardWorkHours: true },
     });
 
-    const standardHours = user?.standardWorkHours || 8;
+    const threshold = user?.standardWorkHours ?? appConfig.timesheet.overtimeThreshold;
 
     // Calculate total hours
     const totalMinutes = differenceInMinutes(validated.timeOff, validated.timeOn);
-    const breakMinutes = validated.breakDuration;
-    const workMinutes = totalMinutes - breakMinutes;
+    const workMinutes = totalMinutes - validated.breakDuration;
     const totalHours = workMinutes / 60;
 
-    // Calculate overtime
-    const overtimeHours = totalHours > appConfig.timesheet.overtimeThreshold ? totalHours - appConfig.timesheet.overtimeThreshold : 0;
     // Calculate overtime based on user's standard work hours
-    const overtimeHours = totalHours > standardHours ? totalHours - standardHours : 0;
+    const overtimeHours = totalHours > threshold ? totalHours - threshold : 0;
 
     // Check for existing entry
     const existingEntry = await prisma.timesheet.findUnique({
@@ -113,13 +110,14 @@ export async function updateTimesheetAction(
       return { error: 'Unauthorized' };
     }
 
-    const standardHours = timesheet.user?.standardWorkHours || 8;
+    const threshold = timesheet.user?.standardWorkHours ?? appConfig.timesheet.overtimeThreshold;
 
     const totalMinutes = differenceInMinutes(validated.timeOff, validated.timeOn);
     const workMinutes = totalMinutes - validated.breakDuration;
     const totalHours = workMinutes / 60;
-    const overtimeHours = totalHours > appConfig.timesheet.overtimeThreshold ? totalHours - appConfig.timesheet.overtimeThreshold : 0;
-    const overtimeHours = totalHours > standardHours ? totalHours - standardHours : 0;
+
+    // Calculate overtime based on user's standard work hours
+    const overtimeHours = totalHours > threshold ? totalHours - threshold : 0;
 
     const updated = await prisma.timesheet.update({
       where: { id: timesheetId },
