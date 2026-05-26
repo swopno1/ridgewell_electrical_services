@@ -11,16 +11,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-
 import {
-  CheckCircle,
-  XCircle,
-  AlertCircle,
-  Edit,
-  Trash2,
+  Search,
   ChevronLeft,
   ChevronRight,
-  Search,
+  Edit,
+  Trash2,
   Check,
   X,
 } from 'lucide-react';
@@ -37,7 +33,7 @@ interface Timesheet {
     name: string;
     client: string;
   };
-  date: string; // Formatted date string
+  date: string;
   totalHours: number;
   overtimeHours: number;
   status: 'PENDING' | 'APPROVED' | 'REJECTED';
@@ -52,9 +48,9 @@ interface TimesheetTableProps {
   onPageChange: (page: number) => void;
   onSearchChange: (search: string) => void;
   onStatusFilter: (status: string) => void;
-  onDelete?: (id: string) => Promise<void>;
-  onApprove?: (id: string) => Promise<void>;
-  onReject?: (id: string) => Promise<void>;
+  onDelete?: (id: string) => void;
+  onApprove?: (id: string) => void;
+  onReject?: (id: string) => void;
   isManagerOrAdmin?: boolean;
 }
 
@@ -69,37 +65,34 @@ export function TimesheetTable({
   onDelete,
   onApprove,
   onReject,
-  isManagerOrAdmin = false,
+  isManagerOrAdmin,
 }: TimesheetTableProps) {
   const [searchVal, setSearchVal] = React.useState('');
   const [statusFilter, setStatusFilter] = React.useState('ALL');
-  const [isPending, startTransition] = React.useTransition();
+  const [isPending] = React.useTransition();
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSearchChange(searchVal);
   };
 
-  const getStatusBadge = (status: 'PENDING' | 'APPROVED' | 'REJECTED') => {
+  const getStatusBadge = (status: string) => {
     switch (status) {
       case 'APPROVED':
         return (
-          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400">
-            <CheckCircle className="h-3 w-3" />
+          <span className="inline-flex items-center rounded-md bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-700/10 dark:bg-emerald-900/20 dark:text-emerald-400">
             Approved
           </span>
         );
       case 'REJECTED':
         return (
-          <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-2.5 py-0.5 text-xs font-semibold text-red-700 dark:bg-red-950/30 dark:text-red-400">
-            <XCircle className="h-3 w-3" />
+          <span className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-700/10 dark:bg-red-900/20 dark:text-red-400">
             Rejected
           </span>
         );
       default:
         return (
-          <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-semibold text-amber-700 dark:bg-amber-950/30 dark:text-amber-400">
-            <AlertCircle className="h-3 w-3" />
+          <span className="inline-flex items-center rounded-md bg-amber-50 px-2 py-1 text-xs font-medium text-amber-700 ring-1 ring-inset ring-amber-700/10 dark:bg-amber-900/20 dark:text-amber-400">
             Pending
           </span>
         );
@@ -222,9 +215,7 @@ export function TimesheetTable({
                               title="Approve Entry"
                               onClick={() => {
                                 if (onApprove) {
-                                  startTransition(async () => {
-                                    await onApprove(entry.id);
-                                  });
+                                  onApprove(entry.id);
                                 }
                               }}
                               className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 dark:hover:bg-emerald-950/20"
@@ -238,9 +229,7 @@ export function TimesheetTable({
                               title="Reject Entry"
                               onClick={() => {
                                 if (onReject) {
-                                  startTransition(async () => {
-                                    await onReject(entry.id);
-                                  });
+                                  onReject(entry.id);
                                 }
                               }}
                               className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/20"
@@ -267,13 +256,7 @@ export function TimesheetTable({
                                 size="icon-xs"
                                 disabled={isPending}
                                 title="Delete Entry"
-                                onClick={() => {
-                                  if (confirm('Are you sure you want to delete this timesheet?')) {
-                                    startTransition(async () => {
-                                      await onDelete(entry.id);
-                                    });
-                                  }
-                                }}
+                                onClick={() => onDelete(entry.id)}
                                 className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/20"
                               >
                                 <Trash2 className="h-4 w-4" />

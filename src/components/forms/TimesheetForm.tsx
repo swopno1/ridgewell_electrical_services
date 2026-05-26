@@ -157,7 +157,7 @@ export function TimesheetForm({ projects, initialData, onSubmit }: TimesheetForm
                   <SelectContent>
                     {projects.map((project) => (
                       <SelectItem key={project.id} value={project.id}>
-                        {project.name} ({project.client})
+                        {`${project.name} (${project.client})`}
                       </SelectItem>
                     ))}
                   </SelectContent>

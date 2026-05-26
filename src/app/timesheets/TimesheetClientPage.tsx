@@ -9,6 +9,7 @@ import { Plus, Clock, FileCheck, HelpCircle } from 'lucide-react';
 import Link from 'next/link';
 import { deleteTimesheetAction, approveTimesheetAction, rejectTimesheetAction } from '@/actions/timesheet';
 import { ApprovalDialog } from '@/components/dialogs/ApprovalDialog';
+import { ConfirmDialog } from '@/components/dialogs/ConfirmDialog';
 
 interface Timesheet {
   id: string;
@@ -57,6 +58,7 @@ export function TimesheetClientPage({
 
   const [reviewId, setReviewId] = React.useState<string | null>(null);
   const [isRejectMode, setIsRejectMode] = React.useState(false);
+  const [deleteId, setDeleteId] = React.useState<string | null>(null);
 
   const createQueryString = React.useCallback(
     (name: string, value: string) => {
@@ -87,12 +89,18 @@ export function TimesheetClientPage({
   };
 
   const handleDelete = async (id: string) => {
-    const res = await deleteTimesheetAction(id, currentUserId);
+    setDeleteId(id);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!deleteId) return;
+    const res = await deleteTimesheetAction(deleteId, currentUserId);
     if (res.error) {
       alert(res.error);
     } else {
       router.refresh();
     }
+    setDeleteId(null);
   };
 
   const handleApproveQuick = async (id: string) => {
@@ -214,7 +222,7 @@ export function TimesheetClientPage({
 
       {/* Review Dialog for rejection */}
       <ApprovalDialog
-        isOpen={isRejectMode}
+        isOpen={!!reviewId && isRejectMode}
         onClose={() => {
           setIsRejectMode(false);
           setReviewId(null);
@@ -222,6 +230,16 @@ export function TimesheetClientPage({
         onSubmit={handleApprovalSubmit}
         title="Reject Timesheet Entry"
         description="Please provide a brief reason or comment explaining why this timesheet entry is being rejected. This feedback will be displayed to the employee."
+      />
+
+      <ConfirmDialog
+        isOpen={!!deleteId}
+        onClose={() => setDeleteId(null)}
+        onConfirm={handleDeleteConfirm}
+        title="Delete Timesheet Entry"
+        description="Are you sure you want to delete this timesheet? This action cannot be undone."
+        confirmText="Delete"
+        variant="destructive"
       />
     </div>
   );

@@ -8,7 +8,7 @@ import { differenceInMinutes } from 'date-fns';
 import { revalidatePath } from 'next/cache';
 
 const createTimesheetSchema = z.object({
-  projectId: z.string().uuid(),
+  projectId: z.string().min(1, 'Please select a project'),
   date: z.coerce.date(),
   timeOn: z.coerce.date(),
   timeOff: z.coerce.date(),

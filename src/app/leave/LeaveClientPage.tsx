@@ -8,7 +8,13 @@ import { LeaveTable } from '@/components/tables/LeaveTable';
 import { Button } from '@/components/ui/button';
 import { CalendarRange, ClipboardCheck, Plus } from 'lucide-react';
 import Link from 'next/link';
-import { cancelLeaveRequestAction } from '@/actions/leave';
+import {
+  cancelLeaveRequestAction,
+  approveLeaveRequestAction,
+  rejectLeaveRequestAction,
+} from '@/actions/leave';
+import { ApprovalDialog } from '@/components/dialogs/ApprovalDialog';
+import { ConfirmDialog } from '@/components/dialogs/ConfirmDialog';
 
 interface LeaveRequest {
   id: string;
@@ -81,12 +87,54 @@ export function LeaveClientPage({
     router.push(`${pathname}?${createQueryString('status', status)}`);
   };
 
+  const [reviewOpen, setReviewOpen] = React.useState(false);
+  const [selectedLeaveId, setSelectedLeaveId] = React.useState<string | null>(null);
+  const [isRejectMode, setIsRejectMode] = React.useState(false);
+  const [cancelId, setCancelId] = React.useState<string | null>(null);
+
   const handleCancel = async (id: string) => {
-    const res = await cancelLeaveRequestAction(id, currentUserId);
+    setCancelId(id);
+  };
+
+  const handleCancelConfirm = async () => {
+    if (!cancelId) return;
+    const res = await cancelLeaveRequestAction(cancelId, currentUserId);
     if (res.error) {
       alert(res.error);
     } else {
       router.refresh();
+    }
+    setCancelId(null);
+  };
+
+  const handleApproveClick = async (id: string) => {
+    setSelectedLeaveId(id);
+    setIsRejectMode(false);
+    setReviewOpen(true);
+  };
+
+  const handleRejectClick = async (id: string) => {
+    setSelectedLeaveId(id);
+    setIsRejectMode(true);
+    setReviewOpen(true);
+  };
+
+  const handleApprovalSubmit = async (approved: boolean, comment?: string) => {
+    if (!selectedLeaveId) return;
+
+    try {
+      const res = approved
+        ? await approveLeaveRequestAction(selectedLeaveId, currentUserId, comment)
+        : await rejectLeaveRequestAction(selectedLeaveId, currentUserId, comment || '');
+
+      if (res.error) {
+        alert(res.error);
+      } else {
+        router.refresh();
+      }
+    } finally {
+      setReviewOpen(false);
+      setSelectedLeaveId(null);
     }
   };
 
@@ -144,9 +192,36 @@ export function LeaveClientPage({
           onSearchChange={handleSearchChange}
           onStatusFilter={handleStatusFilter}
           onCancel={handleCancel}
+          onApprove={handleApproveClick}
+          onReject={handleRejectClick}
           isManagerOrAdmin={isManagerOrAdmin}
         />
       </div>
+
+      <ApprovalDialog
+        isOpen={reviewOpen}
+        onClose={() => {
+          setReviewOpen(false);
+          setSelectedLeaveId(null);
+        }}
+        onSubmit={handleApprovalSubmit}
+        title={isRejectMode ? 'Reject Leave Request' : 'Approve Leave Request'}
+        description={
+          isRejectMode
+            ? 'Provide a brief reason explaining why this leave request is being rejected. This comment will be visible to the employee.'
+            : 'Add a comment to log with this approval. This is optional.'
+        }
+      />
+
+      <ConfirmDialog
+        isOpen={!!cancelId}
+        onClose={() => setCancelId(null)}
+        onConfirm={handleCancelConfirm}
+        title="Cancel Leave Request"
+        description="Are you sure you want to cancel this leave request? This action cannot be undone."
+        confirmText="Cancel Request"
+        variant="destructive"
+      />
     </div>
   );
 }
