@@ -1,4 +1,3 @@
-// src/actions/leave.ts
 'use server';
 
 import { prisma } from '@/lib/prisma';
@@ -152,11 +151,16 @@ export async function approveLeaveRequestAction(
     });
 
     if (!balance) {
+      const user = await prisma.user.findUnique({
+        where: { id: leaveRequest.userId },
+        select: { annualLeaveQuota: true },
+      });
+
       balance = await prisma.leaveBalance.create({
         data: {
           userId: leaveRequest.userId,
           year,
-          annualEntitled: 20,
+          annualEntitled: user?.annualLeaveQuota || 20,
           annualUsed: 0,
           sickUsed: 0,
         },
@@ -277,11 +281,16 @@ export async function getLeaveBalance(userId: string, year: number) {
     });
 
     if (!balance) {
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+        select: { annualLeaveQuota: true },
+      });
+
       balance = await prisma.leaveBalance.create({
         data: {
           userId,
           year,
-          annualEntitled: 20,
+          annualEntitled: user?.annualLeaveQuota || 20,
           annualUsed: 0,
           sickUsed: 0,
         },
