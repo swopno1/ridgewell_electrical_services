@@ -23,6 +23,7 @@ const employeeFormSchema = z.object({
   email: z.string().email('Invalid email address'),
   role: z.enum(['ADMIN', 'MANAGER', 'EMPLOYEE']),
   active: z.boolean().default(true),
+  password: z.string().optional().or(z.literal('')),
 });
 
 type EmployeeFormValues = z.infer<typeof employeeFormSchema>;
@@ -122,6 +123,22 @@ export function EmployeeForm({ initialData, onSubmit }: EmployeeFormProps) {
             />
             {errors.email && (
               <p className="text-xs text-red-500 font-medium">{errors.email.message}</p>
+            )}
+          </div>
+
+          {/* Password Field */}
+          <div className="space-y-2">
+            <Label htmlFor="password">{initialData ? 'New Password (Optional)' : 'Password (Optional)'}</Label>
+            <Input
+              id="password"
+              type="password"
+              placeholder={initialData ? "Leave blank to keep current" : "Leave blank for default password"}
+              disabled={isLoading}
+              className={errors.password ? 'border-red-500 focus-visible:ring-red-500' : ''}
+              {...register('password')}
+            />
+            {errors.password && (
+              <p className="text-xs text-red-500 font-medium">{errors.password.message}</p>
             )}
           </div>
 

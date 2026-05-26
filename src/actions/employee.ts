@@ -13,6 +13,7 @@ const employeeSchema = z.object({
   email: z.string().email('Invalid email address'),
   role: z.enum(['ADMIN', 'MANAGER', 'EMPLOYEE']),
   active: z.boolean().default(true),
+  password: z.string().optional().or(z.literal('')),
 });
 
 // Helper to generate a random hex token
@@ -206,14 +207,20 @@ export async function updateEmployeeAction(id: string, data: unknown) {
       return { error: 'Email already registered to another user' };
     }
 
+    const updateData: any = {
+      name: validated.name,
+      email: validated.email,
+      role: validated.role,
+      active: validated.active,
+    };
+
+    if (validated.password) {
+      updateData.password = await hashPassword(validated.password);
+    }
+
     const employee = await prisma.user.update({
       where: { id },
-      data: {
-        name: validated.name,
-        email: validated.email,
-        role: validated.role,
-        active: validated.active,
-      },
+      data: updateData,
     });
 
     revalidatePath('/employees');
