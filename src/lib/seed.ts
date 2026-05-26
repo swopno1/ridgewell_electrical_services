@@ -2,7 +2,6 @@
 import 'dotenv/config';
 import { prisma } from './prisma';
 import { hashPassword } from './auth-utils';
-import { addDays, startOfToday } from 'date-fns';
 
 async function main() {
   console.log('🌱 Seeding database...');
