@@ -45,21 +45,7 @@ export default async function DocPage({ params }: DocPageProps) {
 
       {/* Markdown Content */}
       <article
-        className="prose prose-slate dark:prose-invert max-w-none
-          prose-headings:font-bold prose-headings:tracking-tight
-          prose-h1:text-4xl prose-h1:mb-8
-          prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-4 prose-h2:pb-2 prose-h2:border-b prose-h2:border-slate-200 dark:prose-h2:border-slate-800
-          prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3
-          prose-p:text-slate-600 dark:prose-p:text-slate-400 prose-p:leading-7 prose-p:mb-4
-          prose-ul:list-disc prose-ul:pl-6 prose-ul:mb-4
-          prose-ol:list-decimal prose-ol:pl-6 prose-ol:mb-4
-          prose-li:text-slate-600 dark:prose-li:text-slate-400 prose-li:mb-2
-          prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:bg-blue-50 dark:prose-blockquote:bg-blue-950/20 prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:rounded-r-lg prose-blockquote:italic
-          prose-code:bg-slate-100 dark:prose-code:bg-slate-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-blue-600 dark:prose-code:text-blue-400 prose-code:font-mono prose-code:text-sm
-          prose-table:w-full prose-table:border-collapse prose-table:my-8
-          prose-th:border prose-th:border-slate-200 dark:prose-th:border-slate-800 prose-th:p-3 prose-th:bg-slate-50 dark:prose-th:bg-slate-900 prose-th:text-left
-          prose-td:border prose-td:border-slate-200 dark:prose-td:border-slate-800 prose-td:p-3
-        "
+        className="prose max-w-none"
         dangerouslySetInnerHTML={{ __html: htmlContent }}
       />
 

@@ -98,10 +98,7 @@ export const authConfig = {
     },
     async authorized({ auth, request }) {
       const isLoggedIn = !!auth?.user;
-
-      if (!isLoggedIn) {
-        return false;
-      }
+      const pathname = request.nextUrl.pathname;
 
       // Protected routes
       const protectedPaths = [
@@ -114,13 +111,12 @@ export const authConfig = {
         '/settings',
       ];
 
-      const pathname = request.nextUrl.pathname;
       const isProtectedPath = protectedPaths.some((path) =>
         pathname.startsWith(path)
       );
 
-      if (isProtectedPath) {
-        return true;
+      if (isProtectedPath && !isLoggedIn) {
+        return false;
       }
 
       return true;
