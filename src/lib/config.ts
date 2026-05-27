@@ -12,7 +12,7 @@ export const appConfig = {
     name: 'Ridgewell Electrical Services LTD.',
     email: 'support@ridgewelles.co.uk',
     phone: '+44 (0) 123 4567',
-    website: 'https://ridgewelles.co.uk',
+    website: 'https://www.ridgewell-electrical.co.uk/',
     address: 'Ridgewell Headquarters, UK',
     logo: '/logo_ridgewell_es.png',
     favicon: '/favicon.ico',

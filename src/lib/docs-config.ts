@@ -1,4 +1,4 @@
-import { Shield, Clock, Calendar, CheckSquare, Settings, LucideIcon, ClipboardCheck, Server } from 'lucide-react';
+import { Shield, Clock, Calendar, CheckSquare, Settings, LucideIcon, Server } from 'lucide-react';
 
 export interface DocEntry {
   slug: string;
@@ -57,19 +57,10 @@ export const docsConfig: DocEntry[] = [
     bgColor: 'bg-slate-100',
   },
   {
-    slug: 'requirements',
-    title: 'Requirements Review',
-    filename: 'requirements-review.md',
-    description: 'A detailed evaluation of how the application meets the initial client specifications and expectations.',
-    icon: ClipboardCheck,
-    color: 'text-indigo-600',
-    bgColor: 'bg-indigo-100',
-  },
-  {
     slug: 'maintenance',
-    title: 'Release Notes & Maintenance',
-    filename: 'maintenance-proposal.md',
-    description: 'Review the MVP release notes, finalized hosting strategy, and the ongoing "Steady-State" maintenance plan.',
+    title: 'Release Notes',
+    filename: 'release-notes.md',
+    description: 'Review the MVP release notes, hosting details, and the steady-state maintenance proposal.',
     icon: Server,
     color: 'text-rose-600',
     bgColor: 'bg-rose-100',

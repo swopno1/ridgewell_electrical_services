@@ -11,8 +11,7 @@ import {
   endOfWeek,
   isSameMonth,
   isSameDay,
-  eachDayOfInterval,
-  parseISO
+  eachDayOfInterval
 } from 'date-fns';
 import { ChevronLeft, ChevronRight, Clock, Calendar as CalendarIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -20,15 +19,15 @@ import Link from 'next/link';
 
 interface TimesheetEntry {
   id: string;
-  date: string;
+  date: string | Date;
   totalHours: number;
   status: 'PENDING' | 'APPROVED' | 'REJECTED';
 }
 
 interface LeaveEntry {
   id: string;
-  startDate: string;
-  endDate: string;
+  startDate: string | Date;
+  endDate: string | Date;
   leaveType: 'ANNUAL' | 'SICK' | 'UNPAID';
   status: 'PENDING' | 'APPROVED' | 'REJECTED' | 'CANCELLED';
 }
@@ -56,14 +55,19 @@ export function Calendar({ timesheets, leaveRequests, initialDate = new Date() }
   });
 
   const getTimesheetForDay = (day: Date) => {
-    return timesheets.find(ts => isSameDay(typeof ts.date === "string" ? parseISO(ts.date) : ts.date, day));
+    const dayStr = format(day, 'yyyy-MM-dd');
+    return timesheets.find(ts => {
+      const tsStr = typeof ts.date === 'string' ? ts.date.split('T')[0] : ts.date.toISOString().split('T')[0];
+      return tsStr === dayStr;
+    });
   };
 
   const getLeaveForDay = (day: Date) => {
+    const dayStr = format(day, 'yyyy-MM-dd');
     return leaveRequests.find(lr => {
-      const start = typeof lr.startDate === "string" ? parseISO(lr.startDate) : lr.startDate;
-      const end = typeof lr.endDate === "string" ? parseISO(lr.endDate) : lr.endDate;
-      return day >= start && day <= end;
+      const startStr = typeof lr.startDate === 'string' ? lr.startDate.split('T')[0] : lr.startDate.toISOString().split('T')[0];
+      const endStr = typeof lr.endDate === 'string' ? lr.endDate.split('T')[0] : lr.endDate.toISOString().split('T')[0];
+      return dayStr >= startStr && dayStr <= endStr;
     });
   };
 

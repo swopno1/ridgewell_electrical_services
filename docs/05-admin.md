@@ -15,8 +15,8 @@ Only users with the **ADMIN** role can register new employees or modify existing
 
 #### Default Setup
 - **Leave Balance**: Automatically initialized to **20 days** for the current year.
-- **Initial Password**: New accounts use default: `Employee@123456`.
-- **First Steps**: Employees should change this password immediately via **Settings**.
+- **Initial Password**: New accounts are initialized with a secure, system-generated temporary password.
+- **First Steps**: Employees must change their temporary password immediately upon their first sign-in via **Settings**.
 
 ### Modifying Employee Details
 1. Locate the employee and click **Edit** (pencil).
