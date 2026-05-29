@@ -143,6 +143,12 @@ export async function createEmployeeAction(data: unknown) {
 
     // Generate setup token (using VerificationToken)
     const setupIdentifier = `setup:${validated.email}`;
+
+    // Delete any existing setup tokens for this email first
+    await prisma.verificationToken.deleteMany({
+      where: { identifier: setupIdentifier },
+    });
+
     const token = generateToken();
     const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
 

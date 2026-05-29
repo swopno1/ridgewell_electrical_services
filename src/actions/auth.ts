@@ -98,6 +98,11 @@ export async function signUpAction(formData: unknown) {
       return { success: true, verified: true };
     }
 
+    // Delete any existing tokens for this email first
+    await prisma.verificationToken.deleteMany({
+      where: { identifier: email },
+    });
+
     // Otherwise, generate verification token and send email
     const token = generateToken();
     const expires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
