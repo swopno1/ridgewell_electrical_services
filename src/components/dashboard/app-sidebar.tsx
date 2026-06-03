@@ -19,6 +19,7 @@ import {
   User,
   Shield,
   BookOpen,
+  Info,
 } from 'lucide-react';
 
 import {
@@ -152,7 +153,20 @@ export function AppSidebar({
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-slate-200 dark:border-slate-800 p-2">
+      <SidebarFooter className="border-t border-slate-200 dark:border-slate-800 p-2 space-y-2">
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              render={<Link href="/contact" className="w-full" />}
+              tooltip="Contact & Credits"
+              className="w-full justify-start text-xs text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
+            >
+              <Info className="h-4 w-4 shrink-0" />
+              <span className="hidden sm:inline">About</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+
         <SidebarMenu>
           <SidebarMenuItem>
             <DropdownMenu>

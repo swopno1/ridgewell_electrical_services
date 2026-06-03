@@ -78,7 +78,7 @@ export function DashboardLayout({
                 </BreadcrumbList>
               </Breadcrumb>
             </div>
-            
+
             <div className="flex items-center gap-4">
               <span className="text-xs text-slate-500 hidden md:block">
                 {new Date().toLocaleDateString('en-US', {

@@ -137,10 +137,18 @@ export const appConfig = {
     showVersion: true,
     showLinks: true,
     links: [
+      { label: 'Terms of Service', href: '/tos' },
       { label: 'Privacy Policy', href: '/privacy' },
-      { label: 'Terms of Service', href: '/terms' },
-      { label: 'Support', href: '/support' },
+      { label: 'Contact & Credits', href: '/contact' },
     ],
+  },
+
+  // Developer Company
+  developer: {
+    name: 'ViveScript Solutions',
+    website: 'https://www.vivescriptsolutions.com/',
+    contact: 'https://www.vivescriptsolutions.com/en/contact',
+    services: 'https://www.vivescriptsolutions.com/en/services',
   },
 
   // Email
