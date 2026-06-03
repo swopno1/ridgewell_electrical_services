@@ -1,8 +1,8 @@
 import { PublicLayout } from "@/components/layouts/PublicLayout";
 
 export const metadata = {
-  title: "Terms of Service",
-  description: "Terms of Service for Ridgewell ES",
+  title: "Terms of Service | Ridgewell ES by ViveScript Solutions",
+  description: "Terms of Service for Ridgewell ES, an enterprise HR solution by ViveScript Solutions. Read the complete terms and conditions.",
 };
 
 export default function TermsOfServicePage() {

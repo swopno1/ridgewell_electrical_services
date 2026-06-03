@@ -1,8 +1,8 @@
 import { PublicLayout } from "@/components/layouts/PublicLayout";
 
 export const metadata = {
-  title: "Privacy Policy",
-  description: "Privacy Policy for Ridgewell ES",
+  title: "Privacy Policy | Ridgewell ES by ViveScript Solutions",
+  description: "Privacy Policy for Ridgewell ES. Learn how ViveScript Solutions protects your personal data and maintains GDPR compliance.",
 };
 
 export default function PrivacyPage() {

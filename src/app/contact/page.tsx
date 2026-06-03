@@ -2,13 +2,64 @@ import { PublicLayout } from "@/components/layouts/PublicLayout";
 import { ExternalLink, Mail, Globe } from "lucide-react";
 
 export const metadata = {
-  title: "Contact & Credits",
-  description: "Contact information and credits for Ridgewell ES",
+  title: "Contact & Credits | Ridgewell ES by ViveScript Solutions",
+  description: "Get in touch with ViveScript Solutions, creators of Ridgewell ES. Learn about their digital transformation and custom web application services.",
+  openGraph: {
+    title: "Contact ViveScript Solutions - Creators of Ridgewell ES",
+    description: "Enterprise software development company specializing in custom web applications and digital transformation.",
+    url: "https://ridgewell-electrical.vercel.app/contact",
+  },
 };
 
 export default function ContactPage() {
   return (
-    <PublicLayout title="Contact & Credits">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "ViveScript Solutions",
+            "url": "https://www.vivescriptsolutions.com",
+            "description": "Leading software development and digital transformation company specializing in custom web applications, enterprise solutions, and digital innovation",
+            "logo": "https://www.vivescriptsolutions.com/logo.png",
+            "sameAs": [
+              "https://www.vivescriptsolutions.com",
+              "https://www.vivescriptsolutions.com/en/services",
+              "https://www.vivescriptsolutions.com/en/contact"
+            ],
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "contactType": "Customer Service",
+              "url": "https://www.vivescriptsolutions.com/en/contact",
+              "email": "contact@vivescriptsolutions.com"
+            },
+            "areaServed": "Global",
+            "serviceArea": "Global",
+            "knowsAbout": [
+              "Web Application Development",
+              "Enterprise Solutions",
+              "Digital Transformation",
+              "Custom Software Development",
+              "Business Process Automation",
+              "Progressive Web Apps",
+              "Employee Management Systems",
+              "HR Solutions"
+            ],
+            "portfolioItem": [
+              {
+                "@type": "CreativeWork",
+                "name": "Ridgewell ES",
+                "description": "Employee Timesheet & Leave Management System - Enterprise-grade HR solution",
+                "url": "https://ridgewell-electrical.vercel.app",
+                "author": { "@type": "Organization", "name": "ViveScript Solutions" }
+              }
+            ]
+          })
+        }}
+      />
+      <PublicLayout title="Contact & Credits">
       <div className="space-y-6 max-w-4xl">
         {/* Header */}
         <div>
@@ -254,5 +305,6 @@ export default function ContactPage() {
         </div>
       </div>
     </PublicLayout>
+    </>
   );
 }
