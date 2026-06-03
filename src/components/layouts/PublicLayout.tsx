@@ -35,6 +35,12 @@ export function PublicLayout({
 
           <nav className="flex items-center gap-4">
             <Link
+              href="/docs"
+              className="text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
+            >
+              Docs
+            </Link>
+            <Link
               href="/tos"
               className="text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
             >
@@ -87,6 +93,12 @@ export function PublicLayout({
                 Resources
               </h4>
               <nav className="space-y-1">
+                <Link
+                  href="/docs"
+                  className="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 block"
+                >
+                  Documentation
+                </Link>
                 <Link
                   href="/tos"
                   className="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 block"
