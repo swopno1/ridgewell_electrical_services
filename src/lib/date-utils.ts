@@ -1,4 +1,4 @@
-import { differenceInDays, eachDayOfInterval, isWeekend } from 'date-fns';
+import { eachDayOfInterval, isWeekend } from "date-fns";
 
 /**
  * Calculate the number of business days (weekdays only, excluding weekends)
@@ -18,16 +18,16 @@ export function countBusinessDays(startDate: Date, endDate: Date): number {
     end: endDate,
   });
 
-  return days.filter(day => !isWeekend(day)).length;
+  return days.filter((day) => !isWeekend(day)).length;
 }
 
 /**
  * Format time as HH:MM string
  */
 export function formatTime(date: Date): string {
-  return date.toLocaleTimeString('en-US', {
-    hour: '2-digit',
-    minute: '2-digit',
+  return date.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
     hour12: true,
   });
 }
