@@ -47,6 +47,7 @@ export default function RootLayout({
         {children}
         <Toaster position="top-right" richColors />
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
