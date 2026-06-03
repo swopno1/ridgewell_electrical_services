@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "sonner";
 import { PWAInstall } from '@/components/PWAInstall';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
