@@ -4,6 +4,7 @@ import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { Toaster } from "sonner";
 import { PWAInstall } from '@/components/PWAInstall';
+import { Analytics } from '@vercel/analytics/react';
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -44,6 +45,7 @@ export default function RootLayout({
         <PWAInstall />
         {children}
         <Toaster position="top-right" richColors />
+        <Analytics />
       </body>
     </html>
   );

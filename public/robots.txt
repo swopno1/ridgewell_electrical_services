@@ -1,0 +1,32 @@
+# Robots.txt for Ridgewell ES
+# Allow search engines to crawl public pages only
+
+User-agent: *
+Allow: /
+Allow: /tos
+Allow: /privacy
+Allow: /contact
+Allow: /docs
+Allow: /sitemap.xml
+
+# Disallow all private and authenticated routes
+Disallow: /auth/
+Disallow: /dashboard/
+Disallow: /admin/
+Disallow: /settings/
+Disallow: /profile/
+Disallow: /timesheets/
+Disallow: /leave/
+Disallow: /projects/
+Disallow: /reports/
+Disallow: /employees/
+Disallow: /calendar/
+
+# Allow crawling of API routes only for public endpoints
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://ridgewell-es.com/sitemap.xml
+
+# Crawl delay (optional - be respectful to servers)
+Crawl-delay: 1
