@@ -16,10 +16,16 @@ import {
 import { ChevronLeft, ChevronRight, Clock, Calendar as CalendarIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { formatTime } from '@/lib/date-utils';
 
 interface User {
   id: string;
   name: string | null;
+}
+
+interface Project {
+  id: string;
+  name: string;
 }
 
 interface TimesheetEntry {
@@ -27,6 +33,10 @@ interface TimesheetEntry {
   date: string | Date;
   totalHours: number;
   status: 'PENDING' | 'APPROVED' | 'REJECTED';
+  timeOn: string | Date;
+  timeOff: string | Date;
+  breakDuration: number;
+  project?: Project;
   user?: User;
 }
 
@@ -139,18 +149,22 @@ export function Calendar({ timesheets, leaveRequests, initialDate = new Date() }
                 {ts && (
                   <Link
                     href={`/timesheets/${ts.id}`}
-                    className={`block px-1.5 py-0.5 rounded text-[10px] font-medium truncate ${
+                    className={`block px-1.5 py-1 rounded text-[9px] font-medium ${
                       ts.status === 'APPROVED'
                         ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400'
                         : ts.status === 'REJECTED'
                         ? 'bg-red-50 text-red-700 dark:bg-red-950/30 dark:text-red-400'
                         : 'bg-amber-50 text-amber-700 dark:bg-amber-950/30 dark:text-amber-400'
                     }`}
-                    title={ts.user?.name ? `${ts.user.name} - ${ts.totalHours}h` : `${ts.totalHours}h`}
+                    title={`${ts.user?.name ? ts.user.name + ' - ' : ''}${ts.project?.name || 'No Project'} (${formatTime(new Date(ts.timeOn))} - ${formatTime(new Date(ts.timeOff))})`}
                   >
-                    <div className="flex items-center gap-1">
-                      <Clock className="h-2 w-2" />
-                      <span>{ts.totalHours}h {ts.user?.name && `(${ts.user.name.split(' ')[0]})`}</span>
+                    <div className="space-y-0.5">
+                      <div className="flex items-center gap-1 truncate">
+                        <Clock className="h-2 w-2 flex-shrink-0" />
+                        <span className="truncate">{formatTime(new Date(ts.timeOn))} - {formatTime(new Date(ts.timeOff))}</span>
+                      </div>
+                      {ts.project?.name && <div className="truncate text-[8px] opacity-75">{ts.project.name}</div>}
+                      {ts.user?.name && <div className="truncate text-[8px] opacity-75">{ts.user.name.split(' ')[0]}</div>}
                     </div>
                   </Link>
                 )}
@@ -190,11 +204,15 @@ export function Calendar({ timesheets, leaveRequests, initialDate = new Date() }
       <div className="mt-6 flex flex-wrap items-center gap-4 text-xs">
         <div className="flex items-center gap-1.5">
           <div className="h-3 w-3 rounded-sm bg-emerald-500"></div>
-          <span className="text-slate-600 dark:text-slate-400">Approved Time</span>
+          <span className="text-slate-600 dark:text-slate-400">Approved (Time & Project)</span>
         </div>
         <div className="flex items-center gap-1.5">
           <div className="h-3 w-3 rounded-sm bg-amber-500"></div>
-          <span className="text-slate-600 dark:text-slate-400">Pending Time</span>
+          <span className="text-slate-600 dark:text-slate-400">Pending (Time & Project)</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className="h-3 w-3 rounded-sm bg-red-500"></div>
+          <span className="text-slate-600 dark:text-slate-400">Rejected Time</span>
         </div>
         <div className="flex items-center gap-1.5">
           <div className="h-3 w-3 rounded-sm bg-blue-500"></div>

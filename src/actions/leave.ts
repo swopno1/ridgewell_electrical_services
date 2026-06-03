@@ -2,10 +2,10 @@
 
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
-import { differenceInDays } from 'date-fns';
 import { getSession } from '@/lib/session';
 import { revalidatePath } from 'next/cache';
 import { notifyLeaveSubmission, notifyLeaveStatusChange } from '@/lib/notifications';
+import { countBusinessDays } from '@/lib/date-utils';
 
 const createLeaveRequestSchema = z.object({
   leaveType: z.enum(['ANNUAL', 'SICK', 'UNPAID']),
@@ -22,7 +22,8 @@ export async function createLeaveRequestAction(data: unknown, userId: string) {
       return { error: 'End date must be after start date' };
     }
 
-    const totalDays = differenceInDays(validated.endDate, validated.startDate) + 1;
+    // Calculate business days only (excluding weekends)
+    const totalDays = countBusinessDays(validated.startDate, validated.endDate);
 
     const leaveRequest = await prisma.leaveRequest.create({
       data: {
@@ -78,7 +79,8 @@ export async function updateLeaveRequestAction(
       return { error: 'Cannot modify approved or rejected requests' };
     }
 
-    const totalDays = differenceInDays(validated.endDate, validated.startDate) + 1;
+    // Calculate business days only (excluding weekends)
+    const totalDays = countBusinessDays(validated.startDate, validated.endDate);
 
     const updated = await prisma.leaveRequest.update({
       where: { id: leaveRequestId },
