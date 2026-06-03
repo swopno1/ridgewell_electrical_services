@@ -22,9 +22,12 @@ export default async function CalendarPage() {
   const rangeStart = startOfMonth(subMonths(today, 1));
   const rangeEnd = endOfMonth(addMonths(today, 1));
 
+  // Admins and managers should see all employees' data on the calendar
+  const fetchAllEmployees = ['ADMIN', 'MANAGER'].includes(userRole);
+
   const [timesheetsResult, leaveResult] = await Promise.all([
-    getTimesheetsByDateRange(userId, rangeStart, rangeEnd),
-    getLeaveRequestsByDateRange(userId, rangeStart, rangeEnd),
+    getTimesheetsByDateRange(userId, rangeStart, rangeEnd, fetchAllEmployees),
+    getLeaveRequestsByDateRange(userId, rangeStart, rangeEnd, fetchAllEmployees),
   ]);
 
   const timesheets = timesheetsResult.success ? timesheetsResult.timesheets || [] : [];

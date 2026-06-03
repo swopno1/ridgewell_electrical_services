@@ -17,11 +17,17 @@ import { ChevronLeft, ChevronRight, Clock, Calendar as CalendarIcon } from 'luci
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
+interface User {
+  id: string;
+  name: string | null;
+}
+
 interface TimesheetEntry {
   id: string;
   date: string | Date;
   totalHours: number;
   status: 'PENDING' | 'APPROVED' | 'REJECTED';
+  user?: User;
 }
 
 interface LeaveEntry {
@@ -30,6 +36,7 @@ interface LeaveEntry {
   endDate: string | Date;
   leaveType: 'ANNUAL' | 'SICK' | 'UNPAID';
   status: 'PENDING' | 'APPROVED' | 'REJECTED' | 'CANCELLED';
+  user?: User;
 }
 
 interface CalendarProps {
@@ -139,10 +146,11 @@ export function Calendar({ timesheets, leaveRequests, initialDate = new Date() }
                         ? 'bg-red-50 text-red-700 dark:bg-red-950/30 dark:text-red-400'
                         : 'bg-amber-50 text-amber-700 dark:bg-amber-950/30 dark:text-amber-400'
                     }`}
+                    title={ts.user?.name ? `${ts.user.name} - ${ts.totalHours}h` : `${ts.totalHours}h`}
                   >
                     <div className="flex items-center gap-1">
                       <Clock className="h-2 w-2" />
-                      <span>{ts.totalHours}h {ts.status.toLowerCase()}</span>
+                      <span>{ts.totalHours}h {ts.user?.name && `(${ts.user.name.split(' ')[0]})`}</span>
                     </div>
                   </Link>
                 )}
@@ -157,10 +165,11 @@ export function Calendar({ timesheets, leaveRequests, initialDate = new Date() }
                         ? 'bg-violet-50 text-violet-700 dark:bg-violet-950/30 dark:text-violet-400'
                         : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300'
                     }`}
+                    title={lr.user?.name ? `${lr.user.name} - ${lr.leaveType}` : lr.leaveType}
                   >
                     <div className="flex items-center gap-1">
                       <CalendarIcon className="h-2 w-2" />
-                      <span>{lr.leaveType} {lr.status.toLowerCase()}</span>
+                      <span>{lr.leaveType} {lr.user?.name && `(${lr.user.name.split(' ')[0]})`}</span>
                     </div>
                   </Link>
                 )}

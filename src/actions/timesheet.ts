@@ -74,6 +74,7 @@ export async function createTimesheetAction(data: unknown, userId: string) {
     await notifyTimesheetSubmission(timesheet);
 
     revalidatePath('/timesheets');
+    revalidatePath('/calendar');
     revalidatePath('/dashboard');
     return { success: true, timesheet };
   } catch (error) {
@@ -264,12 +265,19 @@ export async function rejectTimesheetAction(
 export async function getTimesheetsByDateRange(
   userId: string,
   startDate: Date,
-  endDate: Date
+  endDate: Date,
+  fetchAllEmployees: boolean = false
 ) {
   try {
+    const session = await getSession();
+    const userRole = session?.user?.role || 'EMPLOYEE';
+
+    // Only allow fetching all employees for ADMIN and MANAGER roles
+    const shouldFetchAll = fetchAllEmployees && ['ADMIN', 'MANAGER'].includes(userRole);
+
     const timesheets = await prisma.timesheet.findMany({
       where: {
-        userId,
+        ...(shouldFetchAll ? {} : { userId }),
         date: {
           gte: startDate,
           lte: endDate,
@@ -277,6 +285,7 @@ export async function getTimesheetsByDateRange(
       },
       include: {
         project: true,
+        user: true,
         approvals: {
           include: { approverUser: true },
         },

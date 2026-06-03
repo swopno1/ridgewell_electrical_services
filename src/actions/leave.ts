@@ -43,6 +43,7 @@ export async function createLeaveRequestAction(data: unknown, userId: string) {
     await notifyLeaveSubmission(leaveRequest);
 
     revalidatePath('/leave');
+    revalidatePath('/calendar');
     revalidatePath('/dashboard');
     return { success: true, leaveRequest };
   } catch (error) {
@@ -381,12 +382,19 @@ export async function getLeaveRequestsAction(
 export async function getLeaveRequestsByDateRange(
   userId: string,
   startDate: Date,
-  endDate: Date
+  endDate: Date,
+  fetchAllEmployees: boolean = false
 ) {
   try {
+    const session = await getSession();
+    const userRole = session?.user?.role || 'EMPLOYEE';
+
+    // Only allow fetching all employees for ADMIN and MANAGER roles
+    const shouldFetchAll = fetchAllEmployees && ['ADMIN', 'MANAGER'].includes(userRole);
+
     const leaveRequests = await prisma.leaveRequest.findMany({
       where: {
-        userId,
+        ...(shouldFetchAll ? {} : { userId }),
         OR: [
           {
             startDate: {
@@ -399,6 +407,7 @@ export async function getLeaveRequestsByDateRange(
         ],
       },
       include: {
+        user: true,
         approvals: {
           include: { approverUser: true },
         },
@@ -410,8 +419,8 @@ export async function getLeaveRequestsByDateRange(
       success: true,
       leaveRequests: leaveRequests.map((l: any) => ({
         ...l,
-        startDate: l.startDate.toISOString().split('T')[0],
-        endDate: l.endDate.toISOString().split('T')[0],
+        startDate: l.startDate instanceof Date ? l.startDate.toISOString().split('T')[0] : l.startDate,
+        endDate: l.endDate instanceof Date ? l.endDate.toISOString().split('T')[0] : l.endDate,
       })),
     };
   } catch (error: any) {
