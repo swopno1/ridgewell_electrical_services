@@ -48,6 +48,7 @@ export default async function CalendarPage() {
         <Calendar
           timesheets={timesheets as any}
           leaveRequests={leaveRequests as any}
+          userRole={userRole}
         />
       </div>
     </DashboardLayout>
