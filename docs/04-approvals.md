@@ -1,77 +1,77 @@
 # Manager Approvals
 
-The **Approvals Queue** is the central hub for reviewing labor hours and time-off requests. This document provides comprehensive instructions for Managers and Administrators.
+The **Approvals Queue** is the central hub for reviewing labour-hour submissions and time-off requests. This document is intended for Managers and Administrators.
 
 ---
 
 ## 1. Navigating the Queues
 
-To ensure a focused workflow, approvals are separated by type.
+Approvals are separated by type for a focused workflow.
 
-### Accessing the Queues
-- **Timesheet Approvals**: Navigate to **Timesheets** -> **Approvals Queue** (or `/timesheets/approvals`).
-- **Leave Approvals**: Navigate to **Leave** -> **Approvals Queue** (or `/leave/approvals`).
+| Queue | Location |
+| :--- | :--- |
+| **Timesheet Approvals** | Timesheets → Approvals Queue (`/timesheets/approvals`) |
+| **Leave Approvals** | Leave → Approvals Queue (`/leave/approvals`) |
 
-### Filtering and Searching
-Both queues support real-time searching:
-- **Employee Search**: Use the search bar to find entries by name or email.
-- **Pending Focus**: By default, only **PENDING** status entries are displayed.
+Both queues support real-time searching by employee name or email. By default, only **Pending** entries are shown.
 
 ---
 
-## 2. Understanding Queue Metrics
+## 2. Queue Metrics
 
-Stats cards at the top of each page provide an immediate summary:
+Stats cards at the top of each queue page give an immediate summary:
 
-- **Pending Submissions**: Total count of entries awaiting review.
-- **Total Pending Hours/Days**: Aggregate sum of hours (Timesheets) or days (Leave) in the queue.
-- **Employees Requesting**: Number of distinct staff members with items in the queue.
+- **Pending Submissions** — total count awaiting review.
+- **Total Pending Hours / Days** — aggregate of all pending entries.
+- **Employees Requesting** — number of distinct staff with items in the queue.
 
 ---
 
 ## 3. Reviewing Submissions
 
-Managers can process submissions via Quick-Approvals or Detailed Audits.
+### Quick Approval
 
-### Performing Quick-Approvals
-For routine entries:
-1. Locate the entry in the list.
-2. Review basic details (Employee, Date, Hours/Days).
-3. Click the **Approve** (check-mark) icon.
+For straightforward entries:
 
-### Performing Detailed Audits
-Before approving complex entries:
-1. **Verify Project**: Ensure hours are billed to the correct client.
-2. **Inspect Notes**: Check for clear descriptions of work.
-3. **Check Entitlements**: For Leave, verify the dates align with the team schedule.
-4. **Finalize**: Click **Approve** or **Reject**.
+1. Review the employee name, date, and hours or days.
+2. Click the **Approve** (tick) icon.
+
+### Detailed Audit
+
+Before approving complex or unusual entries:
+
+1. **Verify the Project** — confirm hours are billed to the correct client.
+2. **Inspect Notes** — check the description is clear and accurate.
+3. **Check Entitlements** — for leave, verify the dates align with the team schedule and the employee has sufficient balance.
+4. **Decide** — click **Approve** or **Reject**.
 
 ---
 
-## 4. Handling Rejections
+## 4. Rejecting Submissions
 
-When an entry is inaccurate, reject it to allow the employee to make corrections.
+When an entry needs correction:
 
-### Rejection Workflow:
-1. Click the **Reject** (X) icon for the specific entry.
-2. **Provide Feedback**: Enter a mandatory comment explaining the rejection.
-3. **Finalize**: Click the red **Reject** button in the modal.
+1. Click the **Reject** (✕) icon for the entry.
+2. **Enter a comment** — explain clearly what needs correcting.
+3. Click the **Reject** button to finalise.
 
-> [!IMPORTANT]
 > **Feedback is Mandatory**
-> You cannot finalize a rejection without a comment. This guidance helps the employee correct and resubmit their entry.
+> You cannot reject an entry without a comment. This guidance is sent to the employee so they can correct and resubmit.
 
 ---
 
-## 5. Project Auditing
+## 5. Using the Calendar for Approvals
 
-The **Projects** module allows you to track jobs and audit allocated labor resources.
+Before approving leave requests, Managers and Admins can use the **Calendar** page to check the team schedule at a glance — spotting conflicts or coverage gaps before a decision is made. All pending leave requests appear on the calendar in amber.
 
-### Accessing Project Summaries
+See the [Calendar View](../calendar) documentation for more information.
+
+---
+
+## 6. Project Auditing
+
+The **Projects** module lets you track jobs and audit allocated labour.
+
 1. Navigate to **Projects** in the sidebar.
-2. View high-level stats: **Total Projects**, **Active Jobs**, and **Total Hours**.
-
-### Auditing Aggregate Hours
-1. Review the **Hours Logged** column in the projects table.
-2. These figures are an aggregate of all **APPROVED** timesheet entries linked to that project.
-3. Toggle project status between **Active** and **Inactive** as needed.
+2. Review **Hours Logged** per project — this is the aggregate of all **Approved** timesheet entries linked to that project.
+3. Toggle project status between **Active** and **Inactive** as needed. Inactive projects are hidden from timesheet dropdowns but preserved in historical reports.

@@ -2,20 +2,20 @@
 export const appConfig = {
   // Application Meta
   app: {
-    name: 'Ridgewell ES',
-    description: 'Employee Timesheet & Leave Management System',
-    version: '0.1.0',
+    name: "Ridgewell ES",
+    description: "Employee Timesheet & Leave Management System",
+    version: "0.1.0",
   },
 
   // Company Info
   company: {
-    name: 'Ridgewell Electrical Services LTD.',
-    email: 'support@ridgewelles.co.uk',
-    phone: '+44 (0) 123 4567',
-    website: 'https://www.ridgewell-electrical.co.uk/',
-    address: 'Ridgewell Headquarters, UK',
-    logo: '/logo_ridgewell_es.png',
-    favicon: '/favicon.ico',
+    name: "Ridgewell Electrical Services LTD.",
+    email: "info@ridgewell-electrical.co.uk",
+    phone: "+44 (0) 123 4567",
+    website: "https://www.ridgewell-electrical.co.uk/",
+    address: "Ridgewell Headquarters, UK",
+    logo: "/logo_ridgewell_es.png",
+    favicon: "/favicon.ico",
   },
 
   // Authentication
@@ -31,27 +31,37 @@ export const appConfig = {
 
   // UI / Theme
   theme: {
-    primaryColor: '#2563eb', // Blue
-    accentColor: '#059669', // Green
-    dangerColor: '#dc2626', // Red
-    warningColor: '#f59e0b', // Amber
+    primaryColor: "#2563eb", // Blue
+    accentColor: "#059669", // Green
+    dangerColor: "#dc2626", // Red
+    warningColor: "#f59e0b", // Amber
     darkMode: false,
-    borderRadius: '0.5rem',
-    defaultFontFamily: 'system-ui, -apple-system, sans-serif',
+    borderRadius: "0.5rem",
+    defaultFontFamily: "system-ui, -apple-system, sans-serif",
   },
 
   // Navigation
   navigation: {
     mainNav: [
-      { label: 'Dashboard', href: '/dashboard', icon: 'LayoutDashboard' },
-      { label: 'Timesheets', href: '/timesheets', icon: 'Clock' },
-      { label: 'Leave', href: '/leave', icon: 'CalendarClock' },
-      { label: 'Calendar', href: '/calendar', icon: 'Calendar' },
-      { label: 'Projects', href: '/projects', icon: 'Briefcase' },
-      { label: 'Reports', href: '/reports', icon: 'BarChart3' },
-      { label: 'Employees', href: '/employees', icon: 'Users', adminOnly: true },
-      { label: 'Settings', href: '/settings', icon: 'Settings', adminOnly: true },
-      { label: 'Documentation', href: '/docs', icon: 'BookOpen' },
+      { label: "Dashboard", href: "/dashboard", icon: "LayoutDashboard" },
+      { label: "Timesheets", href: "/timesheets", icon: "Clock" },
+      { label: "Leave", href: "/leave", icon: "CalendarClock" },
+      { label: "Calendar", href: "/calendar", icon: "Calendar" },
+      { label: "Projects", href: "/projects", icon: "Briefcase" },
+      { label: "Reports", href: "/reports", icon: "BarChart3" },
+      {
+        label: "Employees",
+        href: "/employees",
+        icon: "Users",
+        adminOnly: true,
+      },
+      {
+        label: "Settings",
+        href: "/settings",
+        icon: "Settings",
+        adminOnly: true,
+      },
+      { label: "Documentation", href: "/docs", icon: "BookOpen" },
     ],
   },
 
@@ -71,7 +81,7 @@ export const appConfig = {
   leave: {
     annualLeaveEntitlement: 20, // days per year
     sickLeaveEntitlement: 10, // days per year
-    leaveTypes: ['ANNUAL', 'SICK', 'UNPAID'],
+    leaveTypes: ["ANNUAL", "SICK", "UNPAID"],
     minLeaveRequestDays: 1,
     maxLeaveRequestDays: 30,
     minNoticeBeforeLeave: 2, // days
@@ -87,22 +97,22 @@ export const appConfig = {
 
   // Timezone
   timezone: {
-    default: 'UTC',
+    default: "UTC",
     userSelectable: true,
   },
 
   // Date Format
   dateFormat: {
-    short: 'MMM dd, yyyy',
-    long: 'EEEE, MMMM dd, yyyy',
-    time: 'HH:mm',
-    dateTime: 'MMM dd, yyyy HH:mm',
+    short: "MMM dd, yyyy",
+    long: "EEEE, MMMM dd, yyyy",
+    time: "HH:mm",
+    dateTime: "MMM dd, yyyy HH:mm",
   },
 
   // Currency & Payroll
   payroll: {
-    currency: 'USD',
-    currencySymbol: '$',
+    currency: "USD",
+    currencySymbol: "$",
     decimalPlaces: 2,
     hourlyRateEditable: true,
     overtimeMultiplier: 1.25,
@@ -110,8 +120,8 @@ export const appConfig = {
 
   // Report Settings
   reports: {
-    exportFormats: ['CSV', 'PDF'],
-    defaultFormat: 'PDF',
+    exportFormats: ["CSV", "PDF"],
+    defaultFormat: "PDF",
     includeEmployeePhotos: false,
     includeBankDetails: false,
   },
@@ -137,25 +147,25 @@ export const appConfig = {
     showVersion: true,
     showLinks: true,
     links: [
-      { label: 'Terms of Service', href: '/tos' },
-      { label: 'Privacy Policy', href: '/privacy' },
-      { label: 'Contact & Credits', href: '/contact' },
+      { label: "Terms of Service", href: "/tos" },
+      { label: "Privacy Policy", href: "/privacy" },
+      { label: "Contact & Credits", href: "/contact" },
     ],
   },
 
   // Developer Company
   developer: {
-    name: 'ViveScript Solutions',
-    website: 'https://www.vivescriptsolutions.com/',
-    contact: 'https://www.vivescriptsolutions.com/en/contact',
-    services: 'https://www.vivescriptsolutions.com/en/services',
+    name: "ViveScript Solutions",
+    website: "https://www.vivescriptsolutions.com/",
+    contact: "https://www.vivescriptsolutions.com/en/contact",
+    services: "https://www.vivescriptsolutions.com/en/services",
   },
 
   // Email
   email: {
-    from: 'noreply@ridgewelles.co.uk',
-    fromName: 'Ridgewell ES',
-    supportEmail: 'support@ridgewelles.co.uk',
+    from: "noreply@ridgewelles.co.uk",
+    fromName: "Ridgewell ES",
+    supportEmail: "info@vivescriptsolutions.com",
     enableNotifications: true,
   },
 
@@ -213,5 +223,7 @@ export const rolePermissions = {
 // Helper to check permissions
 export const hasPermission = (role: string, permission: string): boolean => {
   const permissions = rolePermissions[role as keyof typeof rolePermissions];
-  return permissions ? (permissions[permission as keyof typeof permissions] ?? false) : false;
+  return permissions
+    ? (permissions[permission as keyof typeof permissions] ?? false)
+    : false;
 };

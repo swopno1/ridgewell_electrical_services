@@ -1,51 +1,66 @@
 # Release Notes
 
-Welcome to the official release notes for **TimesheetPro** (v1.0.0). Below you will find details about the initial MVP features, the deployment and hosting architecture, and the proposed support plan.
+Official release notes for **Ridgewell ES** — the timesheet and leave management system for Ridgewell Electrical Services, developed by ViveScript Solutions.
 
 ---
 
-## 1. Version 1.0.0 (MVP Release)
+## Version 1.1.0 — Calendar View Update
 
-The initial version of TimesheetPro delivers a fully-functional, secure, and production-ready workforce management system tailored for small-to-medium teams.
+**Released:** June 2026
+
+### New Features
+
+- **Calendar View** — A full month-by-month visual calendar showing all timesheet entries and leave requests in a colour-coded grid. Admin and Manager views display the entire team; Employee views show personal data only.
+- **Day Detail Panel** — Clicking any calendar day with entries opens an inline detail panel showing every timesheet and leave request for that date, with full status, time range, project, and employee name (admin/manager).
+- **Entry Count Badges** — Each day cell shows a count badge and a "+N more" indicator when entries exceed the visible limit, so no data is ever silently hidden.
+- **Legend** — A persistent colour key below the calendar grid explains all status colours at a glance.
+
+---
+
+## Version 1.0.0 — MVP Release
+
+**Released:** May 2026
 
 ### Key Features Delivered
-* **Core Workforce Directory**: Centralized employee tracking with Role-Based Access Control (RBAC) supporting `Admin`, `Manager`, and `Employee` tiers.
-* **Smart Timesheet Logger**: Daily time entry logs featuring automatic break calculations and overtime detection (applying a standard 1.25x multiplier above 8 hours).
-* **Leave Management Portal**: Streamlined lifecycle for submitting and tracking Annual, Sick, and Unpaid leave requests with live balance counters.
-* **Approval Queues**: Dedicated queues allowing Managers and Admins to approve, reject, and leave feedback on timesheets and leave requests.
-* **Reporting Engine**: Labor tracking by project, payroll summary logs, and employee working-hour statistics, exportable directly to PDF or CSV format.
-* **In-App Documentation**: Centralized help center for quick onboarding of new users.
+
+- **Core Workforce Directory** — Centralised employee tracking with Role-Based Access Control (RBAC) supporting Admin, Manager, and Employee tiers.
+- **Smart Timesheet Logger** — Daily time-entry logging with automatic break calculations and overtime detection (1.25× multiplier above 8 hours standard).
+- **Leave Management Portal** — Full lifecycle for Annual, Sick, and Unpaid leave requests with live balance counters.
+- **Approval Queues** — Dedicated queues for Managers and Admins to approve, reject, and comment on timesheets and leave requests.
+- **Reporting Engine** — Labour tracking by project, payroll summaries, and employee hour statistics, exportable to PDF or CSV.
+- **In-App Documentation** — Centralised help centre for onboarding new users.
 
 ---
 
-## 2. Infrastructure & Hosting Architecture
+## Infrastructure & Hosting
 
-To guarantee 99.9% uptime, rapid page loads, and zero-downtime deployments, the system is configured to run on top of modern cloud services:
-
-* **Frontend & Backend Hosting**: **Vercel** (standard edge layer routing) for fast static and dynamic server response times in the UK.
-* **Database Layer**: **Render PostgreSQL** database cluster ensuring isolated transaction boundaries, high safety levels, and reliable data persistence.
-* **CI/CD Integration**: Automatic git-based deployments for seamless rolling updates.
-
----
-
-## 3. Maintenance & Support Proposal
-
-To ensure the long-term health, security, and stability of the platform, we recommend enrolling in the **Steady-State Maintenance Plan**.
-
-### Service Overview
-* **Investment**: `$100 / month`
-* **Security & Audits**: Monthly dependency updates (npm packages, security patches) and database schema optimization.
-* **Automated Backups**: Daily database dumps stored offsite with a 14-day retention cycle.
-* **Priority Bug Fixes**: Guaranteed 48-hour response/resolution time for any critical production issues.
-* **Minor Enhancements**: Up to 2 hours of development time per month for UI styling tweaks, copy updates, or minor report layouts.
-* **Availability Checks**: Proactive uptime alerts via UptimeRobot to resolve any network issues before users are affected.
-
-### Service Workflow
-1. **Submit Request**: Send support tickets or modification requests via the designated channel.
-2. **Review & Triage**: Tasks are classified as standard maintenance (covered under SLA) or feature requests (scoped separately).
-3. **Stage & Deploy**: Changes are validated on a test server before rolling out to the production system.
+| Layer | Service |
+| :--- | :--- |
+| **Frontend & Backend** | Vercel (edge network, UK region) |
+| **Database** | Render PostgreSQL — isolated transactions, high durability |
+| **CI/CD** | Git-based automatic deployments |
 
 ---
 
-**Prepared for**: Ridgewell Electrical Services LTD  
-**Release Date**: May 27, 2026
+## Maintenance & Support Plan
+
+### Steady-State Plan — £100 / month
+
+| Item | Detail |
+| :--- | :--- |
+| **Security & Dependency Audits** | Monthly npm package updates and database schema optimisation |
+| **Automated Backups** | Daily database dumps, 14-day offsite retention |
+| **Priority Bug Fixes** | 48-hour response/resolution SLA for critical production issues |
+| **Minor Enhancements** | Up to 2 hours of development time per month for UI tweaks, copy updates, or minor report adjustments |
+| **Uptime Monitoring** | Proactive alerts via UptimeRobot to catch and resolve network issues before users are affected |
+
+### Support Workflow
+
+1. **Submit a Request** — via the designated support channel.
+2. **Review & Triage** — classified as standard maintenance (covered under SLA) or a feature request (scoped separately).
+3. **Stage & Deploy** — validated on a staging environment before rolling out to production.
+
+---
+
+**Prepared for:** Ridgewell Electrical Services LTD
+**Developed by:** ViveScript Solutions

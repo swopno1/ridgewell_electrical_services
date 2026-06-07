@@ -1,61 +1,64 @@
 # Leave & Balances
 
-TimesheetPro simplifies the process of requesting time off and tracking your remaining leave entitlements.
+Ridgewell ES simplifies requesting time off and tracking your remaining leave entitlements throughout the year.
 
 ---
 
 ## 1. Viewing Your Balances
 
-Before requesting leave, it is important to check your available balance.
+Before submitting a request, check your available balance.
 
-1.  **Access Leave Module**: Navigate to **Leave** in the sidebar.
-2.  **Review Stats Cards**: At the top of the page, you will see summary cards for:
-    *   **Annual Entitlement**: Your total allowed paid leave for the year (e.g., 20 days).
-    *   **Approved (Paid)**: The number of days you have already taken or have had approved.
-    *   **Remaining Balance**: Your current "bank" of available days.
-    *   **Sick Days Used**: A counter of sick leave taken for tracking purposes.
+1. **Access the Leave Module**: Navigate to **Leave** in the sidebar.
+2. **Review the Summary Cards** at the top of the page:
+   - **Annual Entitlement** — your total paid leave allowance for the year (default: 20 days).
+   - **Approved (Paid)** — days already taken or approved.
+   - **Remaining Balance** — your current available days.
+   - **Sick Days Used** — sick leave counter for the year.
 
 ---
 
 ## 2. Submitting a Leave Request
 
-Requesting leave is handled through a single form that routes directly to your manager for approval.
-
-1.  **Open Request Form**: Click the **Request Leave** button on the Leave page.
-2.  **Select Leave Type**: Choose from **ANNUAL**, **SICK**, or **UNPAID**.
-3.  **Set Dates**: Select the **Start Date** and **End Date** for your time off.
-4.  **Provide Reason**: Enter a mandatory reason for your request (minimum 10 characters).
-5.  **Submit**: Click **Submit Request**.
+1. **Open the Form**: Click **Request Leave** on the Leave page.
+2. **Select Leave Type**: Choose **Annual**, **Sick**, or **Unpaid**.
+3. **Set Dates**: Pick a **Start Date** and **End Date**.
+4. **Provide a Reason**: Enter a meaningful reason (minimum 10 characters). Managers use this to make informed decisions.
+5. **Submit**: Click **Submit Request**.
 
 ---
 
-## 3. Validation & Rules
+## 3. Validation Rules
 
-The system enforces several rules to ensure data integrity:
+The system enforces the following rules before accepting a request:
 
-- **Sufficient Balance**: You cannot submit an **Annual Leave** request that exceeds your remaining balance.
-- **Mandatory Reasons**: Every request requires a descriptive reason so managers can make informed approval decisions.
-- **Pending Conflict**: You cannot edit a request while it is pending; you must cancel and resubmit if details change.
-
-### Tracking Behaviors
-| Leave Type | Impact on Balance | Approval Required |
+| Leave Type | Deducts from Balance | Approval Required |
 | :--- | :--- | :--- |
-| **Annual Leave** | Deducts from yearly entitlement | Yes |
-| **Sick Leave** | Increments "Sick Used" counter | Yes |
+| **Annual Leave** | Yes — from your yearly entitlement | Yes |
+| **Sick Leave** | No — increments "Sick Used" counter | Yes |
 | **Unpaid Leave** | No impact on paid balances | Yes |
 
+Additional constraints:
+- You cannot submit an Annual Leave request that exceeds your remaining balance.
+- You cannot edit a request while it is Pending — cancel it and resubmit with the corrected details.
+
 ---
 
-## 4. Cancelling Requests
+## 4. Cancelling a Request
 
-If your plans change, you can withdraw a leave request that has not yet been processed.
+If your plans change before the request is processed:
 
-### How to Cancel:
-1. Locate the request in the **Leave History & Requests** table.
-2. Ensure the status is **PENDING**.
-3. Click the **Cancel** button in the Actions column.
-4. Confirm the action in the browser pop-up.
+1. Find the request in the **Leave History & Requests** table.
+2. Confirm the status is **Pending**.
+3. Click **Cancel** in the Actions column.
+4. Confirm in the dialogue.
 
-> [!WARNING]
-> **Non-Retractable Cancellations**
-> Once a request is cancelled, it cannot be "un-cancelled." You must submit a new request if you decide you need that time off after all. Additionally, you cannot cancel requests that have already been **Approved** or **Rejected**.
+> **Cancellations are final**
+> A cancelled request cannot be reversed. Submit a new request if you still need the time off. Requests that have already been **Approved** or **Rejected** cannot be cancelled.
+
+---
+
+## 5. Viewing Leave on the Calendar
+
+All approved and pending leave requests appear on the **Calendar** page. Admin and Manager views show the full team's leave at a glance — making it easy to spot conflicts before approving new requests.
+
+See the [Calendar View](../calendar) documentation for more information.
