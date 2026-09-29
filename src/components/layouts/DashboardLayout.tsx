@@ -170,35 +170,37 @@ export function DashboardLayout({
                 id="access-notice-title"
                 className="text-2xl font-bold text-slate-950 dark:text-white sm:text-3xl"
               >
-                Access suspended
+                Important payment reminder
               </h1>
               <div
                 id="access-notice-description"
                 className="mt-5 space-y-4 text-base leading-7 text-slate-700 dark:text-slate-300"
               >
                 <p>
-                  Due to an outstanding payment for this code, its use is no
-                  longer authorized. If you have resold or deployed the code for
-                  others, please{" "}
+                  Our records indicate that payment for this software is still
+                  outstanding. Please arrange payment promptly. Until the
+                  balance is resolved, please do not resell, redistribute, or
+                  deploy the code for additional customers.
+                </p>
+                <p>
+                  For teams already using a deployment, WorkRoster offers a
+                  managed SaaS option for $1 per member per month. Our team can
+                  help migrate your existing data. Please{" "}
                   <Link
                     href="https://www.workroster.net/contact"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="font-semibold text-blue-700 underline underline-offset-2 dark:text-blue-300"
                   >
-                    contact us
-                  </Link>{" "}
-                  to migrate your existing data to WorkRoster, our SaaS
-                  application, for $1 per member per month.
+                    contact us about migration
+                  </Link>
+                  .
                 </p>
                 <p>
-                  This subscription may not recover the full unpaid balance, but
-                  it may help offset some of the loss.
-                </p>
-                <p>
-                  The WorkRoster Android app is also available on Google Play.
-                  You can continue using this app after acknowledging this
-                  notice.
+                  WorkRoster is also available on Android through Google Play.
+                  You may continue using this app after acknowledging this
+                  reminder; the links below open separately and will not
+                  redirect you.
                 </p>
               </div>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
