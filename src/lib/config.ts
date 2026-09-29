@@ -160,6 +160,14 @@ export const appConfig = {
     contact: "https://www.workroster.net/contact",
   },
 
+  // Outstanding payment notice (shown to ADMIN users only). Set enabled: false once paid.
+  paymentNotice: {
+    enabled: true,
+    amountDue: "$300",
+    dueDate: "2026-10-13", // yyyy-MM-dd, 14 days from issue (2026-09-29)
+    paymentTermsDays: 14,
+  },
+
   // Email
   email: {
     from: "noreply@ridgewelles.co.uk",
