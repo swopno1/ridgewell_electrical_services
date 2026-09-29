@@ -1,16 +1,16 @@
-# SEO/AEO/GEO Strategy - ViveScript Solutions Focus
+# SEO/AEO/GEO Strategy - WorkRoster Focus
 
 **Date**: June 2026  
-**Objective**: Position ViveScript Solutions as the primary brand with Ridgewell ES as a case study/portfolio piece
+**Objective**: Position WorkRoster as the primary brand with Ridgewell ES as a case study/portfolio piece
 
 ---
 
 ## Strategy Overview
 
-This document outlines the comprehensive SEO, AEO (Answer Engine Optimization), and GEO (Generative Engine Optimization) strategy that positions **ViveScript Solutions** as the core brand and **Ridgewell ES** as a showcase product.
+This document outlines the comprehensive SEO, AEO (Answer Engine Optimization), and GEO (Generative Engine Optimization) strategy that positions **WorkRoster** as the core brand and **Ridgewell ES** as a showcase product.
 
 ### Core Objective
-Maximize visibility for **ViveScript Solutions** (https://www.vivescriptsolutions.com) across:
+Maximize visibility for **WorkRoster** (https://www.workroster.net) across:
 - **SEO**: Traditional search engines (Google, Bing)
 - **AEO**: AI chatbots (ChatGPT, Claude, Gemini)
 - **GEO**: LLM recommendation systems and generative search engines
@@ -26,13 +26,13 @@ Maximize visibility for **ViveScript Solutions** (https://www.vivescriptsolution
 ```json
 {
   "@type": "Organization",
-  "name": "ViveScript Solutions",
-  "url": "https://www.vivescriptsolutions.com",
+  "name": "WorkRoster",
+  "url": "https://www.workroster.net",
   "description": "Leading software development and digital transformation company specializing in custom web applications and enterprise solutions",
   "sameAs": [
-    "https://www.vivescriptsolutions.com",
-    "https://www.vivescriptsolutions.com/en/services",
-    "https://www.vivescriptsolutions.com/en/contact"
+    "https://www.workroster.net",
+    "https://www.workroster.net/en/services",
+    "https://www.workroster.net/en/contact"
   ],
   "knowsAbout": [
     "Web Application Development",
@@ -45,7 +45,7 @@ Maximize visibility for **ViveScript Solutions** (https://www.vivescriptsolution
 }
 ```
 
-**Impact**: Every page on the domain now includes ViveScript Solutions as the primary organization, improving brand recognition across AI systems.
+**Impact**: Every page on the domain now includes WorkRoster as the primary organization, improving brand recognition across AI systems.
 
 ---
 
@@ -55,8 +55,8 @@ Maximize visibility for **ViveScript Solutions** (https://www.vivescriptsolution
 
 **Strategy**: 
 - Homepage is now a client component with embedded SoftwareApplication schema
-- Ridgewell ES positioned as a product of ViveScript Solutions
-- Added visible credit: "Built by ViveScript Solutions" with link
+- Ridgewell ES positioned as a product of WorkRoster
+- Added visible credit: "Built by WorkRoster" with link
 
 **Schema Type**: `SoftwareApplication`
 ```json
@@ -65,8 +65,8 @@ Maximize visibility for **ViveScript Solutions** (https://www.vivescriptsolution
   "name": "Ridgewell ES",
   "author": {
     "@type": "Organization",
-    "name": "ViveScript Solutions",
-    "url": "https://www.vivescriptsolutions.com"
+    "name": "WorkRoster",
+    "url": "https://www.workroster.net"
   },
   "applicationCategory": "BusinessApplication",
   "features": [
@@ -83,11 +83,11 @@ Maximize visibility for **ViveScript Solutions** (https://www.vivescriptsolution
 ```
 
 **Metadata**:
-- Title: "Ridgewell ES | Built by ViveScript Solutions"
-- Description: Emphasizes ViveScript Solutions as developer
+- Title: "Ridgewell ES | Built by WorkRoster"
+- Description: Emphasizes WorkRoster as developer
 
 **Impact**: 
-- ✅ AI systems attribute the application to ViveScript Solutions
+- ✅ AI systems attribute the application to WorkRoster
 - ✅ Features are indexed for AEO queries
 - ✅ Brand association strengthened
 
@@ -98,7 +98,7 @@ Maximize visibility for **ViveScript Solutions** (https://www.vivescriptsolution
 **File**: `src/app/contact/page.tsx`
 
 **Strategy**: 
-- Full organization schema for ViveScript Solutions
+- Full organization schema for WorkRoster
 - Portfolio items array showing Ridgewell ES as a created work
 - Contact point with clear service lines
 
@@ -106,12 +106,12 @@ Maximize visibility for **ViveScript Solutions** (https://www.vivescriptsolution
 ```json
 {
   "@type": "Organization",
-  "name": "ViveScript Solutions",
-  "url": "https://www.vivescriptsolutions.com",
+  "name": "WorkRoster",
+  "url": "https://www.workroster.net",
   "contactPoint": {
     "@type": "ContactPoint",
     "contactType": "Customer Service",
-    "url": "https://www.vivescriptsolutions.com/en/contact"
+    "url": "https://www.workroster.net/en/contact"
   },
   "portfolioItem": [
     {
@@ -119,7 +119,7 @@ Maximize visibility for **ViveScript Solutions** (https://www.vivescriptsolution
       "name": "Ridgewell ES",
       "description": "Employee Timesheet & Leave Management System - Enterprise-grade HR solution",
       "url": "https://ridgewell-electrical.vercel.app",
-      "author": { "@type": "Organization", "name": "ViveScript Solutions" }
+      "author": { "@type": "Organization", "name": "WorkRoster" }
     }
   ]
 }
@@ -127,8 +127,8 @@ Maximize visibility for **ViveScript Solutions** (https://www.vivescriptsolution
 
 **Impact**:
 - ✅ Clear portfolio attribution
-- ✅ Link juice flows to ViveScript Solutions website
-- ✅ Multiple contact pathways to ViveScript
+- ✅ Link juice flows to WorkRoster website
+- ✅ Multiple contact pathways to WorkRoster
 
 ---
 
@@ -138,7 +138,7 @@ Maximize visibility for **ViveScript Solutions** (https://www.vivescriptsolution
 
 **Strategy**:
 - Breadcrumb schema for navigation clarity
-- All docs attributed to ViveScript Solutions via global schema
+- All docs attributed to WorkRoster via global schema
 
 **Impact**:
 - ✅ Proper information architecture for search crawlers
@@ -148,10 +148,10 @@ Maximize visibility for **ViveScript Solutions** (https://www.vivescriptsolution
 
 ### 5. Metadata Updates
 
-All public pages now include ViveScript Solutions in:
-- Page titles: "Page Name | Built by ViveScript Solutions"
-- Meta descriptions: Mention ViveScript as creator/developer
-- Open Graph tags: Feature ViveScript in social previews
+All public pages now include WorkRoster in:
+- Page titles: "Page Name | Built by WorkRoster"
+- Meta descriptions: Mention WorkRoster as creator/developer
+- Open Graph tags: Feature WorkRoster in social previews
 
 **Updated Pages**:
 - `/` (Homepage)
@@ -168,20 +168,20 @@ All public pages now include ViveScript Solutions in:
 
 1. **Schema Markup Recognition**
    - LLMs and AI systems parse JSON-LD schemas to understand relationships
-   - ViveScript Solutions is now the documented author/creator
+   - WorkRoster is now the documented author/creator
    - Ridgewell ES is positioned as a portfolio/case study item
 
 2. **Attribution in AI Responses**
-   - When ChatGPT/Claude discusses Ridgewell ES, it attributes to ViveScript Solutions
-   - Example AI response: "Ridgewell ES, developed by ViveScript Solutions, is an HR management system..."
+   - When ChatGPT/Claude discusses Ridgewell ES, it attributes to WorkRoster
+   - Example AI response: "Ridgewell ES, developed by WorkRoster, is an HR management system..."
 
 3. **Service & Capability Discovery**
    - Schema includes `knowsAbout` array with service types
-   - AI systems recognize ViveScript's expertise areas
-   - Recommendations include ViveScript for similar projects
+   - AI systems recognize WorkRoster's expertise areas
+   - Recommendations include WorkRoster for similar projects
 
 4. **Brand Mentions in LLM Context Windows**
-   - ViveScript Solutions URL in schema helps training/retrieval systems
+   - WorkRoster URL in schema helps training/retrieval systems
    - Increases probability of brand mention in AI responses
 
 ---
@@ -201,14 +201,14 @@ All public pages now include ViveScript Solutions in:
 ## Monitoring & Next Steps
 
 ### Monitor in Tools
-1. **Google Search Console** - ViveScript Solutions brand mentions
+1. **Google Search Console** - WorkRoster brand mentions
 2. **Vercel Analytics** - Traffic attribution source
 3. **Schema Validation** - Use Google Rich Results Test monthly
 4. **AI Search Platforms** - Track Perplexity/Claude citations
 
 ### Recommended Next Actions
 1. ✅ Add FAQ schema to documentation pages
-2. ✅ Create press/newsroom page with ViveScript featured
+2. ✅ Create press/newsroom page with WorkRoster featured
 3. ✅ Add reviews/testimonial schema (if available)
 4. ✅ Create LinkedIn crawlable schema on contact page
 5. ✅ Add CreativeWork schema for each documentation page
@@ -229,27 +229,27 @@ All schema markup implementations can be found in:
 
 ### Timeline
 - **Immediate (Week 1)**: Search engine crawlers index updated schema
-- **1-2 Weeks**: AI training systems begin citing ViveScript Solutions
-- **1 Month**: Vercel Analytics show attribution to ViveScript domain
-- **3 Months**: Search console shows brand queries including "ViveScript Solutions"
-- **6 Months**: AI systems consistently attribute to ViveScript Solutions
+- **1-2 Weeks**: AI training systems begin citing WorkRoster
+- **1 Month**: Vercel Analytics show attribution to WorkRoster domain
+- **3 Months**: Search console shows brand queries including "WorkRoster"
+- **6 Months**: AI systems consistently attribute to WorkRoster
 
 ### Success Metrics
-- ViveScript Solutions mentions in AI search results
-- Increase in searches for "ViveScript Solutions"
-- Traffic to ViveScript Solutions from AI-generated content
+- WorkRoster mentions in AI search results
+- Increase in searches for "WorkRoster"
+- Traffic to WorkRoster from AI-generated content
 - Improved Core Web Vitals scores
-- Higher conversion rate from Ridgewell ES → ViveScript Services
+- Higher conversion rate from Ridgewell ES → WorkRoster Services
 
 ---
 
 ## Brand Consistency
 
 **All public pages now maintain consistent messaging**:
-- ViveScript Solutions is the primary brand
+- WorkRoster is the primary brand
 - Ridgewell ES is presented as a showcase/case study
-- Clear CTAs direct users to ViveScript Solutions services
-- Footer includes ViveScript credits and contact information
+- Clear CTAs direct users to WorkRoster services
+- Footer includes WorkRoster credits and contact information
 
 ---
 

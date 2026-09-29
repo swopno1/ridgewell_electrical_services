@@ -49,19 +49,19 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              "name": "ViveScript Solutions",
-              "url": "https://www.vivescriptsolutions.com",
-              "logo": "https://www.vivescriptsolutions.com/logo.png",
+              "name": "WorkRoster",
+              "url": "https://www.workroster.net",
+              "logo": "https://www.workroster.net/logo.png",
               "description": "Leading software development and digital transformation company specializing in custom web applications and enterprise solutions",
               "sameAs": [
-                "https://www.vivescriptsolutions.com",
-                "https://www.vivescriptsolutions.com/en/services",
-                "https://www.vivescriptsolutions.com/en/contact"
+                "https://www.workroster.net",
+                "https://www.workroster.net/en/services",
+                "https://www.workroster.net/en/contact"
               ],
               "contactPoint": {
                 "@type": "ContactPoint",
                 "contactType": "Customer Service",
-                "url": "https://www.vivescriptsolutions.com/en/contact"
+                "url": "https://www.workroster.net/en/contact"
               },
               "areaServed": "Global",
               "knowsAbout": [

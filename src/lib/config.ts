@@ -155,17 +155,17 @@ export const appConfig = {
 
   // Developer Company
   developer: {
-    name: "ViveScript Solutions",
-    website: "https://www.vivescriptsolutions.com/",
-    contact: "https://www.vivescriptsolutions.com/en/contact",
-    services: "https://www.vivescriptsolutions.com/en/services",
+    name: "WorkRoster",
+    website: "https://www.workroster.net/",
+    contact: "https://www.workroster.net/en/contact",
+    services: "https://www.workroster.net/en/services",
   },
 
   // Email
   email: {
     from: "noreply@ridgewelles.co.uk",
     fromName: "Ridgewell ES",
-    supportEmail: "info@vivescriptsolutions.com",
+    supportEmail: "info@workroster.net",
     enableNotifications: true,
   },
 

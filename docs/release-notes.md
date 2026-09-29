@@ -1,6 +1,6 @@
 # Release Notes
 
-Official release notes for **Ridgewell ES** — the timesheet and leave management system for Ridgewell Electrical Services, developed by ViveScript Solutions.
+Official release notes for **Ridgewell ES** — the timesheet and leave management system for Ridgewell Electrical Services, developed by WorkRoster.
 
 ---
 
@@ -63,4 +63,4 @@ Official release notes for **Ridgewell ES** — the timesheet and leave manageme
 ---
 
 **Prepared for:** Ridgewell Electrical Services LTD
-**Developed by:** ViveScript Solutions
+**Developed by:** WorkRoster

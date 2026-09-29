@@ -75,7 +75,7 @@ export default function DocsPage() {
             </p>
             <div className="flex flex-wrap gap-3 pt-1">
               <a
-                href="mailto:info@vivescriptsolutions.com"
+                href="mailto:info@workroster.net"
                 className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-100 transition-colors"
               >
                 Email Support

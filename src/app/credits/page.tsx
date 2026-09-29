@@ -73,14 +73,14 @@ export default async function CreditsPage() {
           <div className="space-y-4">
             <div>
               <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-2">
-                ViveScript Solutions
+                WorkRoster
               </h3>
               <p className="text-slate-600 dark:text-slate-400 mb-4">
-                ViveScript Solutions is a leading software development and digital transformation company specializing in custom web applications, enterprise solutions, and digital innovation.
+                WorkRoster is a leading software development and digital transformation company specializing in custom web applications, enterprise solutions, and digital innovation.
               </p>
 
               <div className="flex flex-wrap gap-3">
-                <Link href="https://www.vivescriptsolutions.com/" target="_blank" rel="noopener noreferrer">
+                <Link href="https://www.workroster.net/" target="_blank" rel="noopener noreferrer">
                   <Button
                     variant="outline"
                     className="border-blue-200 dark:border-blue-700 hover:bg-blue-100 dark:hover:bg-blue-900/50"
@@ -91,7 +91,7 @@ export default async function CreditsPage() {
                   </Button>
                 </Link>
 
-                <Link href="https://www.vivescriptsolutions.com/en/contact" target="_blank" rel="noopener noreferrer">
+                <Link href="https://www.workroster.net/en/contact" target="_blank" rel="noopener noreferrer">
                   <Button
                     variant="outline"
                     className="border-blue-200 dark:border-blue-700 hover:bg-blue-100 dark:hover:bg-blue-900/50"
@@ -102,7 +102,7 @@ export default async function CreditsPage() {
                   </Button>
                 </Link>
 
-                <Link href="https://www.vivescriptsolutions.com/en/services" target="_blank" rel="noopener noreferrer">
+                <Link href="https://www.workroster.net/en/services" target="_blank" rel="noopener noreferrer">
                   <Button
                     variant="outline"
                     className="border-blue-200 dark:border-blue-700 hover:bg-blue-100 dark:hover:bg-blue-900/50"
@@ -198,19 +198,19 @@ export default async function CreditsPage() {
           </h2>
 
           <p className="text-slate-600 dark:text-slate-400 mb-4">
-            For support, inquiries, or service requests, please reach out to ViveScript Solutions directly:
+            For support, inquiries, or service requests, please reach out to WorkRoster directly:
           </p>
 
           <div className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
-            <p><strong>Website:</strong> <a href="https://www.vivescriptsolutions.com/" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">https://www.vivescriptsolutions.com/</a></p>
-            <p><strong>Contact:</strong> <a href="https://www.vivescriptsolutions.com/en/contact" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">https://www.vivescriptsolutions.com/en/contact</a></p>
-            <p><strong>Services:</strong> <a href="https://www.vivescriptsolutions.com/en/services" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">https://www.vivescriptsolutions.com/en/services</a></p>
+            <p><strong>Website:</strong> <a href="https://www.workroster.net/" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">https://www.workroster.net/</a></p>
+            <p><strong>Contact:</strong> <a href="https://www.workroster.net/en/contact" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">https://www.workroster.net/en/contact</a></p>
+            <p><strong>Services:</strong> <a href="https://www.workroster.net/en/services" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">https://www.workroster.net/en/services</a></p>
           </div>
         </div>
 
         {/* Footer Note */}
         <div className="text-center text-xs text-slate-500 dark:text-slate-400 py-4">
-          <p>© {new Date().getFullYear()} ViveScript Solutions. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} WorkRoster. All rights reserved.</p>
           <p className="mt-1">Ridgewell ES - Employee Timesheet & Leave Management System</p>
         </div>
       </div>

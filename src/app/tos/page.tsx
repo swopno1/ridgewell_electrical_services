@@ -1,8 +1,8 @@
 import { PublicLayout } from "@/components/layouts/PublicLayout";
 
 export const metadata = {
-  title: "Terms of Service | Ridgewell ES by ViveScript Solutions",
-  description: "Terms of Service for Ridgewell ES, an enterprise HR solution by ViveScript Solutions. Read the complete terms and conditions.",
+  title: "Terms of Service | Ridgewell ES by WorkRoster",
+  description: "Terms of Service for Ridgewell ES, an enterprise HR solution by WorkRoster. Read the complete terms and conditions.",
 };
 
 export default function TermsOfServicePage() {
@@ -88,7 +88,7 @@ export default function TermsOfServicePage() {
             </h2>
             <p>
               Ridgewell ES is provided "as is" without any warranties. In no
-              event shall ViveScript Solutions, the developers, or any related
+              event shall WorkRoster, the developers, or any related
               parties be liable for any indirect, incidental, special, or
               consequential damages arising from the use or inability to use the
               system.
@@ -129,7 +129,7 @@ export default function TermsOfServicePage() {
             </h2>
             <p>
               All content, features, and functionality of Ridgewell ES are owned
-              by ViveScript Solutions, its licensors, or other providers of such
+              by WorkRoster, its licensors, or other providers of such
               material. Your use of the system does not grant you ownership of
               any intellectual property rights.
             </p>
@@ -165,30 +165,30 @@ export default function TermsOfServicePage() {
             </h2>
             <p>
               If you have any questions about these Terms of Service, please
-              contact ViveScript Solutions:
+              contact WorkRoster:
             </p>
             <div className="bg-slate-100 dark:bg-slate-900 p-4 rounded-lg mt-3">
               <p className="text-sm">
-                <strong>ViveScript Solutions</strong>
+                <strong>WorkRoster</strong>
                 <br />
                 Website:{" "}
                 <a
-                  href="https://www.vivescriptsolutions.com/"
+                  href="https://www.workroster.net/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 dark:text-blue-400 hover:underline"
                 >
-                  https://www.vivescriptsolutions.com/
+                  https://www.workroster.net/
                 </a>
                 <br />
                 Contact:{" "}
                 <a
-                  href="https://www.vivescriptsolutions.com/en/contact"
+                  href="https://www.workroster.net/en/contact"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 dark:text-blue-400 hover:underline"
                 >
-                  https://www.vivescriptsolutions.com/en/contact
+                  https://www.workroster.net/en/contact
                 </a>
               </p>
             </div>

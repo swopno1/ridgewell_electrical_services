@@ -2,10 +2,10 @@ import { PublicLayout } from "@/components/layouts/PublicLayout";
 import { ExternalLink, Mail, Globe } from "lucide-react";
 
 export const metadata = {
-  title: "Contact & Credits | Ridgewell ES by ViveScript Solutions",
-  description: "Get in touch with ViveScript Solutions, creators of Ridgewell ES. Learn about their digital transformation and custom web application services.",
+  title: "Contact & Credits | Ridgewell ES by WorkRoster",
+  description: "Get in touch with WorkRoster, creators of Ridgewell ES. Learn about their digital transformation and custom web application services.",
   openGraph: {
-    title: "Contact ViveScript Solutions - Creators of Ridgewell ES",
+    title: "Contact WorkRoster - Creators of Ridgewell ES",
     description: "Enterprise software development company specializing in custom web applications and digital transformation.",
     url: "https://ridgewell-electrical.vercel.app/contact",
   },
@@ -20,20 +20,20 @@ export default function ContactPage() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Organization",
-            "name": "ViveScript Solutions",
-            "url": "https://www.vivescriptsolutions.com",
+            "name": "WorkRoster",
+            "url": "https://www.workroster.net",
             "description": "Leading software development and digital transformation company specializing in custom web applications, enterprise solutions, and digital innovation",
-            "logo": "https://www.vivescriptsolutions.com/logo.png",
+            "logo": "https://www.workroster.net/logo.png",
             "sameAs": [
-              "https://www.vivescriptsolutions.com",
-              "https://www.vivescriptsolutions.com/en/services",
-              "https://www.vivescriptsolutions.com/en/contact"
+              "https://www.workroster.net",
+              "https://www.workroster.net/en/services",
+              "https://www.workroster.net/en/contact"
             ],
             "contactPoint": {
               "@type": "ContactPoint",
               "contactType": "Customer Service",
-              "url": "https://www.vivescriptsolutions.com/en/contact",
-              "email": "contact@vivescriptsolutions.com"
+              "url": "https://www.workroster.net/en/contact",
+              "email": "contact@workroster.net"
             },
             "areaServed": "Global",
             "serviceArea": "Global",
@@ -53,7 +53,7 @@ export default function ContactPage() {
                 "name": "Ridgewell ES",
                 "description": "Employee Timesheet & Leave Management System - Enterprise-grade HR solution",
                 "url": "https://ridgewell-electrical.vercel.app",
-                "author": { "@type": "Organization", "name": "ViveScript Solutions" }
+                "author": { "@type": "Organization", "name": "WorkRoster" }
               }
             ]
           })
@@ -124,17 +124,17 @@ export default function ContactPage() {
           <div className="space-y-4">
             <div>
               <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-2">
-                ViveScript Solutions
+                WorkRoster
               </h3>
               <p className="text-slate-600 dark:text-slate-400 mb-4">
-                ViveScript Solutions is a leading software development and
+                WorkRoster is a leading software development and
                 digital transformation company specializing in custom web
                 applications, enterprise solutions, and digital innovation.
               </p>
 
               <div className="flex flex-wrap gap-3">
                 <a
-                  href="https://www.vivescriptsolutions.com/"
+                  href="https://www.workroster.net/"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -146,7 +146,7 @@ export default function ContactPage() {
                 </a>
 
                 <a
-                  href="https://www.vivescriptsolutions.com/en/contact"
+                  href="https://www.workroster.net/en/contact"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -158,7 +158,7 @@ export default function ContactPage() {
                 </a>
 
                 <a
-                  href="https://www.vivescriptsolutions.com/en/services"
+                  href="https://www.workroster.net/en/services"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -258,7 +258,7 @@ export default function ContactPage() {
           </h2>
 
           <p className="text-slate-600 dark:text-slate-400 mb-4">
-            Have questions or need support? Contact ViveScript Solutions:
+            Have questions or need support? Contact WorkRoster:
           </p>
 
           <div className="space-y-3 text-sm text-slate-600 dark:text-slate-400">
@@ -267,12 +267,12 @@ export default function ContactPage() {
                 Website:
               </strong>{" "}
               <a
-                href="https://www.vivescriptsolutions.com/"
+                href="https://www.workroster.net/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 dark:text-blue-400 hover:underline"
               >
-                https://www.vivescriptsolutions.com/
+                https://www.workroster.net/
               </a>
             </p>
             <p>
@@ -280,12 +280,12 @@ export default function ContactPage() {
                 Contact Form:
               </strong>{" "}
               <a
-                href="https://www.vivescriptsolutions.com/en/contact"
+                href="https://www.workroster.net/en/contact"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 dark:text-blue-400 hover:underline"
               >
-                https://www.vivescriptsolutions.com/en/contact
+                https://www.workroster.net/en/contact
               </a>
             </p>
             <p>
@@ -293,12 +293,12 @@ export default function ContactPage() {
                 Services:
               </strong>{" "}
               <a
-                href="https://www.vivescriptsolutions.com/en/services"
+                href="https://www.workroster.net/en/services"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 dark:text-blue-400 hover:underline"
               >
-                https://www.vivescriptsolutions.com/en/services
+                https://www.workroster.net/en/services
               </a>
             </p>
           </div>

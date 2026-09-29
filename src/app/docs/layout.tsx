@@ -3,8 +3,8 @@ import { Sidebar } from './Sidebar';
 import { PublicLayout } from '@/components/layouts/PublicLayout';
 
 export const metadata = {
-  title: "Documentation | Ridgewell ES - Built by ViveScript Solutions",
-  description: "Complete documentation and guides for Ridgewell ES, an enterprise timesheet and leave management system created by ViveScript Solutions.",
+  title: "Documentation | Ridgewell ES - Built by WorkRoster",
+  description: "Complete documentation and guides for Ridgewell ES, an enterprise timesheet and leave management system created by WorkRoster.",
 };
 
 export default function DocsLayout({

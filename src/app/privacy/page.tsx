@@ -1,8 +1,8 @@
 import { PublicLayout } from "@/components/layouts/PublicLayout";
 
 export const metadata = {
-  title: "Privacy Policy | Ridgewell ES by ViveScript Solutions",
-  description: "Privacy Policy for Ridgewell ES. Learn how ViveScript Solutions protects your personal data and maintains GDPR compliance.",
+  title: "Privacy Policy | Ridgewell ES by WorkRoster",
+  description: "Privacy Policy for Ridgewell ES. Learn how WorkRoster protects your personal data and maintains GDPR compliance.",
 };
 
 export default function PrivacyPage() {
@@ -29,7 +29,7 @@ export default function PrivacyPage() {
               1. Introduction
             </h2>
             <p>
-              ViveScript Solutions ("we", "our", or "us") operates the Ridgewell
+              WorkRoster ("we", "our", or "us") operates the Ridgewell
               ES application. This page informs you of our policies regarding
               the collection, use, and disclosure of personal data when you use
               our service and the choices you have associated with that data.
@@ -192,26 +192,26 @@ export default function PrivacyPage() {
             </p>
             <div className="bg-slate-100 dark:bg-slate-900 p-4 rounded-lg mt-3">
               <p className="text-sm">
-                <strong>ViveScript Solutions</strong>
+                <strong>WorkRoster</strong>
                 <br />
                 Website:{" "}
                 <a
-                  href="https://www.vivescriptsolutions.com/"
+                  href="https://www.workroster.net/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 dark:text-blue-400 hover:underline"
                 >
-                  https://www.vivescriptsolutions.com/
+                  https://www.workroster.net/
                 </a>
                 <br />
                 Contact:{" "}
                 <a
-                  href="https://www.vivescriptsolutions.com/en/contact"
+                  href="https://www.workroster.net/en/contact"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 dark:text-blue-400 hover:underline"
                 >
-                  https://www.vivescriptsolutions.com/en/contact
+                  https://www.workroster.net/en/contact
                 </a>
               </p>
             </div>

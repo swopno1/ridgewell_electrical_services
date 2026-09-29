@@ -41,13 +41,13 @@ export default function HomePage() {
               "https://ridgewell-electrical.vercel.app/banner_ridgewell_es.png",
             author: {
               "@type": "Organization",
-              name: "ViveScript Solutions",
-              url: "https://www.vivescriptsolutions.com",
+              name: "WorkRoster",
+              url: "https://www.workroster.net",
               description:
                 "Leading software development and digital transformation company specializing in custom web applications and enterprise solutions",
               sameAs: [
-                "https://www.vivescriptsolutions.com/en/services",
-                "https://www.vivescriptsolutions.com/en/contact",
+                "https://www.workroster.net/en/services",
+                "https://www.workroster.net/en/contact",
               ],
             },
             features: [
@@ -112,12 +112,12 @@ export default function HomePage() {
             <p className="mb-8 text-xs text-slate-500">
               Built by{" "}
               <a
-                href="https://www.vivescriptsolutions.com"
+                href="https://www.workroster.net"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-400 hover:text-blue-300"
               >
-                ViveScript Solutions
+                WorkRoster
               </a>
             </p>
 
