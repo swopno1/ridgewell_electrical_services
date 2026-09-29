@@ -183,12 +183,12 @@ export default function TermsOfServicePage() {
                 <br />
                 Contact:{" "}
                 <a
-                  href="https://www.workroster.net/en/contact"
+                  href="https://www.workroster.net/contact"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 dark:text-blue-400 hover:underline"
                 >
-                  https://www.workroster.net/en/contact
+                  https://www.workroster.net/contact
                 </a>
               </p>
             </div>

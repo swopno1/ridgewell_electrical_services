@@ -46,8 +46,7 @@ export default function HomePage() {
               description:
                 "Leading software development and digital transformation company specializing in custom web applications and enterprise solutions",
               sameAs: [
-                "https://www.workroster.net/en/services",
-                "https://www.workroster.net/en/contact",
+                "https://www.workroster.net/contact",
               ],
             },
             features: [

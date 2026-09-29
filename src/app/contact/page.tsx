@@ -26,13 +26,12 @@ export default function ContactPage() {
             "logo": "https://www.workroster.net/logo.png",
             "sameAs": [
               "https://www.workroster.net",
-              "https://www.workroster.net/en/services",
-              "https://www.workroster.net/en/contact"
+              "https://www.workroster.net/contact"
             ],
             "contactPoint": {
               "@type": "ContactPoint",
               "contactType": "Customer Service",
-              "url": "https://www.workroster.net/en/contact",
+              "url": "https://www.workroster.net/contact",
               "email": "contact@workroster.net"
             },
             "areaServed": "Global",
@@ -146,24 +145,13 @@ export default function ContactPage() {
                 </a>
 
                 <a
-                  href="https://www.workroster.net/en/contact"
+                  href="https://www.workroster.net/contact"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <button className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-blue-200 dark:border-blue-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors text-sm font-medium">
                     <Mail className="h-4 w-4" />
                     Send Email
-                    <ExternalLink className="h-3 w-3" />
-                  </button>
-                </a>
-
-                <a
-                  href="https://www.workroster.net/en/services"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <button className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-blue-200 dark:border-blue-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors text-sm font-medium">
-                    Our Services
                     <ExternalLink className="h-3 w-3" />
                   </button>
                 </a>
@@ -280,25 +268,12 @@ export default function ContactPage() {
                 Contact Form:
               </strong>{" "}
               <a
-                href="https://www.workroster.net/en/contact"
+                href="https://www.workroster.net/contact"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 dark:text-blue-400 hover:underline"
               >
-                https://www.workroster.net/en/contact
-              </a>
-            </p>
-            <p>
-              <strong className="text-slate-900 dark:text-white">
-                Services:
-              </strong>{" "}
-              <a
-                href="https://www.workroster.net/en/services"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 dark:text-blue-400 hover:underline"
-              >
-                https://www.workroster.net/en/services
+                https://www.workroster.net/contact
               </a>
             </p>
           </div>

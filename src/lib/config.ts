@@ -157,8 +157,7 @@ export const appConfig = {
   developer: {
     name: "WorkRoster",
     website: "https://www.workroster.net/",
-    contact: "https://www.workroster.net/en/contact",
-    services: "https://www.workroster.net/en/services",
+    contact: "https://www.workroster.net/contact",
   },
 
   // Email

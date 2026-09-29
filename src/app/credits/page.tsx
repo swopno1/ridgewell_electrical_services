@@ -91,23 +91,13 @@ export default async function CreditsPage() {
                   </Button>
                 </Link>
 
-                <Link href="https://www.workroster.net/en/contact" target="_blank" rel="noopener noreferrer">
+                <Link href="https://www.workroster.net/contact" target="_blank" rel="noopener noreferrer">
                   <Button
                     variant="outline"
                     className="border-blue-200 dark:border-blue-700 hover:bg-blue-100 dark:hover:bg-blue-900/50"
                   >
                     <Mail className="h-4 w-4 mr-2" />
                     Contact Us
-                    <ExternalLink className="h-3 w-3 ml-1" />
-                  </Button>
-                </Link>
-
-                <Link href="https://www.workroster.net/en/services" target="_blank" rel="noopener noreferrer">
-                  <Button
-                    variant="outline"
-                    className="border-blue-200 dark:border-blue-700 hover:bg-blue-100 dark:hover:bg-blue-900/50"
-                  >
-                    Our Services
                     <ExternalLink className="h-3 w-3 ml-1" />
                   </Button>
                 </Link>
@@ -203,8 +193,7 @@ export default async function CreditsPage() {
 
           <div className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
             <p><strong>Website:</strong> <a href="https://www.workroster.net/" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">https://www.workroster.net/</a></p>
-            <p><strong>Contact:</strong> <a href="https://www.workroster.net/en/contact" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">https://www.workroster.net/en/contact</a></p>
-            <p><strong>Services:</strong> <a href="https://www.workroster.net/en/services" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">https://www.workroster.net/en/services</a></p>
+            <p><strong>Contact:</strong> <a href="https://www.workroster.net/contact" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">https://www.workroster.net/contact</a></p>
           </div>
         </div>
 

@@ -31,8 +31,7 @@ Maximize visibility for **WorkRoster** (https://www.workroster.net) across:
   "description": "Leading software development and digital transformation company specializing in custom web applications and enterprise solutions",
   "sameAs": [
     "https://www.workroster.net",
-    "https://www.workroster.net/en/services",
-    "https://www.workroster.net/en/contact"
+    "https://www.workroster.net/contact"
   ],
   "knowsAbout": [
     "Web Application Development",
@@ -111,7 +110,7 @@ Maximize visibility for **WorkRoster** (https://www.workroster.net) across:
   "contactPoint": {
     "@type": "ContactPoint",
     "contactType": "Customer Service",
-    "url": "https://www.workroster.net/en/contact"
+    "url": "https://www.workroster.net/contact"
   },
   "portfolioItem": [
     {
