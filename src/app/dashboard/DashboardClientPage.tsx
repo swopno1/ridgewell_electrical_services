@@ -123,15 +123,6 @@ export function DashboardClientPage({
             {/* Page Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
-                {/* TODO: Need to remove this warning after 7 August. */}
-                <h1 className="text-xl tracking-tight text-indigo-700 dark:text-white">
-                  <span className="font-extrabold">Attention!!</span> Please
-                  note that this app will no longer be able to send email
-                  notifications from 1 August 2026, as the personal email API
-                  used by the provider will no longer be supported. Please check
-                  your email inbox for further details or contact the
-                  administrator if you need assistance.
-                </h1>
                 <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
                   Welcome back, {getFirstName(user.name)}
                 </h1>
