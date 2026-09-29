@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { appConfig } from '@/lib/config';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import Image from "next/image";
+import { appConfig } from "@/lib/config";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function HomePage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -12,7 +12,7 @@ export default function HomePage() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch('/api/auth/session');
+        const response = await fetch("/api/auth/session");
         const session = await response.json();
         setIsAuthenticated(!!session?.user);
       } catch {
@@ -33,22 +33,24 @@ export default function HomePage() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
-            "name": "Ridgewell ES",
-            "applicationCategory": "BusinessApplication",
-            "description": appConfig.app.description,
-            "url": "https://ridgewell-electrical.vercel.app",
-            "screenshot": "https://ridgewell-electrical.vercel.app/banner_ridgewell_es.png",
-            "author": {
+            name: "Ridgewell ES",
+            applicationCategory: "BusinessApplication",
+            description: appConfig.app.description,
+            url: "https://ridgewell-electrical.vercel.app",
+            screenshot:
+              "https://ridgewell-electrical.vercel.app/banner_ridgewell_es.png",
+            author: {
               "@type": "Organization",
-              "name": "ViveScript Solutions",
-              "url": "https://www.vivescriptsolutions.com",
-              "description": "Leading software development and digital transformation company specializing in custom web applications and enterprise solutions",
-              "sameAs": [
+              name: "ViveScript Solutions",
+              url: "https://www.vivescriptsolutions.com",
+              description:
+                "Leading software development and digital transformation company specializing in custom web applications and enterprise solutions",
+              sameAs: [
                 "https://www.vivescriptsolutions.com/en/services",
-                "https://www.vivescriptsolutions.com/en/contact"
-              ]
+                "https://www.vivescriptsolutions.com/en/contact",
+              ],
             },
-            "features": [
+            features: [
               "Employee Time Entry & Timesheet Management",
               "Leave Request Management",
               "Interactive Calendar View",
@@ -56,15 +58,19 @@ export default function HomePage() {
               "Advanced Reporting & Analytics",
               "Role-Based Access Control",
               "Email Notifications",
-              "Progressive Web App (PWA)"
+              "Progressive Web App (PWA)",
             ],
-            "offers": {
+            relatedLink: [
+              "https://www.workroster.net",
+              "https://play.google.com/store/apps/details?id=net.workroster.app",
+            ],
+            offers: {
               "@type": "Offer",
-              "price": "Contact for pricing",
-              "priceCurrency": "USD"
+              price: "Contact for pricing",
+              priceCurrency: "USD",
             },
-            "operatingSystem": "Web (PWA Ready)"
-          })
+            operatingSystem: "Web (PWA Ready)",
+          }),
         }}
       />
       <div className="min-h-screen flex flex-col bg-slate-950">
@@ -104,7 +110,15 @@ export default function HomePage() {
               {appConfig.app.description}
             </p>
             <p className="mb-8 text-xs text-slate-500">
-              Built by <a href="https://www.vivescriptsolutions.com" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">ViveScript Solutions</a>
+              Built by{" "}
+              <a
+                href="https://www.vivescriptsolutions.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-400 hover:text-blue-300"
+              >
+                ViveScript Solutions
+              </a>
             </p>
 
             {/* Action Buttons */}
@@ -130,9 +144,39 @@ export default function HomePage() {
               )}
             </div>
 
+            <div className="mt-6 border-t border-white/10 pt-5">
+              <p className="text-xs leading-5 text-slate-300">
+                Looking for a hosted workforce platform? WorkRoster is available
+                for $1 per member per month.
+              </p>
+              <nav
+                aria-label="WorkRoster products"
+                className="mt-3 flex flex-wrap justify-center gap-x-5 gap-y-2"
+              >
+                <a
+                  href="https://www.workroster.net"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-semibold text-blue-300 underline underline-offset-2 hover:text-blue-200"
+                >
+                  Explore WorkRoster
+                </a>
+                <a
+                  href="https://play.google.com/store/apps/details?id=net.workroster.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-semibold text-blue-300 underline underline-offset-2 hover:text-blue-200"
+                >
+                  WorkRoster on Google Play
+                </a>
+              </nav>
+            </div>
+
             {/* Decorative Grid Accent */}
             <div className="mt-8 border-t border-white/5 pt-6 text-[11px] text-slate-500">
-              <p>© {new Date().getFullYear()} {appConfig.company.name}.</p>
+              <p>
+                © {new Date().getFullYear()} {appConfig.company.name}.
+              </p>
               <p className="mt-1">All rights reserved.</p>
             </div>
           </div>
@@ -143,7 +187,8 @@ export default function HomePage() {
           <div className="max-w-7xl mx-auto px-4 md:px-6 py-6">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
               <p className="text-xs text-slate-400">
-                © {new Date().getFullYear()} {appConfig.company.name}. All rights reserved.
+                © {new Date().getFullYear()} {appConfig.company.name}. All
+                rights reserved.
               </p>
               <nav className="flex items-center gap-6">
                 <Link

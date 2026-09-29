@@ -19,6 +19,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { AlertTriangle, ArrowUpRight, Bell } from "lucide-react";
 import { AppSidebar } from "@/components/dashboard/app-sidebar";
+import Link from "next/link";
 
 export function DashboardLayout({
   children,
@@ -179,14 +180,14 @@ export function DashboardLayout({
                   Due to an outstanding payment for this code, its use is no
                   longer authorized. If you have resold or deployed the code for
                   others, please{" "}
-                  <a
-                    href="/contact"
+                  <Link
+                    href="https://www.workroster.net/contact"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="font-semibold text-blue-700 underline underline-offset-2 dark:text-blue-300"
                   >
                     contact us
-                  </a>{" "}
+                  </Link>{" "}
                   to migrate your existing data to WorkRoster, our SaaS
                   application, for $1 per member per month.
                 </p>
