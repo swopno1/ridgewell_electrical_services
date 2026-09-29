@@ -1,24 +1,31 @@
 // src/app/auth/signin/page.tsx
-'use client';
+"use client";
 
-import React, { Suspense } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { signInAction } from '@/actions/auth';
-import Link from 'next/link';
-import Image from 'next/image';
-import { Eye, EyeOff, AlertCircle } from 'lucide-react';
-import { appConfig } from '@/lib/config';
+import React, { Suspense } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from "@/components/ui/card";
+import { useRouter, useSearchParams } from "next/navigation";
+import { signInAction } from "@/actions/auth";
+import Link from "next/link";
+import Image from "next/image";
+import { Eye, EyeOff, AlertCircle } from "lucide-react";
+import { appConfig } from "@/lib/config";
 
 const signInFormSchema = z.object({
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(1, 'Password is required'),
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(1, "Password is required"),
 });
 
 type SignInFormValues = z.infer<typeof signInFormSchema>;
@@ -26,23 +33,27 @@ type SignInFormValues = z.infer<typeof signInFormSchema>;
 function SignInContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  
+
   const [error, setError] = React.useState<string | null>(null);
   const [isLoading, setIsLoading] = React.useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
-  const [unverifiedEmail, setUnverifiedEmail] = React.useState<string | null>(null);
+  const [unverifiedEmail, setUnverifiedEmail] = React.useState<string | null>(
+    null,
+  );
   const [isInactive, setIsInactive] = React.useState(false);
 
   // Read error parameter from URL redirect
   React.useEffect(() => {
-    const urlError = searchParams.get('error');
-    if (urlError === 'EmailNotVerified') {
-      setError('Your email is not verified. Please verify your email to log in.');
-    } else if (urlError === 'AccountInactive') {
-      setError('Your account is pending administrator approval.');
+    const urlError = searchParams.get("error");
+    if (urlError === "EmailNotVerified") {
+      setError(
+        "Your email is not verified. Please verify your email to log in.",
+      );
+    } else if (urlError === "AccountInactive") {
+      setError("Your account is pending administrator approval.");
       setIsInactive(true);
     } else if (urlError) {
-      setError('Sign in failed. Please check your credentials.');
+      setError("Sign in failed. Please check your credentials.");
     }
   }, [searchParams]);
 
@@ -53,8 +64,8 @@ function SignInContent() {
   } = useForm<SignInFormValues>({
     resolver: zodResolver(signInFormSchema),
     defaultValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     },
   });
 
@@ -67,28 +78,31 @@ function SignInContent() {
 
     try {
       const response = await signInAction(data);
-      if (response && 'error' in response && response.error) {
-        if (response.error === 'EmailNotVerified') {
+      if (response && "error" in response && response.error) {
+        if (response.error === "EmailNotVerified") {
           setUnverifiedEmail(data.email);
-          setError('Your email is not verified. You must verify it before signing in.');
-        } else if (response.error === 'AccountInactive') {
+          setError(
+            "Your email is not verified. You must verify it before signing in.",
+          );
+        } else if (response.error === "AccountInactive") {
           setIsInactive(true);
-          setError('Your account is pending administrator approval.');
+          setError("Your account is pending administrator approval.");
         } else {
           setError(response.error);
         }
       } else {
         // Redirection on success
-        const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
+        window.sessionStorage.removeItem("workroster-notice-dismissed");
+        const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
         router.push(callbackUrl);
         router.refresh();
       }
     } catch (e: any) {
       // Re-throw redirect errors so Next.js handles route transitions
-      if (e.message === 'NEXT_REDIRECT') {
+      if (e.message === "NEXT_REDIRECT") {
         throw e;
       }
-      setError('An unexpected error occurred. Please try again.');
+      setError("An unexpected error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -118,18 +132,27 @@ function SignInContent() {
         <Card className="border border-slate-200 dark:border-slate-800 shadow-xl bg-white dark:bg-slate-950">
           <CardHeader className="space-y-1">
             <CardTitle className="text-xl font-bold">Welcome back</CardTitle>
-            <CardDescription>Enter your email and password to log in.</CardDescription>
+            <CardDescription>
+              Enter your email and password to log in.
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
+            <form
+              onSubmit={handleSubmit(handleFormSubmit)}
+              className="space-y-4"
+            >
               {error && (
-                <div className={`p-3.5 text-sm rounded-lg flex flex-col gap-2 ${
-                  isInactive
-                  ? 'bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/50 text-amber-700 dark:text-amber-400'
-                  : 'bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800/50 text-red-600 dark:text-red-400'
-                }`}>
+                <div
+                  className={`p-3.5 text-sm rounded-lg flex flex-col gap-2 ${
+                    isInactive
+                      ? "bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/50 text-amber-700 dark:text-amber-400"
+                      : "bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800/50 text-red-600 dark:text-red-400"
+                  }`}
+                >
                   <div className="flex items-start gap-2">
-                    {isInactive ? <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" /> : null}
+                    {isInactive ? (
+                      <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
+                    ) : null}
                     <span className="font-medium">{error}</span>
                   </div>
                   {unverifiedEmail && (
@@ -142,8 +165,9 @@ function SignInContent() {
                   )}
                   {isInactive && (
                     <p className="text-xs leading-normal opacity-90">
-                      An administrator needs to review and activate your account before you can sign in.
-                      You will receive an email once your account has been approved.
+                      An administrator needs to review and activate your account
+                      before you can sign in. You will receive an email once
+                      your account has been approved.
                     </p>
                   )}
                 </div>
@@ -157,11 +181,17 @@ function SignInContent() {
                   type="email"
                   placeholder="name@company.com"
                   disabled={isLoading}
-                  className={errors.email ? 'border-red-500 focus-visible:ring-red-500' : ''}
-                  {...register('email')}
+                  className={
+                    errors.email
+                      ? "border-red-500 focus-visible:ring-red-500"
+                      : ""
+                  }
+                  {...register("email")}
                 />
                 {errors.email && (
-                  <p className="text-xs text-red-500 font-medium">{errors.email.message}</p>
+                  <p className="text-xs text-red-500 font-medium">
+                    {errors.email.message}
+                  </p>
                 )}
               </div>
 
@@ -179,11 +209,11 @@ function SignInContent() {
                 <div className="relative">
                   <Input
                     id="password"
-                    type={showPassword ? 'text' : 'password'}
+                    type={showPassword ? "text" : "password"}
                     placeholder="Enter password"
                     disabled={isLoading}
-                    className={`pr-10 ${errors.password ? 'border-red-500 focus-visible:ring-red-500' : ''}`}
-                    {...register('password')}
+                    className={`pr-10 ${errors.password ? "border-red-500 focus-visible:ring-red-500" : ""}`}
+                    {...register("password")}
                   />
                   <button
                     type="button"
@@ -191,11 +221,17 @@ function SignInContent() {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
                   >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
                   </button>
                 </div>
                 {errors.password && (
-                  <p className="text-xs text-red-500 font-medium">{errors.password.message}</p>
+                  <p className="text-xs text-red-500 font-medium">
+                    {errors.password.message}
+                  </p>
                 )}
               </div>
 
@@ -204,13 +240,13 @@ function SignInContent() {
                 disabled={isLoading}
                 className="w-full mt-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition-all"
               >
-                {isLoading ? 'Signing in...' : 'Sign In'}
+                {isLoading ? "Signing in..." : "Sign In"}
               </Button>
             </form>
           </CardContent>
           <CardFooter className="flex flex-col space-y-2 text-center text-xs text-slate-500 border-t border-slate-100 dark:border-slate-800/50 pt-4">
             <p>
-              Don't have an account?{' '}
+              Don't have an account?{" "}
               <Link
                 href="/auth/signup"
                 className="font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
@@ -227,7 +263,13 @@ function SignInContent() {
 
 export default function SignInPage() {
   return (
-    <Suspense fallback={<div className="flex min-h-screen items-center justify-center">Loading...</div>}>
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center">
+          Loading...
+        </div>
+      }
+    >
       <SignInContent />
     </Suspense>
   );
