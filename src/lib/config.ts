@@ -160,12 +160,16 @@ export const appConfig = {
     contact: "https://www.workroster.net/contact",
   },
 
-  // Outstanding payment notice (shown to ADMIN users only). Set enabled: false once paid.
+  // Outstanding payment notice (shown to ADMIN users only). Set enabled: false once
+  // resolved — either the balance is paid or the client moves to WorkRoster.
   paymentNotice: {
     enabled: true,
     amountDue: "$300",
-    dueDate: "2026-10-13", // yyyy-MM-dd, 14 days from issue (2026-09-29)
+    dueDate: "2026-10-13", // yyyy-MM-dd, 14 days from first request (2026-09-29)
     paymentTermsDays: 14,
+    workrosterPrice: "$1 per member per month",
+    androidAppUrl:
+      "https://play.google.com/store/apps/details?id=net.workroster.app",
   },
 
   // Email

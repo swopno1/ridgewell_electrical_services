@@ -36,12 +36,8 @@ export const authConfig = {
             return null;
           }
 
-          // Force amirhossain.limon@gmail.com to be ADMIN
-          const isLimon = email.toLowerCase() === 'amirhossain.limon@gmail.com';
-          const resolvedRole = isLimon ? 'ADMIN' : user.role;
-
-          // Block sign in if email is not verified (except for Limon admin email)
-          if (!isLimon && user.emailVerified === null) {
+          // Block sign in if email is not verified
+          if (user.emailVerified === null) {
             throw new EmailNotVerifiedError();
           }
 
@@ -55,7 +51,7 @@ export const authConfig = {
           }
 
           // Check if account is active after password verification
-          if (!isLimon && !user.active) {
+          if (!user.active) {
             throw new AccountInactiveError();
           }
 
@@ -64,7 +60,7 @@ export const authConfig = {
             email: user.email,
             name: user.name,
             image: user.image,
-            role: resolvedRole,
+            role: user.role,
           };
         } catch (error) {
           if (error instanceof EmailNotVerifiedError || error instanceof AccountInactiveError) {
@@ -83,16 +79,14 @@ export const authConfig = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        const isLimon = user.email?.toLowerCase() === 'amirhossain.limon@gmail.com';
-        token.role = isLimon ? 'ADMIN' : ((user as any).role || 'EMPLOYEE');
+        token.role = (user as any).role || 'EMPLOYEE';
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string;
-        const isLimon = session.user.email?.toLowerCase() === 'amirhossain.limon@gmail.com';
-        session.user.role = isLimon ? 'ADMIN' : (token.role as string);
+        session.user.role = token.role as string;
       }
       return session;
     },

@@ -20,12 +20,18 @@ async function main() {
   // 1. Create Users
   console.log('📝 Creating admin user...');
   
-  const adminPassword = await hashPassword('5WordKomuna*');
-  
+  const adminEmail = process.env.DEFAULT_ADMIN_EMAIL;
+  const adminPasswordPlain = process.env.DEFAULT_ADMIN_PASSWORD;
+  if (!adminEmail || !adminPasswordPlain) {
+    throw new Error('DEFAULT_ADMIN_EMAIL and DEFAULT_ADMIN_PASSWORD must be set');
+  }
+
+  const adminPassword = await hashPassword(adminPasswordPlain);
+
   const admin = await prisma.user.create({
     data: {
-      name: 'Md Amir Hossain',
-      email: 'amirhossain.limon@gmail.com',
+      name: 'Administrator',
+      email: adminEmail,
       password: adminPassword,
       role: 'ADMIN',
       active: true,
@@ -36,8 +42,7 @@ async function main() {
   console.log('✨ Database seeded successfully!');
   console.log('\n📋 Seeded Data Summary:');
   console.log(`  - Users: 1 admin (${admin.email})`);
-  console.log('\n🔐 Default Credentials:');
-  console.log('  Admin: amirhossain.limon@gmail.com / Admin@123456**');
+  console.log('\n🔐 Admin password: value of DEFAULT_ADMIN_PASSWORD');
 }
 
 main()

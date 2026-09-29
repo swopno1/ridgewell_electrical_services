@@ -64,20 +64,14 @@ export async function signUpAction(formData: unknown) {
 
     const hashedPassword = await hashPassword(validatedData.password);
 
-    // amirhossain.limon@gmail.com is forced to ADMIN and automatically verified/active
-    const isLimon = email === 'amirhossain.limon@gmail.com';
-    const role = isLimon ? 'ADMIN' : 'EMPLOYEE';
-    const emailVerified = isLimon ? new Date() : null;
-    const active = isLimon;
-
     const user = await prisma.user.create({
       data: {
         name: validatedData.name,
         email,
         password: hashedPassword,
-        role,
-        active,
-        emailVerified,
+        role: 'EMPLOYEE',
+        active: false,
+        emailVerified: null,
       },
     });
 
@@ -92,11 +86,6 @@ export async function signUpAction(formData: unknown) {
         sickUsed: 0,
       },
     });
-
-    // If verified immediately (e.g. Limon), return success
-    if (isLimon) {
-      return { success: true, verified: true };
-    }
 
     // Delete any existing tokens for this email first
     await prisma.verificationToken.deleteMany({

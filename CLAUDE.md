@@ -151,7 +151,7 @@ const role = session?.user?.role; // 'ADMIN' | 'MANAGER' | 'EMPLOYEE'
 - Check `src/lib/config.ts` → `rolePermissions` for what each role can do.
 - Always re-check role in server actions — never trust client-side role gating alone.
 - ADMIN and MANAGER see all employees' data; EMPLOYEE sees only their own.
-- The email `amirhossain.limon@gmail.com` is hardcoded to ADMIN in `src/auth/config.ts`.
+- Roles come only from the `User.role` column — there are no hardcoded admin accounts. The seed admin is created from `DEFAULT_ADMIN_EMAIL` / `DEFAULT_ADMIN_PASSWORD`.
 
 ### Auth & Session
 ```ts
